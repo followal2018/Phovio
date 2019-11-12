@@ -1,0 +1,56 @@
+{
+  "project_info": {
+    "project_number": "841589592302",
+    "firebase_url": "https://phovio.firebaseio.com",
+    "project_id": "phovio",
+    "storage_bucket": "phovio.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:841589592302:android:8a2cbedc0eb805b8",
+        "android_client_info": {
+          "package_name": "com.videos.phovio"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "841589592302-8tpsetjc85qidve1las0nkht64q0hg1n.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.videos.phovio",
+            "certificate_hash": "c9d39de62596d1e8793a50f9dc043ec70ceea8b3"
+          }
+        },
+        {
+          "client_id": "841589592302-vlcro7315218nlduieip800ioa11tppd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.videos.phovio",
+            "certificate_hash": "6da586234620ef2887e5d65bb2ecc21901e145a0"
+          }
+        },
+        {
+          "client_id": "841589592302-lekog6mtgq3f2j5kunfp04fcpg3i2b1b.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD1Unnf3xzWDp2fXbG4PDddxOVgfB-3QKc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "841589592302-lekog6mtgq3f2j5kunfp04fcpg3i2b1b.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

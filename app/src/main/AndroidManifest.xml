@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.videos.phovio">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.SET_WALLPAPER" />
+    <uses-permission android:name="android.permission.SET_WALLPAPER_HINTS" />
+    <uses-permission android:name="android.permission.CLEAR_APP_CACHE" />
+    <uses-permission android:name="com.android.vending.BILLING" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
+    <protected-broadcast android:name="android.intent.action.MEDIA_MOUNTED" />
+
+    <uses-permission android:name="android.permission.VIBRATE" />
+
+    <application
+        android:name="com.videos.phovio.App"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:largeHeap="true"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true">
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="@string/app_id" />
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths" />
+        </provider>
+
+        <meta-data
+            android:name="com.google.android.gms.cast.framework.OPTIONS_PROVIDER_CLASS_NAME"
+            android:value="com.google.android.exoplayer2.ext.cast.DefaultCastOptionsProvider" />
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
+
+        <activity
+            android:name="com.facebook.FacebookActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:label="@string/app_name" />
+        <activity
+            android:name="com.facebook.CustomTabActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="@string/fb_login_protocol_scheme" />
+            </intent-filter>
+        </activity>
+
+        <service android:name="com.videos.phovio.services.FirebaseIDService">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+            </intent-filter>
+        </service>
+        <service android:name="com.videos.phovio.services.NotifFirebaseMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <activity
+            android:name="com.videos.phovio.ui.Activities.SlideActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.videos.phovio.ui.Activities.MainActivity"
+            android:label="@string/title_activity_main"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.videos.phovio.ui.Activities.CategoryActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.videos.phovio.ui.Activities.VideoActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.videos.phovio.ui.Activities.PermissionActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.videos.phovio.ui.Activities.UploadVideoActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateVisible|adjustResize" />
+        <activity
+            android:name="com.videos.phovio.ui.Activities.LoginActivity"
+            android:theme="@style/Theme.UserDialog" />
+        <activity
+            android:name="com.videos.phovio.ui.Activities.SplashActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.videos.phovio.ui.Activities.SupportActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.videos.phovio.ui.Activities.PolicyActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.videos.phovio.ui.Activities.SettingsActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.videos.phovio.ui.Activities.SearchActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.videos.phovio.ui.Activities.LanguageActivity"
+            android:theme="@style/Theme.UserDialog" />
+        <activity
+            android:name="com.videos.phovio.ui.Activities.AllCategoryActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.videos.phovio.ui.Activities.UserActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.videos.phovio.ui.Activities.EditActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.videos.phovio.ui.Activities.FullscreenActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/title_activity_fullscreen"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.videos.phovio.ui.Activities.WhatsAppActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.videos.phovio.ui.Activities.ImageActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.videos.phovio.ui.Activities.GifActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.videos.phovio.ui.Activities.QuoteActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.videos.phovio.ui.Activities.UploadImageActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.videos.phovio.ui.Activities.UploadGifActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.videos.phovio.ui.Activities.UploadQuoteActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+        <activity
+            android:name="com.videos.phovio.ui.Activities.PayoutsActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.videos.phovio.ui.Activities.EarningActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.videos.phovio.ui.Activities.RequestActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.videos.phovio.ui.Activities.PlayerActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.videos.phovio.ui.Activities.AllPortaitVideosActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.videos.phovio.ui.Activities.AllFullScreenCategoryActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.videos.phovio.ui.Activities.AllFullScreenUserActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.videos.phovio.ui.Activities.AllFullScreenSearchActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name="com.videos.phovio.ui.Activities.AllFullScreenFollowActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+    </application>
+
+</manifest>

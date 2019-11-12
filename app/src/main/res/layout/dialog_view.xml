@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="7dp"
+    android:paddingRight="7dp"
+    android:paddingBottom="20dp"
+    android:paddingTop="20dp"
+    >
+    <RelativeLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <androidx.cardview.widget.CardView
+            app:cardUseCompatPadding="true"
+            app:cardElevation="1dp"
+            app:cardMaxElevation="1dp"
+            app:cardCornerRadius="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <RelativeLayout
+                    android:visibility="gone"
+                    android:id="@+id/relative_layout_dialog_title"
+                    android:gravity="center|left"
+                    android:padding="13dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:textSize="19dp"
+                        android:id="@+id/text_view_view_dialog_title"
+                        android:textColor="@color/primary_text"
+                        android:textStyle="bold"
+                        android:text="Water Wallpaper"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </RelativeLayout>
+                <RelativeLayout
+                    android:visibility="gone"
+                    android:paddingTop="15dp"
+                    android:paddingBottom="15dp"
+                    android:id="@+id/relative_layout_quote"
+                    android:gravity="center"
+                    android:background="@drawable/bg_quote_background"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/text_view_quote_status"
+                        android:textAlignment="center"
+                        android:gravity="center"
+                        android:padding="18dp"
+                        android:textSize="12pt"
+                        android:textColor="@color/white"
+                        android:layout_width="wrap_content"
+                        android:layout_height="280dp" />
+                </RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/relative_layout_media"
+                    android:visibility="gone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <com.leo.simplearcloader.SimpleArcLoader
+                        android:visibility="visible"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        app:arc_colors="@array/colors_load"
+                        app:arc_style="simple_arc"
+                        app:arc_speed="medium"
+                        app:arc_margin="3dp">
+                    </com.leo.simplearcloader.SimpleArcLoader>
+                    <com.whygraphics.gifview.gif.GIFView
+                        android:id="@+id/gif_view_dialog_view_gif"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:scaleType="fitXY"
+                        android:adjustViewBounds="true"
+                        android:src="@drawable/bg_transparant"
+                        />
+                    <ImageView
+                        android:adjustViewBounds="true"
+                        android:id="@+id/image_view_dialog_view_image"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/bg_transparant"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                    <com.google.android.exoplayer2.ui.SimpleExoPlayerView
+                        android:background="@color/black"
+                        android:visibility="gone"
+                        android:id="@+id/video_view_dialog_image"
+                        android:layout_width="match_parent"
+                        android:layout_centerHorizontal="true"
+                        android:layout_height="300dp"/>
+                </RelativeLayout>
+                <RelativeLayout
+                    android:padding="12dp"
+                    android:id="@+id/relative_layout_dialog_top"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:gravity="center|left"
+                        android:orientation="horizontal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dp">
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:id="@+id/circle_image_view_dialog_image"
+                            android:src="@drawable/profile"
+                            android:layout_width="24dp"
+                            android:layout_height="25dp" />
+                        <TextView
+                            android:layout_marginLeft="4dp"
+                            android:ellipsize="end"
+                            android:maxLines="1"
+                            android:textStyle="bold"
+                            android:textSize="13dp"
+                            android:textColor="@color/primary_text"
+                            android:id="@+id/text_view_view_dialog_user"
+                            android:text="user name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
+                    <RelativeLayout
+                        android:gravity="center|right"
+                        android:layout_marginRight="5dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dp">
+                        <ImageView
+                            android:tint="@color/primary_text"
+                            app:srcCompat="@drawable/ic_share_app"
+                            android:layout_width="15dp"
+                            android:layout_height="20dp" />
+                        <TextView
+                            android:textSize="13dp"
+                            android:id="@+id/text_view_downloads"
+                            android:gravity="center"
+                            android:textColor="@color/primary_text"
+                            android:text="2K Views"
+                            android:layout_marginLeft="25dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="20dp" />
+                    </RelativeLayout>
+                </RelativeLayout>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_marginTop="3dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <androidx.cardview.widget.CardView
+            app:cardElevation="3dp"
+            app:cardCornerRadius="20dp"
+            android:layout_margin="0dp"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp">
+                <com.like.LikeButton
+                    android:padding="5dp"
+
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentBottom="true"
+                    android:id="@+id/like_button_fav_image_dialog"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    app:circle_end_color="#ff0048"
+                    app:circle_start_color="#0f89a4"
+                    app:dots_primary_color="#ff0048"
+                    app:dots_secondary_color="#0f89a4"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    app:icon_size="30dp"
+                    app:anim_scale_factor="10"
+                    app:like_drawable="@drawable/ic_favorite"
+                    app:unlike_drawable="@drawable/ic_favorite_border" />
+                <com.like.LikeButton
+                    android:padding="5dp"
+
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentBottom="true"
+                    android:id="@+id/like_button_whatsapp_image_dialog"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    app:circle_end_color="#5CAA4F"
+                    app:circle_start_color="#7FD371"
+                    app:dots_primary_color="#5CAA4F"
+                    app:dots_secondary_color="#7FD371"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    app:icon_size="30dp"
+                    app:anim_scale_factor="10"
+                    app:like_drawable="@drawable/ic_whatsapp"
+                    app:unlike_drawable="@drawable/ic_whatsapp" />
+                <com.like.LikeButton
+                    android:padding="5dp"
+
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentBottom="true"
+                    android:id="@+id/like_button_messenger_image_dialog"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    app:circle_end_color="#0656F7"
+                    app:circle_start_color="#3AD5F9"
+                    app:dots_primary_color="#0656F7"
+                    app:dots_secondary_color="#3AD5F9"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    app:icon_size="30dp"
+                    app:anim_scale_factor="10"
+                    app:like_drawable="@drawable/ic_messenger"
+                    app:unlike_drawable="@drawable/ic_messenger" />
+                <com.like.LikeButton
+                    android:padding="5dp"
+
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentBottom="true"
+                    android:id="@+id/like_button_facebook_image_dialog"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    app:circle_end_color="#064D93"
+                    app:circle_start_color="#5397EA"
+                    app:dots_primary_color="#064D93"
+                    app:dots_secondary_color="#5397EA"
+                    app:icon_size="30dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    app:anim_scale_factor="10"
+                    app:like_drawable="@drawable/ic_facebook"
+                    app:unlike_drawable="@drawable/ic_facebook" />
+                <com.like.LikeButton
+                    android:padding="5dp"
+
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentBottom="true"
+                    android:id="@+id/like_button_instagram_image_dialog"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    app:circle_end_color="#8A3293"
+                    app:circle_start_color="#FEA150"
+                    app:dots_primary_color="#8A3293"
+                    app:dots_secondary_color="#FEA150"
+                    app:icon_size="30dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    app:anim_scale_factor="10"
+                    app:like_drawable="@drawable/ic_instagram"
+                    app:unlike_drawable="@drawable/ic_instagram" />
+                <com.like.LikeButton
+                    android:padding="5dp"
+
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentBottom="true"
+                    android:id="@+id/like_button_share_image_dialog"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    app:circle_end_color="#5CAA4F"
+                    app:circle_start_color="#7FD371"
+                    app:dots_primary_color="#5CAA4F"
+                    app:dots_secondary_color="#7FD371"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    app:icon_size="30dp"
+                    app:anim_scale_factor="10"
+                    app:like_drawable="@drawable/ic_share"
+                    app:unlike_drawable="@drawable/ic_share" />
+                <com.like.LikeButton
+                    android:padding="5dp"
+
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentBottom="true"
+                    android:id="@+id/like_button_copy_image_dialog"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    app:circle_end_color="#fe6150"
+                    app:circle_start_color="#FEA150"
+                    app:dots_primary_color="#fe6150"
+                    app:dots_secondary_color="#FEA150"
+                    app:icon_size="30dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    app:anim_scale_factor="10"
+                    app:like_drawable="@drawable/ic_copy"
+                    app:unlike_drawable="@drawable/ic_copy" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+    </RelativeLayout>
+
+</RelativeLayout>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/fab_gif"
+        android:title="Gif"
+        android:icon="@drawable/ic_gif"
+        />
+    <item
+        android:id="@+id/fab_image"
+        android:title="Image"
+        android:icon="@drawable/ic_image"
+        />
+    <item
+        android:id="@+id/fab_video"
+        android:title="Video"
+        android:icon="@drawable/ic_videocam"
+        />
+    <item
+        android:id="@+id/fab_quote"
+        android:title="Quote"
+        android:icon="@drawable/ic_quote"
+        />
+</menu>

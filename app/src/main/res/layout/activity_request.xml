@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/white"
+    android:id="@+id/activity_contact"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:layout_editor_absoluteY="8dp"
+    tools:layout_editor_absoluteX="8dp">
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
+        app:elevation="2dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <androidx.appcompat.widget.Toolbar
+                app:elevation="2dp"
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="@color/colorPrimary"
+                style="@style/ActionBar"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                />
+        </LinearLayout>
+    </com.google.android.material.appbar.AppBarLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/appBarLayout">
+        <ImageView
+            android:padding="30dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/edit_text_bg"
+            android:tint="@color/black"
+            app:srcCompat="@drawable/ic_monetization_on_black_24dp"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:id="@+id/imageView" />
+        <LinearLayout
+            android:paddingBottom="@dimen/activity_vertical_margin"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_below="@+id/imageView">
+
+            <TextView
+                android:layout_marginLeft="10dp"
+                android:layout_marginBottom="3dp"
+                android:text="Select Payment Method"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <Spinner
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/edit_text_bg"
+                android:id="@+id/spinner_payments_methode"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:spinnerMode="dropdown"/>
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_marginBottom="10dp"
+
+                android:id="@+id/payments_details_input_layout_message"
+                android:layout_width="match_parent"
+                android:theme="@style/textview_login"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:padding="10dp"
+                    android:background="@drawable/edit_text_bg"
+                    android:gravity="top"
+                    android:lines="4"
+                    android:id="@+id/payments_details_input_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textMultiLine"
+                    android:hint="@string/hint_payemnts" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Button
+                android:id="@+id/send_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/gradient_dialog_btn"
+                android:elevation="1dp"
+                android:padding="16dp"
+                android:text="@string/send_request"
+                android:textColor="@color/white"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+    </RelativeLayout>
+
+
+</RelativeLayout>

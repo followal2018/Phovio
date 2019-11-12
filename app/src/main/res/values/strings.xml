@@ -1,0 +1,232 @@
+<resources>
+    <string name="app_name">Phovio</string>
+    <string name="title_activity_main">MainActivity</string>
+
+    <string-array name="payments_methodes">
+        <item>PayPal</item>
+        <item>Paytm</item>
+    </string-array>
+
+    <string name="facebook_app_id">2083179975316329</string>
+    <string name="fb_login_protocol_scheme">fb2083179975316329</string>
+
+
+    <string name="NATIVE_ADS_TYPE">both</string> <!-- facebook/admob/both -->
+
+    <string name="policy_privacy_url">http://phovio.com/termsandconditions.html</string>
+    <string name="my_google_play">https://play.google.com/store/apps/developer?id=Xpert+Manager</string>
+
+    <!-- Admob Published For GDPR -->
+    <string name="publisher_id">pub-2885193985970095</string>
+    <string name="app_id">ca-app-pub-2885193985970095~5532011596</string>
+
+
+    <string name="AD_MOB_TIME">15</string>
+    <string name="ad_unit_id_interstitial">ca-app-pub-2885193985970095/5180657800</string>
+<!--    <string name="ad_unit_id_reward">ca-app-pub-2885193985970095/4302690404</string>-->
+    <string name="ad_unit_id_reward">ca-app-pub-3940256099942544/5224354917</string>
+    <string name="ad_unit_id_banner">ca-app-pub-2885193985970095/2810818799</string>
+    <string name="ad_unit_id_native">ca-app-pub-2885193985970095/9536009243</string>
+
+
+    <!-- FACEBOOK ADS -->
+    <string name="FACEBOOK_ADS_NATIVE_BANNER_PLACEMENT_ID">488896505197015_488904698529529</string>
+    <string name="FACEBOOK_ADS_NATIVE_PLACEMENT_ID">488896505197015_488899258530073</string>
+    <!-- enable / disbale NATIVE BANNER -->
+
+    <string name="FACEBOOK_ADS_ENABLED_BANNER">true</string>
+    <!-- enable / disbale NATIVE ADS BETWEEN ITEM -->
+    <string name="FACEBOOK_ADS_ENABLED_NATIVE">true</string>
+    <!-- NUMBER OF WALLPAPER BETWEEN ADS -->
+    <string name="NATIVE_ADS_ITEM_BETWWEN_ADS">2</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <array name="colors_load">
+        <item>@color/colorPrimaryDark</item>
+        <item>@color/colorPrimaryDark</item>
+    </array>
+
+    <array name="colors_load_img">
+        <item>@color/black</item>
+        <item>@color/dark_gray</item>
+    </array>
+    <string name="action_settings">Settings</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+
+    <string name="action_infos"><![CDATA[Report bug & Help]]></string>
+    <string name="error_short_value">Your field is too short</string>
+    <string name="error_mail_valide">Please enter a valid E-mail</string>
+    <string name="message_sended">Message has been sent successfully</string>
+    <string name="progress_login">Work in progress</string>
+    <string name="policy_privacy">Policy privacy</string>
+    <string name="action_rate">Rate App</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="language_label">Choose your languages</string>
+    <string name="loading_language">Loading Languages ...</string>
+    <string name="error_server">Check your internet connection</string>
+    <string name="try_again">Try again</string>
+    <string name="favorite">Favorite</string>
+    <string name="download">Download</string>
+    <string name="share">Share</string>
+    <string name="copy">Copy</string>
+    <string name="more_status">MORE STATUS</string>
+    <string name="permission_desc">Now we need your permission to continue use the application perfectly</string>
+    <string name="permission_title">Everything is okay</string>
+    <string name="menu_popular">Popular</string>
+    <string name="menu_latest">Latest</string>
+    <string name="upload_image">Upload Image</string>
+    <string name="edit_text_upload_title_error">Title very short , please a write correct title</string>
+    <string name="image_upload_error">Please select an image</string>
+    <string name="video_upload_error">Please select an image</string>
+    <string name="gif_upload_error">Please select an image</string>
+    <string name="image_upload_success">Your image has been successfully uploaded</string>
+    <string name="video_upload_success">Your video has been successfully uploaded</string>
+    <string name="joke_upload_success">Your Joke has been successfully added</string>
+    <string name="status_upload_success">Your Status has been successfully added</string>
+    <string name="status_copied_success">Your Status has been successfully copied</string>
+    <string name="gif_upload_success">Your GIF has been successfully added</string>
+    <string name="no_connexion">Connection problem</string>
+    <string name="retry">Retry</string>
+    <string name="upload_gif">Upload GIF</string>
+    <string name="please_login">Login to your account</string>
+    <string name="welcome_login">Login to use More</string>
+    <string name="welcome_login_text">Login to upload , image ,video ....</string>
+    <string name="operation_progress">Operation in progress</string>
+    <string name="account_disabled">Sorry your account has been locked</string>
+    <string name="login_gg_text">Login with google</string>
+    <string name="message_logout">You are successfully logout</string>
+    <string name="more_jokes">MORE JOKES</string>
+    <string name="more_images">MORE IMAGES</string>
+    <string name="more_gifs">MORE GIFS</string>
+    <string name="more_videos">MORE VIDEOS</string>
+    <string name="update_now">Update Now</string>
+    <string name="exit">Exit</string>
+    <string name="go_pro">GO PRO</string>
+    <string name="hint_message">Your message</string>
+    <string name="send_support">Send Message</string>
+    <string name="hint_email">E-mail</string>
+    <string name="hint_name">Full name</string>
+    <string name="about_us">About us</string>
+    <string name="version_label">Version</string>
+    <string name="title_notification">Enable push notification</string>
+    <string name="label_notification">Receive push notification</string>
+    <string name="clear_cache">Clear Cache</string>
+    <string name="label_cache">Clear locally cached statuses. Currently : </string>
+    <string name="contact_us">Contact us</string>
+
+    <string name="download_more_from_link">Earn Cash by uploading, View, SuperLike videos/images/gifs/quotes. Get more from == https://play.google.com/store/apps/details?id=com.videos.phovio ==</string>
+    <string name="upload_video">Upload Video</string>
+    <string name="share_as_image">Share \n as image</string>
+    <string name="share_as_text">Share \n as text</string>
+    <string name="copy_status">Copy \n status</string>
+    <string name="add_to_favorite">Add to \n favorites</string>
+    <string name="copy_joke">Copy \n  Joke</string>
+    <string name="comment">Comment</string>
+    <string name="write_comment">Write comment</string>
+    <string name="comment_hidden">Comment Hidden</string>
+    <string name="now_time">Now</string>
+    <string name="all_categories">Show all</string>
+    <string name="all_categories_gif">All Gifs Categories</string>
+    <string name="all_categories_video">All statuses Categories</string>
+    <string name="all_categories_status">All Status Categories</string>
+    <string name="all_categories_jokes">All Joke Categories</string>
+    <string name="all_categories_images">All Images categories</string>
+
+    <string name="loading">Loading</string>
+    <string name="invalide_url">Invalid Url</string>
+    <string name="loading_user_data">Loading user data</string>
+    <string name="edit_my_profile">Edit my profile</string>
+
+    <string name="hint_facebook">Facebook url</string>
+    <string name="hint_twitter">Twitter url</string>
+    <string name="hint_instragram">Instagram Url</string>
+    <string name="save">Save</string>
+    <string name="menu_me">Me</string>
+    <string name="comments">  Comments</string>
+    <array name="autosize_text_sizes">
+        <item>10sp</item>
+        <item>12sp</item>
+        <item>20sp</item>
+        <item>40sp</item>
+        <item>100sp</item>
+    </array>
+    <string name="skip">Skip</string>
+    <string name="rate_our_app">Rate Our App</string>
+    <string name="rate_our_app_message">If you love our application ,please take a moment to rate it .</string>
+    <string name="rate_now">Rate Now</string>
+    <string name="later">Later</string>
+    <string name="no_again">Don’t ask again</string>
+    <string name="description_subsribte">With our pack. You can enjoy an ad-free experience . and focus on the  essential!</string>
+    <string name="select_language">Select your Languages</string>
+    <string name="on_review">On review</string>
+
+    <string name="title_slide_1">Welcome to PHOVIO App</string>
+    <string name="description_slide_1">Thank you for download Phovio App ,Enjoy with this Amazing android app with cool features .</string>
+
+    <string name="title_slide_2">Earn Money by Using App</string>
+    <string name="description_slide_2">Earn money by superlike , upload and watch videos,gifs,image,status and invite your friends , earn more if they earn from superlike. </string>
+    <string name="title_slide_3">Be Creative </string>
+    <string name="description_slide_3">Register now and share your creative idea with many users and be one of our community. Get more SuperLikes on your content and earn more...</string>
+
+    <string name="title_slide_4">Download and share</string>
+    <string name="description_slide_4">Download Any content and keep it on your device to watch it on offline mode , and share it with your friends  </string>
+
+    <string name="title_slide_5">Favourites</string>
+    <string name="description_slide_5">Create your favorite list and save any content to view it later . </string>
+
+    <string name="title_slide_6">Give your Reactions </string>
+    <string name="description_slide_6">Browse best status collection  and give your reaction like,love, haha , lool , angry ...</string>
+
+    <string name="title_slide_8">Take your freedom</string>
+    <string name="description_slide_8">Subscribe with a small price , and take your freedom by remove all ads .</string>
+
+    <string name="share_this_app">Share this App</string>
+    <string name="images_downloaded">Video has been downloaded successfully</string>
+    <string name="twitter_not_installed">Twitter have not been installed</string>
+    <string name="app_not_installed">No App installed</string>
+    <string name="share_via">Shared via</string>
+    <string name="downloading">Downloading</string>
+    <string name="instagram_not_installed">Instagram have not been installed</string>
+    <string name="hike_not_installed">Hike have not been installed</string>
+    <string name="snapchat_not_installed">Snapshat have not been installed</string>
+    <string name="messenger_not_installed">Messenger have not been installed</string>
+    <string name="facebook_not_installed">Facebook have not been installed</string>
+    <string name="whatsapp_not_installed">Whatsapp have not been installed</string>
+    <string name="download_failed">Download failed! Please check your internet connection and try again</string>
+    <string name="my_profile">My Profile</string>
+    <string name="menu_follow">Follow</string>
+
+    <string name="title_activity_fullscreen">FullscreenActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="downloaded_video">Downloaded statuses</string>
+    <string name="dialog_text_no_ads_title">Turn Off ads</string>
+    <string name="dialog_text_no_premium_wallpapers_title">Premium Content</string>
+    <string name="dialog_text_no_premium_wallpapers_description">Get unlimited wallpapers</string>
+    <string name="dialog_text_no_ads_description">Use App more free without ads</string>
+    <string name="subscribe">Subscribe</string>
+    <string name="Logout">Logout</string>
+    <string name="login">Login / Register</string>
+
+    <string name="save_successful_message">Saved To Gallery!</string>
+    <string name="save_error_message">Could not save,Try again later</string>
+    <string name="whatsapp_saver">Whatsapp Status Saver</string>
+    <string name="write_quote">Write Quote</string>
+    <string name="my_earning">My Earning</string>
+    <string name="reference_code_copied">Your Reference code has been copied</string>
+    <string name="hint_payemnts">Payment account infos</string>
+    <string name="send_request">Send Request</string>
+    <string name="request_withdrawal">Request withdrawal</string>
+    <string name="withdrawals">Withdrawals</string>
+
+    <!-- update 1.2 -->
+    <string name="rating_dialog_cancel">Cancel</string>
+    <string name="rating_dialog_experience">How was your experience with us?</string>
+    <string name="rating_dialog_feedback_title">Feedback</string>
+    <string name="rating_dialog_maybe_later">Maybe later</string>
+    <string name="rating_dialog_never">Never</string>
+    <string name="rating_dialog_submit">Submit</string>
+    <string name="FACEBOOK_ADS_INTERSTITIAL_PLACEMENT_ID">488896505197015_488906218529377</string>
+</resources>

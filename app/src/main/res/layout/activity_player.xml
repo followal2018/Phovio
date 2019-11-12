@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.Activities.PlayerActivity">
+
+
+    <fr.castorflex.android.verticalviewpager.VerticalViewPager
+        android:layout_above="@id/adView"
+        android:id="@+id/view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+    <com.google.android.gms.ads.AdView
+        xmlns:ads="http://schemas.android.com/apk/res-auto"
+        android:visibility="gone"
+        android:id="@+id/adView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        ads:adSize="SMART_BANNER"
+        ads:adUnitId="@string/ad_unit_id_banner"
+        android:layout_alignParentBottom="true"
+        />
+    <com.leo.simplearcloader.SimpleArcLoader
+        android:visibility="gone"
+        android:elevation="10dp"
+        android:layout_marginTop="80dp"
+        android:layout_marginRight="10dp"
+        android:id="@+id/simple_arc_loader_exo"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        app:arc_colors="@array/colors_load"
+        app:arc_style="simple_arc"
+        app:arc_speed="medium"
+        app:arc_margin="3dp">
+    </com.leo.simplearcloader.SimpleArcLoader>
+</RelativeLayout>

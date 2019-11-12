@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="colorPrimaryDark">#dddee3</color>
+    <color name="colorPrimary">#BF80FF</color>
+    <color name="colorPrimaryDarkMenu">#FFFFFF</color>
+    <color name="colorPrimarybg">#dddee3</color>
+
+    <color name="primary_text">#301934</color>
+
+    <color name="colorAccent">#301934</color>
+    <color name="white">#FFFFFF</color>
+    <color name="light_white">#d4d4d4</color>
+    <color name="pruple">#a905b6</color>
+    <color name="green">#00b341</color>
+    <color name="red">#ec302b</color>
+    <color name="blue">#2984fc</color>
+    <color name="black">#5f196b</color>
+    <color name="gray_color">#ccc</color>
+    <color name="black_overlay">#66000000</color>
+    <color name="primary_text_light">#606060</color>
+    <color name="transparent">#00000000</color>
+    <color name="dark_gray">#9c9c9c</color>
+    <color name="phovio_color">#5f196b</color>
+
+    <array name="dot_colors">
+        <item>#03A9F4</item>
+        <item>#E65100</item>
+        <item>#FFBB00</item>
+    </array>
+</resources>

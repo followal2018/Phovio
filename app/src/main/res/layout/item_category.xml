@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    >
+    <androidx.cardview.widget.CardView
+        app:cardElevation="3dp"
+        android:id="@+id/card_view_category_status"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginBottom="2dp"
+        android:layout_marginTop="3dp"
+        app:cardCornerRadius="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:clickable="false"
+                android:focusable="false"
+                android:adjustViewBounds="true"
+                android:scaleType="centerCrop"
+                android:id="@+id/image_view_item_category"
+                android:background="@drawable/bg_raduis_img_cat"
+                android:layout_width="match_parent"
+                android:layout_height="140dp" />
+            <TextView
+                android:background="@drawable/gradient_category"
+                android:id="@+id/text_view_item_category"
+                android:layout_width="match_parent"
+                android:layout_height="140dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingTop="20dp"
+                android:textSize="20dp"
+                android:paddingBottom="20dp"
+                android:gravity="center"
+                android:text="Navigation"
+                android:textColor="@color/white"
+                android:textStyle="bold"/>
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+</LinearLayout>

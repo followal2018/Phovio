@@ -1,0 +1,363 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:focusableInTouchMode="true"
+    tools:context=".ui.Activities.EarningActivity">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:elevation="2dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                style="@style/ActionBar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="@color/colorPrimary"
+                app:elevation="2dp"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+
+        </LinearLayout>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refreshl_earning_activity"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@id/appBarLayout">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginBottom="5dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="215dp"
+                        android:background="@drawable/bg_earning_big"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:gravity="center"
+                            android:text="Available Balance"
+                            android:textColor="@color/white"
+                            android:textSize="18dp"
+                            android:textStyle="bold" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="120dp"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/text_view_earning_amount_earning_activity"
+                                android:layout_width="wrap_content"
+                                android:layout_height="70dp"
+                                android:gravity="center|bottom"
+                                android:text="--"
+                                android:textColor="@color/white"
+                                android:textSize="30dp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/text_view_earning_points_earning_activity"
+                                android:layout_width="wrap_content"
+                                android:layout_height="40dp"
+                                android:gravity="center|top"
+                                android:text="You have -- Points"
+                                android:textColor="@color/white"
+                                android:textSize="20dp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:paddingLeft="10dp"
+                            android:paddingRight="10dp">
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/text_view_earning_usd_to_points_activity"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="0.6"
+                                    android:gravity="center|left"
+                                    android:paddingTop="8dp"
+                                    android:text="-- = -- Points"
+                                    android:textColor="@color/white"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:id="@+id/text_view_minimum_point_to_withdraw_activity"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:ellipsize="end"
+                                    android:gravity="center|left"
+                                    android:maxLines="1"
+                                    android:text="Min Withdrawal = 330000 Points"
+                                    android:textColor="@color/white"
+                                    android:textStyle="normal" />
+                            </LinearLayout>
+
+                            <TextView
+                                android:id="@+id/text_view_earning_date_activity"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.4"
+                                android:gravity="center|right"
+                                android:paddingTop="8dp"
+                                android:text="20/11/2019"
+                                android:textColor="@color/white"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <ImageView
+                        android:id="@+id/image_view_info"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_centerInParent="true"
+                        android:layout_toLeftOf="@+id/text_view_code_earning_actiivty"
+                        android:padding="6dp"
+                        android:layout_marginRight="3dp"
+                        android:layout_marginEnd="3dp"
+                        android:layout_marginTop="3dp"
+                        android:layout_gravity="end"
+                        android:tint="@color/white"
+                        app:srcCompat="@drawable/ic_info_black" />
+
+                </FrameLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:background="@drawable/bg_earning_big"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:id="@+id/relative_layout_copy_code_earning_actiivty"
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:background="?android:attr/selectableItemBackground"
+                        android:clickable="true"
+                        android:focusable="true">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="30dp"
+                            android:gravity="bottom|left"
+                            android:paddingLeft="10dp"
+                            android:text="Your Reference code "
+                            android:textColor="@color/white"
+                            android:textSize="17dp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="30dp"
+                            android:layout_marginTop="30dp"
+                            android:gravity="top|left"
+                            android:paddingLeft="10dp"
+                            android:text="Click here to Copy"
+                            android:textColor="@color/white"
+                            android:textSize="12dp"
+                            android:textStyle="bold" />
+
+                        <ImageView
+                            android:id="@+id/imgsharecode"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_centerInParent="true"
+                            android:layout_marginRight="30dp"
+                            android:layout_toLeftOf="@+id/text_view_code_earning_actiivty"
+                            android:padding="5dp"
+                            android:tint="@color/white"
+                            app:srcCompat="@drawable/ic_share_app" />
+
+                        <TextView
+                            android:id="@+id/text_view_code_earning_actiivty"
+                            android:layout_width="wrap_content"
+                            android:layout_height="40dp"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginRight="5dp"
+                            android:background="@drawable/bg_referenace_code"
+                            android:padding="10dp"
+                            android:text="------------"
+                            android:textColor="@color/white"
+                            android:textSize="15dp"
+                            android:textStyle="bold" />
+                    </RelativeLayout>
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="5dp"
+                    android:layout_weight="2"
+                    android:orientation="horizontal">
+
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="2dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/bg_earning_big">
+
+                        <RelativeLayout
+                            android:id="@+id/relative_layout_request_payout_earning_actiivty"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="?android:attr/selectableItemBackground"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:padding="6dp">
+
+                            <ImageView
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:layout_alignParentLeft="true"
+                                android:layout_centerVertical="true"
+                                android:layout_marginLeft="4dp"
+                                android:padding="8dp"
+                                android:tint="@color/white"
+                                app:srcCompat="@drawable/ic_money" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="40dp"
+                                android:layout_marginLeft="50dp"
+                                android:gravity="center|left"
+                                android:text="Request Withdrawal"
+                                android:textColor="@color/white"
+                                android:textSize="12dp"
+                                android:textStyle="bold" />
+                        </RelativeLayout>
+                    </RelativeLayout>
+
+                    <RelativeLayout
+
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="2dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/bg_earning_big">
+
+                        <RelativeLayout
+                            android:id="@+id/relative_layout_history_payout_earning_actiivty"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="?android:attr/selectableItemBackground"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:padding="6dp">
+
+                            <ImageView
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:layout_alignParentLeft="true"
+                                android:layout_centerVertical="true"
+                                android:layout_marginLeft="4dp"
+                                android:padding="8dp"
+                                android:tint="@color/white"
+                                app:srcCompat="@drawable/ic_history" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="40dp"
+                                android:layout_marginLeft="50dp"
+                                android:gravity="center|left"
+                                android:text="Withdrawal History"
+                                android:textColor="@color/white"
+                                android:textSize="12dp"
+                                android:textStyle="bold" />
+                        </RelativeLayout>
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_view_transaction_earning_activity"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    tools:listitem="@layout/item_earning" />
+
+                <Button
+                    android:id="@+id/button_load_more"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_margin="5dp"
+                    android:background="@drawable/bg_earning_big"
+                    android:text="Load More"
+                    android:textColor="@color/white"
+                    android:visibility="gone" />
+            </LinearLayout>
+
+        </ScrollView>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <RelativeLayout
+        android:id="@+id/relative_layout_load_more"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/loading_bg"
+        android:gravity="center"
+        android:visibility="gone">
+
+        <com.leo.simplearcloader.SimpleArcLoader
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:visibility="visible"
+            app:arc_colors="@array/colors_load"
+            app:arc_margin="3dp"
+            app:arc_speed="medium"
+            app:arc_style="simple_arc">
+
+        </com.leo.simplearcloader.SimpleArcLoader>
+    </RelativeLayout>
+</RelativeLayout>

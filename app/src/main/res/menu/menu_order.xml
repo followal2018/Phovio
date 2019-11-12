@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:id="@+id/nav_sort"
+        android:icon="@drawable/ic_sort"
+        android:title="Sort"
+        app:showAsAction="always">
+        <menu>
+            <item android:id="@+id/nav_latest"
+                android:icon="@drawable/ic_access_time"
+                android:title="Latest"
+                app:showAsAction="withText"/>
+            <item android:id="@+id/nav_popular"
+                android:icon="@drawable/ic_whatshot_black"
+                android:title="Popular"
+                app:showAsAction="withText"/>
+        </menu>
+    </item>
+
+</menu>
