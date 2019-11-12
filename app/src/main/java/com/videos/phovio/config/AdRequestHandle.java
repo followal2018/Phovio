@@ -22,7 +22,7 @@ public class AdRequestHandle {
 
     public static void initAd(Context context) {
 //        mInterstitialAd = new InterstitialAd(context, AppContext.getInstance().getPreference().getString(Constants.FB_Interstitial_Cetting_call_sms_wp));
-        mInterstitialAd = new InterstitialAd(context,"IMG_16_9_LINK#488896505197015_488906218529377");
+        mInterstitialAd = new InterstitialAd(context,"488896505197015_488906218529377");
         requestNewInterstitial();
         loadNativeAd(context);
     }

@@ -24,7 +24,7 @@
     <string name="AD_MOB_TIME">15</string>
     <string name="ad_unit_id_interstitial">ca-app-pub-2885193985970095/5180657800</string>
 <!--    <string name="ad_unit_id_reward">ca-app-pub-2885193985970095/4302690404</string>-->
-    <string name="ad_unit_id_reward">ca-app-pub-3940256099942544/5224354917</string>
+    <string name="ad_unit_id_reward">ca-app-pub-2885193985970095/4302690404</string>
     <string name="ad_unit_id_banner">ca-app-pub-2885193985970095/2810818799</string>
     <string name="ad_unit_id_native">ca-app-pub-2885193985970095/9536009243</string>
 
