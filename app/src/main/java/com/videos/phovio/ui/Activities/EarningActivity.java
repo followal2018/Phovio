@@ -12,6 +12,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.StrictMode;
@@ -31,6 +32,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -53,7 +55,6 @@ import com.videos.phovio.Provider.PrefManager;
 import com.videos.phovio.R;
 import com.videos.phovio.api.apiClient;
 import com.videos.phovio.api.apiRest;
-import com.videos.phovio.config.AdRequestHandle;
 import com.videos.phovio.model.ApiResponse;
 import com.videos.phovio.model.ApiResponseSettings;
 import com.videos.phovio.model.ApiResponseValidation;
@@ -86,6 +87,7 @@ public class EarningActivity extends AppCompatActivity {
     private static final int STATE_SIGNIN_SUCCESS = 6;
     private static final String TAG = "PhoneAuthActivity";
     String settings = "";
+    String validationmsg = "";
     private RecyclerView recycler_view_transaction_earning_activity;
     private List<Transaction> transactionList = new ArrayList<>();
     private Transactiondapter adapter;
@@ -302,10 +304,11 @@ public class EarningActivity extends AppCompatActivity {
                 }
                 path = file.getPath();
                 Uri bmpUri = Uri.parse("file://" + path);
+                PrefManager prefManager=new PrefManager(getApplicationContext());
 
 
 //                String shareBody = "Download Phovio app and use my refer code : " + text_view_code_earning_actiivty.getText().toString().trim();
-                String shareBody = "Download Phovio app from this link https://play.google.com/store/apps/details?id=com.videos.phovio and use my code : " + text_view_code_earning_actiivty.getText().toString().trim();
+                String shareBody = "Download Phovio app from this link "+ prefManager.getString("invitationLink");
                 Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
                 sharingIntent.setType("text/plain");
                 sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "My Refer");
@@ -327,10 +330,54 @@ public class EarningActivity extends AppCompatActivity {
             public void onClick(View v) {
 
 //                showDialog();
+                if (validationmsg.trim().isEmpty()) {
+                    Intent intent = new Intent(EarningActivity.this, RequestActivity.class);
+                    startActivity(intent);
+                    overridePendingTransition(R.anim.enter, R.anim.exit);
+                } else {
+                    final Dialog dialog = new Dialog(EarningActivity.this,
+                            R.style.Theme_Dialog);
+                    dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                    dialog.setCancelable(true);
+                    dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                    dialog.setContentView(R.layout.dialog_validation);
+                    Window window = dialog.getWindow();
+                    WindowManager.LayoutParams wlp = window.getAttributes();
+                    getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+                    wlp.gravity = Gravity.BOTTOM;
+                    wlp.flags &= ~WindowManager.LayoutParams.FLAG_DIM_BEHIND;
+                    window.setAttributes(wlp);
+                    final TextView textview_info = (TextView) dialog.findViewById(R.id.textview_info);
+                    TextView text_view_reward_ok = (TextView) dialog.findViewById(R.id.text_view_reward_ok);
 
-                Intent intent = new Intent(EarningActivity.this, RequestActivity.class);
-                startActivity(intent);
-                overridePendingTransition(R.anim.enter, R.anim.exit);
+//                textview_info.setText("Minimum withdrawal 1 usd or equivalent coins\n" +
+//                        "Minimum 50 superlikes done\n" +
+//                        "Minimum 3 refers\n" +
+//                        "Minimum 20 video views\n" +
+//                        "Minimum 1 video uploads\n" +
+//                        "Minimum 1 image uploads");
+
+                    textview_info.setText(validationmsg);
+
+                    text_view_reward_ok.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialog.dismiss();
+                        }
+                    });
+                    dialog.setOnKeyListener(new Dialog.OnKeyListener() {
+
+                        @Override
+                        public boolean onKey(DialogInterface arg0, int keyCode,
+                                             KeyEvent event) {
+                            if (keyCode == KeyEvent.KEYCODE_BACK) {
+                                dialog.dismiss();
+                            }
+                            return true;
+                        }
+                    });
+                    dialog.show();
+                }
             }
         });
         this.relative_layout_copy_code_earning_actiivty.setOnClickListener(new View.OnClickListener() {
@@ -538,10 +585,11 @@ public class EarningActivity extends AppCompatActivity {
             id_user = Integer.parseInt(prefManager.getString("ID_USER"));
             key_user = prefManager.getString("TOKEN_USER");
         }
-        Retrofit retrofit = apiClient.getClientNew();
+        Retrofit retrofit = apiClient.getClient();
         apiRest service = retrofit.create(apiRest.class);
         Call<ApiResponseValidation> call = service.requestWithdrawalvalidation(id_user);
         call.enqueue(new Callback<ApiResponseValidation>() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onResponse(Call<ApiResponseValidation> call, Response<ApiResponseValidation> response) {
 
@@ -549,11 +597,7 @@ public class EarningActivity extends AppCompatActivity {
 
                 apiClient.FormatData(EarningActivity.this, response);
                 if (response.isSuccessful()) {
-                    if (response.body().getCode().equals(200)) {
-                        relative_layout_request_payout_earning_actiivty.setClickable(true);
-                    } else {
-                        relative_layout_request_payout_earning_actiivty.setClickable(false);
-                    }
+                    validationmsg = response.body().getMessage().replaceAll(",", "\n");
                 }
                 register_progress.dismiss();
             }
@@ -590,7 +634,7 @@ public class EarningActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     if (response.body().getCode().equals(200)) {
                         Log.e("response", "" + response.message());
-                        settings=response.body().getValues().replaceAll(",", "\n");
+                        settings = response.body().getValues().replaceAll(",", "\n");
 
 //                        settings=response.body().getValues();
 //                        relative_layout_request_payout_earning_actiivty.setClickable(true);

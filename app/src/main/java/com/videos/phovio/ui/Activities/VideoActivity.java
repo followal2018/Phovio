@@ -13,6 +13,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Environment;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -395,23 +396,111 @@ public class VideoActivity extends AppCompatActivity {
 
     private void onSuperLikeClicked() {
         PrefManager prefManager = new PrefManager(this);
-        String SuperLikeIds = prefManager.getString("SuperLikeUserIds");
-        Date today = new Date();
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        if (prefManager.getString("SuperLikeDate").equalsIgnoreCase(sdf.format(today))) {
-            if (SuperLikeIds.contains(String.valueOf(userid))) {
-                Toasty.error(this, "Already Superlike this user post", Toast.LENGTH_SHORT, true).show();
-            } else {
-                showDialog(id, userid, position);
-            }
+
+        if (prefManager.getInt("SuperLikeCount") == 5) {
+
+            showDialogTimer();
+
         } else {
-            prefManager.setInt("SuperLikeCount", 0);
-            prefManager.setString("SuperLikeUserIds", "");
-            prefManager.setString("SuperLikeDate", sdf.format(today));
+            String SuperLikeIds = prefManager.getString("SuperLikeUserIds");
+            Date today = new Date();
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            if (prefManager.getString("SuperLikeDate").equalsIgnoreCase(sdf.format(today))) {
+                if (SuperLikeIds.contains(String.valueOf(userid))) {
+                    Toasty.error(this, "Already Superlike this user post", Toast.LENGTH_SHORT, true).show();
+                } else {
+                    showDialog(id, userid, position);
+                }
+            } else {
+                prefManager.setInt("SuperLikeCount", 0);
+                prefManager.setString("SuperLikeUserIds", "");
+                prefManager.setString("SuperLikeDate", sdf.format(today));
 //                            setSuperLikedata(position);
 //                            AddSuperLikePoints(statusList.get(position).getId(), statusList.get(position).getUserid());
-            showDialog(id, userid, position);
+                showDialog(id, userid, position);
+            }
         }
+    }
+
+    public void showDialogTimer() {
+        final Dialog dialog = new Dialog(this,
+                R.style.Theme_Dialog);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(true);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.setContentView(R.layout.dialog_rewardadtimer);
+        Window window = dialog.getWindow();
+        WindowManager.LayoutParams wlp = window.getAttributes();
+        getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        wlp.gravity = Gravity.BOTTOM;
+        wlp.flags &= ~WindowManager.LayoutParams.FLAG_DIM_BEHIND;
+        window.setAttributes(wlp);
+        final TextView textviewtimer = (TextView) dialog.findViewById(R.id.textviewtimer);
+        TextView text_view_reward_ok = (TextView) dialog.findViewById(R.id.text_view_reward_ok);
+
+        Calendar now = Calendar.getInstance();
+        now = Calendar.getInstance();
+        PrefManager prefManager = new PrefManager(this);
+        long LastSuperLikeTime = Long.parseLong(prefManager.getString("LastSuperLikeTime"));
+        Log.e("LastSuperLikeTime", "" + LastSuperLikeTime);
+
+        long difference = LastSuperLikeTime - now.getTimeInMillis();
+
+        new CountDownTimer(difference, 1000) {
+
+            public void onTick(long millisUntilFinished) {
+                // mTextField.setText("seconds remaining: " + millisUntilFinished / 1000);
+
+                long secondsInMilli = 1000;
+                long minutesInMilli = secondsInMilli * 60;
+                long hoursInMilli = minutesInMilli * 60;
+
+
+                long elapsedHours = millisUntilFinished / hoursInMilli;
+                millisUntilFinished = millisUntilFinished % hoursInMilli;
+
+                long elapsedMinutes = millisUntilFinished / minutesInMilli;
+                millisUntilFinished = millisUntilFinished % minutesInMilli;
+
+                long elapsedSeconds = millisUntilFinished / secondsInMilli;
+
+
+                String yy = String.format("%02d:%02d:%02d", elapsedHours, elapsedMinutes, elapsedSeconds);
+
+                Log.e("TImerrrrr-11111111---", "" + yy);
+                textviewtimer.setText("Ads will display after : " + yy);
+
+            }
+
+            public void onFinish() {
+                //  mTextField.setText("done!");
+            }
+        }.start();
+
+
+        text_view_reward_ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+//                showRewardedVideo(SuperlikePostId, userid, position);
+//                bp.subscribe(MainActivity.this, Global.SUBSCRIPTION_ID);
+            }
+        });
+        dialog.setOnKeyListener(new Dialog.OnKeyListener() {
+
+            @Override
+            public boolean onKey(DialogInterface arg0, int keyCode,
+                                 KeyEvent event) {
+                // TODO Auto-generated method stub
+                if (keyCode == KeyEvent.KEYCODE_BACK) {
+
+                    dialog.dismiss();
+                }
+                return true;
+            }
+        });
+        dialog.show();
+
     }
 
     public void showDialog(final Integer SuperlikePostId, final Integer userid, final Integer position) {
@@ -513,6 +602,7 @@ public class VideoActivity extends AppCompatActivity {
                             Isrewardcompleted = true;
                             Toasty.success(getApplicationContext(), "Success", Toast.LENGTH_SHORT, true).show();
                             AddSuperLikePoints(superlikePostId, userid, position);
+                            loadRewardedAd();
                         }
 
                         @Override
@@ -525,7 +615,8 @@ public class VideoActivity extends AppCompatActivity {
                     };
             rewardedAd.show(this, adCallback);
         } else {
-            Toasty.error(getApplicationContext(), "Ads will Available in Next 15 Min.", Toast.LENGTH_SHORT, true).show();
+            showDialogTimer();
+//            Toasty.error(getApplicationContext(), "Ads will Available in Next 15 Min.", Toast.LENGTH_SHORT, true).show();
         }
     }
 
@@ -948,10 +1039,17 @@ public class VideoActivity extends AppCompatActivity {
 
         this.button_follow_user_activity = (Button) findViewById(R.id.button_follow_user_activity);
         this.relative_layout_dialog_top = (RelativeLayout) findViewById(R.id.relative_layout_dialog_top);
-
         ripple_view_wallpaper_super_like = findViewById(R.id.ripple_view_wallpaper_super_like);
-        ripple_view_wallpaper_super_like.setVisibility(Integer.parseInt(prefManager.getString("ID_USER")) == userid ? View.GONE : View.VISIBLE);
 
+        if (prefManager.getString("ID_USER").equalsIgnoreCase("")) {
+            ripple_view_wallpaper_super_like.setVisibility(View.GONE);
+        } else {
+            try {
+                ripple_view_wallpaper_super_like.setVisibility(Integer.parseInt(prefManager.getString("ID_USER")) == userid ? View.GONE : View.VISIBLE);
+            } catch (Exception e) {
+                Log.e("Error", "" + e.toString());
+            }
+        }
         final FavoritesStorage storageFavorites = new FavoritesStorage(VideoActivity.this.getApplicationContext());
 
         List<Status> favorites_list = storageFavorites.loadImagesFavorites();

@@ -64,7 +64,12 @@ import com.google.ads.consent.ConsentFormListener;
 import com.google.ads.consent.ConsentInfoUpdateListener;
 import com.google.ads.consent.ConsentInformation;
 import com.google.ads.consent.ConsentStatus;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.dynamiclinks.DynamicLink;
+import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
+import com.google.firebase.dynamiclinks.ShortDynamicLink;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.leinardi.android.speeddial.SpeedDialActionItem;
 import com.leinardi.android.speeddial.SpeedDialView;
@@ -133,6 +138,7 @@ public class MainActivity extends AppCompatActivity
 
         }
     };
+    String refercode = "";
     private Boolean EarningSystem = true;
     private Dialog rateDialog;
     private MaterialSearchView searchView;
@@ -157,7 +163,6 @@ public class MainActivity extends AppCompatActivity
     private String old_language;
     private MenuItem item_language;
     private SpeedDialView speed_dial_main_activity;
-
 
     public void checkPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -439,13 +444,11 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (!bp.handleActivityResult(requestCode, resultCode, data))
             super.onActivityResult(requestCode, resultCode, data);
     }
-
 
     @Override
     public boolean onOptionsItemSelected(final MenuItem item) {
@@ -572,7 +575,7 @@ public class MainActivity extends AppCompatActivity
             Uri bmpUri = Uri.parse("file://" + path);
             final String appPackageName = getApplication().getPackageName();
 //            String shareBody = "Download "+getString(R.string.app_name)+" From :  "+"http://play.google.com/store/apps/details?id=" + appPackageName;
-            String shareBody = "Download Phovio app from this link https://play.google.com/store/apps/details?id=com.videos.phovio and use my code : "+refercode;
+            String shareBody = "Download Phovio app from this link " + prefManager.getString("invitationLink");
             Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
             sharingIntent.setType("image/png");
             sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
@@ -597,7 +600,41 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    String refercode="";
+    public void createDynamicLink_Advanced() {
+//        String link = "Invitedby";// + pref.getString(PREF_USERNAME)+"( "+ pref.getString(PREF_USER_ID) + ")";
+        String link = "https://phovio.com/?invitedby=" + refercode;
+
+        FirebaseDynamicLinks.getInstance().createDynamicLink()
+                .setLink(Uri.parse(link))
+                .setDomainUriPrefix("https://phovio.page.link")
+                .setAndroidParameters(
+                        new DynamicLink.AndroidParameters.Builder("com.videos.phovio")
+                                .setMinimumVersion(0)
+                                .build())
+                .setIosParameters(new DynamicLink.IosParameters.Builder("com.videos.phovio").build())
+                .buildShortDynamicLink()
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.e("onFailure", e.toString());
+                    }
+                })
+                .addOnSuccessListener(new OnSuccessListener<ShortDynamicLink>() {
+                    @Override
+                    public void onSuccess(ShortDynamicLink shortDynamicLink) {
+                        Uri mInvitationUrl = shortDynamicLink.getShortLink();
+                        String invitationLink = mInvitationUrl.toString();
+                        PrefManager prefManager = new PrefManager(getApplicationContext());
+                        prefManager.setString("invitationLink", invitationLink);
+                        Log.e("invitationLink", invitationLink);
+//                        pref.putString("InviteUrl", invitationLink);
+                    }
+                });
+
+
+        // [END create_link_advanced]
+    }
+
     private void getData() {
         PrefManager prefManager = new PrefManager(getApplicationContext());
         Integer follower = -1;
@@ -619,8 +656,9 @@ public class MainActivity extends AppCompatActivity
                     for (int i = 0; i < response.body().getValues().size(); i++) {
 
                         if (response.body().getValues().get(i).getName().equals("code")) {
-                            refercode=response.body().getValues().get(i).getValue();
+                            refercode = response.body().getValues().get(i).getValue();
 //                            text_view_code_earning_actiivty.setText(response.body().getValues().get(i).getValue());
+                            createDynamicLink_Advanced();
                         }
 
                     }
@@ -634,6 +672,7 @@ public class MainActivity extends AppCompatActivity
             }
         });
     }
+
     private void iniView() {
         this.speed_dial_main_activity = (SpeedDialView) findViewById(R.id.speed_dial_main_activity);
         speed_dial_main_activity.inflate(R.menu.menu_speed_dial);

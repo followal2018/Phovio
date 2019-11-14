@@ -104,7 +104,7 @@
                         android:id="@+id/linear_layout_control_image_fragment"
                         android:background="@drawable/border_bottom"
                         android:padding="5dp"
-                        android:weightSum="5"
+                        android:weightSum="6"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">

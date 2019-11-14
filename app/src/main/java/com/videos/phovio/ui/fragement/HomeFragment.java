@@ -206,8 +206,6 @@ public class HomeFragment extends Fragment {
             public void onResponse(Call<DataObj> call, Response<DataObj> response) {
                 apiClient.FormatData(getActivity(),response);
 
-
-
                 if (response.isSuccessful()){
                     if (response.body().getCategories().size()==0
                             && response.body().getSlides().size()==0

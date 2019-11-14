@@ -470,7 +470,7 @@ public class ImageActivity extends AppCompatActivity {
                         @Override
                         public void onUserEarnedReward(RewardItem rewardItem) {
 
-
+                            loadRewardedAd();
                             Isrewardcompleted = true;
                             Toasty.success(getApplicationContext(), "Success", Toast.LENGTH_SHORT, true).show();
                             AddSuperLikePoints(superlikePostId, userid, position);
@@ -840,10 +840,12 @@ public class ImageActivity extends AppCompatActivity {
 
         this.button_follow_user_activity = (Button) findViewById(R.id.button_follow_user_activity);
         this.relative_layout_dialog_top = (RelativeLayout) findViewById(R.id.relative_layout_dialog_top);
-
-        ripple_view_wallpaper_super_like = findViewById(R.id.ripple_view_wallpaper_super_like);
-        ripple_view_wallpaper_super_like.setVisibility(Integer.parseInt(prefManager.getString("ID_USER")) == userid ? View.GONE : View.VISIBLE);
-
+        try {
+            ripple_view_wallpaper_super_like = findViewById(R.id.ripple_view_wallpaper_super_like);
+            ripple_view_wallpaper_super_like.setVisibility(Integer.parseInt(prefManager.getString("ID_USER")) == userid ? View.GONE : View.VISIBLE);
+        } catch (Exception e) {
+            Log.e("Error", "" + e.toString());
+        }
 
         final FavoritesStorage storageFavorites = new FavoritesStorage(ImageActivity.this.getApplicationContext());
 

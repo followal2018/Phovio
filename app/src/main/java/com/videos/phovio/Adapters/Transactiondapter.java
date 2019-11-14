@@ -35,7 +35,7 @@ public class Transactiondapter extends RecyclerView.Adapter<Transactiondapter.Tr
 
     @Override
     public void onBindViewHolder(TransactionHolder holder,final int position) {
-            holder.text_view_points_transaction_item.setText(transactionList.get(position).getPoints()+" Points");
+            holder.text_view_points_transaction_item.setText(transactionList.get(position).getPoints().replace("P","")+" Points");
 
 //        holder.text_view_amount_transaction_item.setText(String.format("%.6f", transactionList.get(position).getAmount()));
         holder.text_view_amount_transaction_item.setText(String.format("%.6f$", new Double(transactionList.get(position).getAmount().substring(0, transactionList.get(position).getAmount().length() - 1))));
