@@ -58,6 +58,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
                     <RelativeLayout
+                        android:id="@+id/relative_super_like"
                         android:background="@drawable/comment_bg_icon"
                         android:layout_width="50dp"
                         android:layout_height="50dp" >

@@ -171,6 +171,7 @@ public class PlayerFragment extends Fragment {
     private String urlToDownload;
     private String local;
     private int reaction_count = 0;
+    private int superLikeCount = 0;
     private SimpleExoPlayerView simpleExoPlayerView;
     private SimpleExoPlayer player;
     private Timeline.Window window;
@@ -209,11 +210,13 @@ public class PlayerFragment extends Fragment {
     private LikeButton like_button_haha_activity_video;
     private LikeButton like_button_love_activity_video;
     private RelativeLayout relative_layout_comment_section;
+    private TextView text_view_fragment_player_super_like;
     private EditText edit_text_comment_add;
     private ProgressBar progress_bar_comment_add;
     private ProgressBar progress_bar_comment_list;
     private ImageView image_button_comment_add;
     private RecyclerView recycle_view_comment;
+    private RelativeLayout relative_super_like;
     private ImageView imageView_empty_comment;
     private ImageView image_view_comment_box_close;
     private RelativeLayout relative_layout_wallpaper_comments;
@@ -338,6 +341,7 @@ public class PlayerFragment extends Fragment {
         this.progress_bar_comment_list = (ProgressBar) view.findViewById(R.id.progress_bar_comment_list);
         this.image_button_comment_add = (ImageView) view.findViewById(R.id.image_button_comment_add);
         this.recycle_view_comment = (RecyclerView) view.findViewById(R.id.recycle_view_comment);
+        this.relative_super_like = (RelativeLayout) view.findViewById(R.id.relative_super_like);
         this.commentAdapter = new CommentAdapter(commentList, getActivity().getApplication());
         this.recycle_view_comment.setHasFixedSize(true);
         this.recycle_view_comment.setAdapter(commentAdapter);
@@ -345,6 +349,7 @@ public class PlayerFragment extends Fragment {
         this.imageView_empty_comment = (ImageView) view.findViewById(R.id.imageView_empty_comment);
         this.image_view_comment_box_close = (ImageView) view.findViewById(R.id.image_view_comment_box_close);
         this.relative_layout_wallpaper_comments = (RelativeLayout) view.findViewById(R.id.relative_layout_wallpaper_comments);
+        this.text_view_fragment_player_super_like = (TextView) view.findViewById(R.id.text_view_fragment_player_super_like);
         image_button_comment_add.setEnabled(false);
 
         shouldAutoPlay = true;
@@ -356,6 +361,15 @@ public class PlayerFragment extends Fragment {
         simple_arc_loader_exo = (SimpleArcLoader) view.findViewById(R.id.simple_arc_loader_exo);
         exo_pause = (ImageView) view.findViewById(R.id.exo_pause);
         exo_play = (ImageView) view.findViewById(R.id.exo_play);
+
+
+
+        try {
+            relative_super_like.setVisibility(Integer.parseInt(prefManager.getString("ID_USER")) == userid ? View.GONE : View.VISIBLE);
+        } catch (Exception e) {
+            Log.e("Error", "" + e.toString());
+        }
+
     }
 
     @Override
@@ -397,6 +411,7 @@ public class PlayerFragment extends Fragment {
         this.color = bundle.getString("color");
         this.first = bundle.getBoolean("first");
         this.position = bundle.getInt("position");
+        this.superLikeCount = bundle.getInt("superLikeCount");
 
         initView(view);
         initInterstitialAdPrepare();
@@ -466,6 +481,7 @@ public class PlayerFragment extends Fragment {
         text_view_fragment_player_title.setText(title);
         text_view_fragment_player_username.setText(user);
         text_view_fragment_player_like.setText(format(reaction_count));
+        text_view_fragment_player_super_like.setText(format(superLikeCount));
         text_view_fragment_player_comment.setText(format(comments));
         text_view_fragment_player_share.setText(format(shares));
         text_view_fragment_player_download.setText(format(downloads));
