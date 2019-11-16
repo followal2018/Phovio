@@ -827,6 +827,7 @@ public class ImageActivity extends AppCompatActivity {
         this.progress_bar_comment_add = (ProgressBar) findViewById(R.id.progress_bar_comment_add);
         this.progress_bar_comment_list = (ProgressBar) findViewById(R.id.progress_bar_comment_list);
         this.image_button_comment_add = (ImageView) findViewById(R.id.image_button_comment_add);
+        this.ripple_view_wallpaper_super_like =findViewById(R.id.ripple_view_wallpaper_super_like);
         this.recycle_view_comment = (RecyclerView) findViewById(R.id.recycle_view_comment);
         this.commentAdapter = new CommentAdapter(commentList, ImageActivity.this.getApplication());
         this.recycle_view_comment.setHasFixedSize(true);

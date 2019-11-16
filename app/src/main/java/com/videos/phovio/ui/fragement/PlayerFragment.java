@@ -1963,14 +1963,17 @@ public class PlayerFragment extends Fragment {
         prefManager.setString("LastSuperLikeTime", "" + milisecond);
 
 
-        int SuperLikeCount = prefManager.getInt("SuperLikeCount") + 1;
-        prefManager.setInt("SuperLikeCount", SuperLikeCount);
+        int SuperLikeCount =superLikeCount + 1;
+//        prefManager.setInt("SuperLikeCount", SuperLikeCount);
         Log.e("SuperLikeCount", "" + prefManager.getInt("SuperLikeCount"));
 
         prefManager.setString("SuperLikeUserIds", String.valueOf(userid));
         Date today = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         prefManager.setString("SuperLikeDate", sdf.format(today));
+
+        text_view_fragment_player_super_like.setText(""+SuperLikeCount);
+
 
     }
 

@@ -124,6 +124,8 @@ public class PortraitVideoAdapter extends RecyclerView.Adapter<RecyclerView.View
                             intent.putExtra("sad",statusList.get(position).getSad());
                             intent.putExtra("haha",statusList.get(position).getHaha());
                             intent.putExtra("local",statusList.get(position).getLocal());
+                            intent.putExtra("position", position);
+                            intent.putExtra("superLikeCount", statusList.get(position).getSuperLikeCount());
 
                             activity.startActivity(intent);
                             activity.overridePendingTransition(R.anim.enter, R.anim.exit);
@@ -173,6 +175,8 @@ public class PortraitVideoAdapter extends RecyclerView.Adapter<RecyclerView.View
                             intent.putExtra("sad",statusList.get(position).getSad());
                             intent.putExtra("haha",statusList.get(position).getHaha());
                             intent.putExtra("local",statusList.get(position).getLocal());
+                            intent.putExtra("position", position);
+                            intent.putExtra("superLikeCount", statusList.get(position).getSuperLikeCount());
 
                             activity.startActivity(intent);
                             activity.overridePendingTransition(R.anim.enter, R.anim.exit);
