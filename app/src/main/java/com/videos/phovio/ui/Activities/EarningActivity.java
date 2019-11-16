@@ -69,6 +69,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import es.dmoral.toasty.Toasty;
 import retrofit2.Call;
@@ -635,6 +637,11 @@ public class EarningActivity extends AppCompatActivity {
                     if (response.body().getCode().equals(200)) {
                         Log.e("response", "" + response.message());
                         settings = response.body().getValues().replaceAll(",", "\n");
+                        Matcher m = Pattern.compile("withdrawal\\s(.*)\\spoints").matcher(settings);
+                        while(m.find()){
+                            text_view_minimum_point_to_withdraw_activity.setText(String.format("Min Withdrawal = %s Points",m.group(1)));
+                            System.out.println(m.group(1));
+                        }
 
 //                        settings=response.body().getValues();
 //                        relative_layout_request_payout_earning_actiivty.setClickable(true);

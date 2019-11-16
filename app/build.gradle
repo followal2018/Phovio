@@ -49,6 +49,7 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
 
+    implementation project(':videocompressor')
     implementation 'com.github.ittianyu:BottomNavigationViewEx:1.2.4'
     implementation 'com.google.android.material:material:1.0.0'
     implementation 'androidx.appcompat:appcompat:1.0.0'

@@ -128,7 +128,6 @@
                                     android:ellipsize="end"
                                     android:gravity="center|left"
                                     android:maxLines="1"
-                                    android:text="Min Withdrawal = 330000 Points"
                                     android:textColor="@color/white"
                                     android:textStyle="normal" />
                             </LinearLayout>
