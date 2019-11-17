@@ -394,7 +394,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                         if (pendingDynamicLinkData != null) {
                             deepLink = pendingDynamicLinkData.getLink();
 //                            AddRefer(deepLink);
-                            String id = deepLink.toString().substring(deepLink.toString().lastIndexOf("/") + 1);
+                            String id = deepLink.toString().substring(deepLink.toString().lastIndexOf("=") + 1);
                             Log.e("deepLink", "" + id);
                             edit_text_reference_code.setText(id);
 //                            Toast.makeText(HomeActivity.this, id, 2000).show();

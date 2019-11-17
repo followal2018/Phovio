@@ -1971,7 +1971,6 @@ public class PlayerFragment extends Fragment {
         Date today = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         prefManager.setString("SuperLikeDate", sdf.format(today));
-
         text_view_fragment_player_super_like.setText(""+SuperLikeCount);
 
 
