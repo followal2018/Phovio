@@ -1868,6 +1868,7 @@ public class PlayerFragment extends Fragment {
                         public void onRewardedAdOpened() {
                             // Ad opened.
 //                            Toast.makeText(getActivity(), "onRewardedAdOpened", Toast.LENGTH_SHORT).show();
+                            pausePlayer();
                         }
 
                         @Override
@@ -1884,7 +1885,7 @@ public class PlayerFragment extends Fragment {
                         @Override
                         public void onUserEarnedReward(RewardItem rewardItem) {
 
-
+                            startPlayer();
                             Isrewardcompleted = true;
                             Toasty.success(getActivity().getApplicationContext(), "Success", Toast.LENGTH_SHORT, true).show();
                             AddSuperLikePoints(superlikePostId, userid, position);
@@ -1904,7 +1905,15 @@ public class PlayerFragment extends Fragment {
             Toasty.error(getActivity().getApplicationContext(), "Ads will Available in Next 15 Min.", Toast.LENGTH_SHORT, true).show();
         }
     }
+    private void pausePlayer() {
+        player.setPlayWhenReady(false);
+        player.getPlaybackState();
+    }
 
+    private void startPlayer() {
+        player.setPlayWhenReady(true);
+        player.getPlaybackState();
+    }
     public void AddSuperLikePoints(Integer postid, Integer userid, final Integer position) {
         final PrefManager prefManager = new PrefManager(getActivity());
         Integer id_user = 0;

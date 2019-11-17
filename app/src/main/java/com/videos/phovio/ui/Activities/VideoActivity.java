@@ -582,6 +582,8 @@ public class VideoActivity extends AppCompatActivity {
                         public void onRewardedAdOpened() {
                             // Ad opened.
 //                            Toast.makeText(getActivity(), "onRewardedAdOpened", Toast.LENGTH_SHORT).show();
+
+                            pausePlayer();
                         }
 
                         @Override
@@ -598,7 +600,7 @@ public class VideoActivity extends AppCompatActivity {
                         @Override
                         public void onUserEarnedReward(RewardItem rewardItem) {
 
-
+                            startPlayer();
                             Isrewardcompleted = true;
                             Toasty.success(getApplicationContext(), "Success", Toast.LENGTH_SHORT, true).show();
                             AddSuperLikePoints(superlikePostId, userid, position);
@@ -868,6 +870,16 @@ public class VideoActivity extends AppCompatActivity {
         });
 
 
+    }
+
+    private void pausePlayer() {
+        player.setPlayWhenReady(false);
+        player.getPlaybackState();
+    }
+
+    private void startPlayer() {
+        player.setPlayWhenReady(true);
+        player.getPlaybackState();
     }
 
     private void releasePlayer() {
