@@ -65,6 +65,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
+import static android.provider.Settings.AUTHORITY;
+
 public class UploadGifActivity extends AppCompatActivity implements ProgressRequestBody.UploadCallbacks,SelectableCategoryViewHolder.OnItemSelectedListener ,SelectableLanguageViewHolder.OnItemSelectedListener {
 
     private Spinner spinner_categories_upload;
@@ -360,6 +362,9 @@ public class UploadGifActivity extends AppCompatActivity implements ProgressRequ
     public static boolean isExternalStorageDocument(Uri uri) {
         return "com.android.externalstorage.documents".equals(uri
                 .getAuthority());
+    }
+    public static boolean isLocalStorageDocument(Uri uri) {
+        return AUTHORITY.equals(uri.getAuthority());
     }
 
     /**
