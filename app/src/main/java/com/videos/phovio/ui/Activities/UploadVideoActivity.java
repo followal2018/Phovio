@@ -189,11 +189,8 @@ public class UploadVideoActivity extends AppCompatActivity implements ProgressRe
                     Toasty.error(UploadVideoActivity.this, getResources().getString(R.string.edit_text_upload_title_error), Toast.LENGTH_SHORT).show();
                     return;
                 }
-                if (videoUrl == null) {
-                    Toasty.error(UploadVideoActivity.this, getResources().getString(R.string.image_upload_error), Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                upload(CAMERA_REQUEST_IMAGE_1);
+
+                compressfile();
             }
         });
 
@@ -287,7 +284,7 @@ public class UploadVideoActivity extends AppCompatActivity implements ProgressRe
 
 
     }
-
+    String picturePath="";
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         super.onActivityResult(requestCode, resultCode, data);
@@ -303,43 +300,11 @@ public class UploadVideoActivity extends AppCompatActivity implements ProgressRe
             cursor.moveToFirst();
 
             int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-            String picturePath = cursor.getString(columnIndex);
+             picturePath = cursor.getString(columnIndex);
             cursor.close();
 
 //            compressionDialog.show();
-            videoUrl = android.os.Environment.getExternalStorageDirectory().getPath() + File.separatorChar + "VID_" + new SimpleDateFormat("yyyyMMdd_HHmmss", getLocale()).format(new Date()) + ".mp4";
 
-            VideoCompress.compressVideoLow(picturePath, videoUrl, new VideoCompress.CompressListener() {
-                @Override
-                public void onStart() {
-
-                }
-
-                @Override
-                public void onSuccess() {
-//                    compressionDialog.dismiss();
-//                    compressionDialog.cancel();
-                    File file = new File(videoUrl);
-                    Log.v("SIZE", file.getName() + "");
-                    text_upload_title.setText(file.getName().replace(".mp4", "").replace(".MP4", ""));
-                    iscompressing = false;
-
-                }
-
-                @Override
-                public void onFail() {
-//                    compressionDialog.dismiss();
-//                    compressionDialog.cancel();
-                    iscompressing = false;
-                    Toast.makeText(UploadVideoActivity.this, "Compression Failed", Toast.LENGTH_SHORT).show();
-                }
-
-                @Override
-                public void onProgress(float percent) {
-//                    compressionDialog.setProgress((int) percent);
-                    iscompressing = true;
-                }
-            });
 
 
         } else {
@@ -354,7 +319,48 @@ public class UploadVideoActivity extends AppCompatActivity implements ProgressRe
             }
         }
     }
+public void compressfile()
+{
+    videoUrl = android.os.Environment.getExternalStorageDirectory().getPath() + File.separatorChar + "VID_" + new SimpleDateFormat("yyyyMMdd_HHmmss", getLocale()).format(new Date()) + ".mp4";
 
+    VideoCompress.compressVideoLow(picturePath, videoUrl, new VideoCompress.CompressListener() {
+        @Override
+        public void onStart() {
+            compressionDialog.show();
+        }
+
+        @Override
+        public void onSuccess() {
+                    compressionDialog.dismiss();
+                    compressionDialog.cancel();
+            File file = new File(videoUrl);
+            Log.v("SIZE", file.getName() + "");
+            text_upload_title.setText(file.getName().replace(".mp4", "").replace(".MP4", ""));
+            iscompressing = false;
+            if (videoUrl == null) {
+                Toasty.error(UploadVideoActivity.this, getResources().getString(R.string.image_upload_error), Toast.LENGTH_SHORT).show();
+                return;
+            }
+            upload(CAMERA_REQUEST_IMAGE_1);
+
+
+        }
+
+        @Override
+        public void onFail() {
+                    compressionDialog.dismiss();
+                    compressionDialog.cancel();
+            iscompressing = false;
+            Toast.makeText(UploadVideoActivity.this, "Compression Failed", Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onProgress(float percent) {
+                    compressionDialog.setProgress((int) percent);
+            iscompressing = true;
+        }
+    });
+}
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void upload(final int CODE) {
 
