@@ -17,8 +17,8 @@ android {
             resConfigs "en", "hi", "ur"
         }
     }
-    compileSdkVersion 28
-    buildToolsVersion '28.0.3'
+    compileSdkVersion 29
+    buildToolsVersion '29.0.0'
     defaultConfig {
         vectorDrawables {
             useSupportLibrary = true
@@ -27,8 +27,8 @@ android {
         vectorDrawables.useSupportLibrary = true
 
         applicationId "com.videos.phovio"
-        minSdkVersion 16
-        targetSdkVersion 28
+        minSdkVersion 18
+        targetSdkVersion 29
         versionCode 5
         versionName '5.0'
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -94,6 +94,7 @@ dependencies {
     androidTestImplementation 'androidx.test:runner:1.1.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0'
     implementation 'com.google.firebase:firebase-dynamic-links:19.0.0'
+    implementation 'com.otaliastudios.gif:compressor:1.0.0'
 
 }
 apply plugin: 'com.google.gms.google-services'

@@ -3,6 +3,7 @@ package com.videos.phovio.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,6 +21,9 @@ public class ApiResponse {
     @SerializedName("values")
     @Expose
     private List<ApiValue> values = null;
+    @SerializedName("randomUsers")
+    @Expose
+    private ArrayList<User> randomUsers;
 
     public Integer getCode() {
         return code;
@@ -43,5 +47,13 @@ public class ApiResponse {
 
     public void setValues(List<ApiValue> values) {
         this.values = values;
+    }
+
+    public ArrayList<User> getRandomUsers() {
+        return randomUsers;
+    }
+
+    public void setRandomUsers(ArrayList<User> randomUsers) {
+        this.randomUsers = randomUsers;
     }
 }

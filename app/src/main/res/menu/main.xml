@@ -19,6 +19,7 @@
         android:id="@+id/action_pro"
         android:icon="@drawable/ic_subscribe"
         android:orderInCategory="100"
+        android:visible="false"
         android:title="@string/subscribe"
         app:showAsAction="always" />
     <item

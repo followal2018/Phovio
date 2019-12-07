@@ -40,9 +40,13 @@ import com.videos.phovio.R;
 import com.videos.phovio.api.apiClient;
 import com.videos.phovio.api.apiRest;
 import com.videos.phovio.model.ApiResponse;
+import com.videos.phovio.model.User;
+import com.videos.phovio.ui.diaolg.RandomUserDialog;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 import es.dmoral.toasty.Toasty;
 import retrofit2.Call;
@@ -310,6 +314,9 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                                 registered = response.body().getValues().get(i).getValue();
                             }
                         }
+                        register_progress.dismiss();
+
+                        showRandomUserDialog(response.body().getRandomUsers());
 
                         if (enabled.equals("true")) {
                             PrefManager prf = new PrefManager(getApplicationContext());
@@ -331,7 +338,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                             updateToken(Integer.parseInt(id_user), token_user, token);
                         } else {
                             Toasty.error(getApplicationContext(), getResources().getString(R.string.account_disabled), Toast.LENGTH_SHORT, true).show();
-                            register_progress.dismiss();
                         }
                     }
                     if (response.body().getCode() == 500) {
@@ -360,22 +366,21 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         call.enqueue(new Callback<ApiResponse>() {
             @Override
             public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
-                register_progress.dismiss();
+
                 if (response.isSuccessful()) {
                     Toasty.success(getApplicationContext(), response.body().getMessage(), Toast.LENGTH_SHORT, true).show();
                 }
-                if (!referenceCodeAsked) {
+               /* if (!referenceCodeAsked) {
                     finish();
-                }
+                }*/
             }
 
             @Override
             public void onFailure(Call<ApiResponse> call, Throwable t) {
-                register_progress.dismiss();
                 Toasty.error(getApplicationContext(), "Operation has been cancelled ! ", Toast.LENGTH_SHORT, true).show();
-                if (!referenceCodeAsked) {
+                /*if (!referenceCodeAsked) {
                     finish();
-                }
+                }*/
             }
         });
     }
@@ -440,6 +445,17 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 Toasty.error(getApplicationContext(), "Operation has been cancelled ! ", Toast.LENGTH_SHORT, true).show();
             }
         });
+    }
+
+    public void showRandomUserDialog(ArrayList<User> randomUsers) {
+        RandomUserDialog dialog = RandomUserDialog.getInstance(randomUsers);
+        dialog.setListener(new RandomUserDialog.FollowedListener() {
+            @Override
+            public void onUserFollowed() {
+                finish();
+            }
+        });
+        dialog.show(getSupportFragmentManager(), null);
     }
 }
 

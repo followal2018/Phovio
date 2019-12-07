@@ -246,7 +246,7 @@ public interface apiRest {
 
 
     ///request/withdrawal/validation/user/15/4F5A9C3D9A86FA54EACEDDD635185/16edd7cf-2525-485e-b11a-3dd35f382457/
-   //original request/withdrawal/validation/user/15/4F5A9C3D9A86FA54EACEDDD635185/16edd7cf-2525-485e-b11a-3dd35f382457/
+    //original request/withdrawal/validation/user/15/4F5A9C3D9A86FA54EACEDDD635185/16edd7cf-2525-485e-b11a-3dd35f382457/
     //request/withdrawal/validation/user/15/ece96184f9ae5da8a82642893a42d55e301a323c/4F5A9C3D9A86FA54EACEDDD635185/16edd7cf-2525-485e-b11a-3dd35f382457/ http/1.1
     @POST("request/withdrawal/validation/user/{user}/" + Global.SECURE_KEY + "/" + Global.ITEM_PURCHASE_CODE + "/")
     Call<ApiResponseValidation> requestWithdrawalvalidation(@Path("user") Integer user);
@@ -266,6 +266,9 @@ public interface apiRest {
     @FormUrlEncoded
     @POST("superlike/points/user/{user}/{key}/" + Global.SECURE_KEY + "/" + Global.ITEM_PURCHASE_CODE + "/")
     Call<ApiResponse> AddSuperlike(@Path("user") Integer user, @Path("key") String key, @Field("id") String id);
+
+    @POST("multi/user/ad/" + Global.SECURE_KEY + "/12/")
+    Call<ApiResponse> getRewardedAdKeys();
 
 
 }

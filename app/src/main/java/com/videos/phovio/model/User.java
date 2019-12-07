@@ -1,14 +1,18 @@
 package com.videos.phovio.model;
 
+import androidx.annotation.Nullable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+
+import java.io.Serializable;
 
 /**
  * Created by Tamim on 17/01/2018.
  */
 
 
-public class User {
+public class User implements Serializable {
 
     @SerializedName("id")
     @Expose
@@ -28,6 +32,16 @@ public class User {
     @SerializedName("trusted")
     @Expose
     private String trusted;
+    @SerializedName("email")
+    @Expose
+    private String email;
+    @SerializedName("username")
+    @Expose
+    private String username;
+    @SerializedName("follow")
+    @Expose
+    private boolean follow;
+
     public Integer getId() {
         return id;
     }
@@ -52,27 +66,61 @@ public class User {
         this.image = image;
     }
 
-    public void setLabel(String label) {
-        this.label = label;
-    }
-
     public String getLabel() {
         return label;
     }
 
-    public void setThum(String thum) {
-        this.thum = thum;
+    public void setLabel(String label) {
+        this.label = label;
     }
 
     public String getThum() {
         return thum;
     }
 
-    public void setTrusted(String trusted) {
-        this.trusted = trusted;
+    public void setThum(String thum) {
+        this.thum = thum;
     }
 
     public String getTrusted() {
         return trusted;
     }
+
+    public void setTrusted(String trusted) {
+        this.trusted = trusted;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public boolean isFollow() {
+        return follow;
+    }
+
+    public void setFollow(boolean follow) {
+        this.follow = follow;
+    }
+
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        if (obj instanceof User) {
+            return id.equals(((User) obj).getId());
+        }
+        return false;
+    }
+
 }

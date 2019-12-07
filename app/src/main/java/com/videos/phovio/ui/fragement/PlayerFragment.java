@@ -82,6 +82,7 @@ import com.videos.phovio.App;
 import com.videos.phovio.Provider.DownloadStorage;
 import com.videos.phovio.Provider.FavoritesStorage;
 import com.videos.phovio.Provider.PrefManager;
+import com.videos.phovio.Provider.RewardedAdKeyStorage;
 import com.videos.phovio.R;
 import com.videos.phovio.api.apiClient;
 import com.videos.phovio.api.apiRest;
@@ -1771,7 +1772,8 @@ public class PlayerFragment extends Fragment {
     private void loadRewardedAd() {
         if (rewardedAd == null || !rewardedAd.isLoaded()) {
 //            isLoading = true;
-            rewardedAd = new RewardedAd(getActivity(), this.getString(R.string.ad_unit_id_reward));
+            RewardedAdKeyStorage rewardedAdKeyStorage = new RewardedAdKeyStorage(getActivity().getApplicationContext());
+            rewardedAd = new RewardedAd(getActivity(), rewardedAdKeyStorage.getRewardedAdKey());
 
             rewardedAd.loadAd(
                     new PublisherAdRequest.Builder().addTestDevice("F512225BC55B6A45A3A6A6EF6377EF8E")
@@ -1964,7 +1966,7 @@ public class PlayerFragment extends Fragment {
         PrefManager prefManager = new PrefManager(getActivity());
 
         Calendar now = Calendar.getInstance();
-        now.add(Calendar.HOUR, 6);
+        now.add(Calendar.HOUR, 3);
         System.out.println(now.getTime());
 
         long milisecond = now.getTimeInMillis();
