@@ -306,11 +306,11 @@ public class EarningActivity extends AppCompatActivity {
                 }
                 path = file.getPath();
                 Uri bmpUri = Uri.parse("file://" + path);
-                PrefManager prefManager=new PrefManager(getApplicationContext());
+                PrefManager prefManager = new PrefManager(getApplicationContext());
 
 
 //                String shareBody = "Download Phovio app and use my refer code : " + text_view_code_earning_actiivty.getText().toString().trim();
-                String shareBody = "Download Phovio app from this link "+ prefManager.getString("invitationLink");
+                String shareBody = "Download Phovio app from this link " + prefManager.getString("invitationLink");
                 Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
                 sharingIntent.setType("text/plain");
                 sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "My Refer");
@@ -331,8 +331,19 @@ public class EarningActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-//                showDialog();
-                if (validationmsg.trim().isEmpty()) {
+                final PrefManager prefManager = new PrefManager(EarningActivity.this);
+                String mobile = prefManager.getString("MOBILE");
+                if (mobile == null || mobile.isEmpty()) {
+                    Toasty.error(EarningActivity.this, "Please Register Your Mobile Number.").show();
+                    int id = Integer.parseInt(prefManager.getString("ID_USER"));
+                    String name = prefManager.getString("NAME_USER");
+                    String image = prefManager.getString("IMAGE_USER");
+                    Intent intent = new Intent(EarningActivity.this, EditActivity.class);
+                    intent.putExtra("id", id);
+                    intent.putExtra("name", name);
+                    intent.putExtra("image", image);
+                    startActivity(intent);
+                } else if (validationmsg.trim().isEmpty()) {
                     Intent intent = new Intent(EarningActivity.this, RequestActivity.class);
                     startActivity(intent);
                     overridePendingTransition(R.anim.enter, R.anim.exit);
@@ -638,8 +649,8 @@ public class EarningActivity extends AppCompatActivity {
                         Log.e("response", "" + response.message());
                         settings = response.body().getValues().replaceAll(",", "\n");
                         Matcher m = Pattern.compile("withdrawal\\s(.*)\\spoints").matcher(settings);
-                        while(m.find()){
-                            text_view_minimum_point_to_withdraw_activity.setText(String.format("Min Withdrawal = %s Points",m.group(1)));
+                        while (m.find()) {
+                            text_view_minimum_point_to_withdraw_activity.setText(String.format("Min Withdrawal = %s Points", m.group(1)));
                             System.out.println(m.group(1));
                         }
 

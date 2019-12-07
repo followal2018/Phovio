@@ -149,7 +149,7 @@ public interface apiRest {
 
     @FormUrlEncoded
     @POST("user/edit/" + Global.SECURE_KEY + "/" + Global.ITEM_PURCHASE_CODE + "/")
-    Call<ApiResponse> editUser(@Field("user") Integer user, @Field("key") String key, @Field("name") String name, @Field("email") String email, @Field("facebook") String facebook, @Field("twitter") String twitter, @Field("instagram") String instagram);
+    Call<ApiResponse> editUser(@Field("user") Integer user, @Field("key") String key, @Field("name") String name, @Field("email") String email, @Field("facebook") String facebook, @Field("twitter") String twitter, @Field("instagram") String instagram, @Field("mobile") String mobile);
 
 
     @GET("install/add/{id}/" + Global.SECURE_KEY + "/" + Global.ITEM_PURCHASE_CODE + "/")

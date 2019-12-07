@@ -284,6 +284,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                         String image_user = "x";
                         String enabled = "x";
                         String registered = "x";
+                        String mobile = null;
                         for (int i = 0; i < response.body().getValues().size(); i++) {
                             Log.v("KEYS_REGISTER" + response.body().getValues().get(i).getName(), response.body().getValues().get(i).getValue());
                             if (response.body().getValues().get(i).getName().equals("salt")) {
@@ -313,6 +314,10 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                             if (response.body().getValues().get(i).getName().equals("registered")) {
                                 registered = response.body().getValues().get(i).getValue();
                             }
+                            if (response.body().getValues().get(i).getName().equals("mobile")) {
+                                mobile = response.body().getValues().get(i).getValue();
+                            }
+
                         }
                         register_progress.dismiss();
 
@@ -328,6 +333,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                             prf.setString("USERN_USER", username_user);
                             prf.setString("IMAGE_USER", image_user);
                             prf.setString("LOGGED", "TRUE");
+                            if (mobile != null)
+                                prf.setString("MOBILE", mobile);
                             String token = FirebaseInstanceId.getInstance().getToken();
                             if (registered.equals("true")) {
                                 relative_layout_reference_coode.setVisibility(View.VISIBLE);

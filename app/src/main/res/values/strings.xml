@@ -23,7 +23,7 @@
 
     <string name="AD_MOB_TIME">15</string>
     <string name="ad_unit_id_interstitial">ca-app-pub-2885193985970095/5180657800</string>
-<!--    <string name="ad_unit_id_reward">ca-app-pub-2885193985970095/4302690404</string>-->
+    <!--    <string name="ad_unit_id_reward">ca-app-pub-2885193985970095/4302690404</string>-->
     <string name="ad_unit_id_reward">ca-app-pub-2885193985970095/4302690404</string>
     <string name="ad_unit_id_banner">ca-app-pub-2885193985970095/2810818799</string>
     <string name="ad_unit_id_native">ca-app-pub-2885193985970095/9536009243</string>
@@ -58,6 +58,8 @@
     <string name="action_infos"><![CDATA[Report bug & Help]]></string>
     <string name="error_short_value">Your field is too short</string>
     <string name="error_mail_valide">Please enter a valid E-mail</string>
+    <string name="error_mobile_valide">Please enter a valid Mobile Number</string>
+    <string name="error_add_mobile_valide">Please Verify Mobile Number</string>
     <string name="message_sended">Message has been sent successfully</string>
     <string name="progress_login">Work in progress</string>
     <string name="policy_privacy">Policy privacy</string>
@@ -142,6 +144,9 @@
     <string name="hint_facebook">Facebook url</string>
     <string name="hint_twitter">Twitter url</string>
     <string name="hint_instragram">Instagram Url</string>
+    <string name="hint_mobile_number">Mobile Number</string>
+    <string name="add_mobile_number">Add</string>
+
     <string name="save">Save</string>
     <string name="menu_me">Me</string>
     <string name="comments">  Comments</string>
