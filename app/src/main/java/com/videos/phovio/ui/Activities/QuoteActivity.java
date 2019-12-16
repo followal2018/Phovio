@@ -42,6 +42,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
@@ -68,6 +69,12 @@ import com.google.android.gms.ads.rewarded.RewardItem;
 import com.google.android.gms.ads.rewarded.RewardedAd;
 import com.google.android.gms.ads.rewarded.RewardedAdCallback;
 import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.dynamiclinks.DynamicLink;
+import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
+import com.google.firebase.dynamiclinks.ShortDynamicLink;
+import com.google.gson.Gson;
 import com.like.LikeButton;
 import com.like.OnAnimationEndListener;
 import com.like.OnLikeListener;
@@ -170,6 +177,7 @@ public class QuoteActivity extends AppCompatActivity {
     private String language = "0";
     private String local;
     private String description;
+    private boolean isFromLink = false;
     private CircleImageView circle_image_view_activity_quote_user;
     private TextView text_view_activity_quote_name_user;
     private LikeButton like_button_whatsapp_activity_quote;
@@ -299,6 +307,7 @@ public class QuoteActivity extends AppCompatActivity {
         this.color = bundle.getString("color");
         this.position = bundle.getInt("position");
         this.superLikeCount = bundle.getInt("superLikeCount");
+        this.isFromLink = bundle.getBoolean("isFromLink");
 
         urlToDownload = original;
 
@@ -318,13 +327,17 @@ public class QuoteActivity extends AppCompatActivity {
         initView();
         initAction();
         initInterstitialAdPrepare();
-        initStatus();
         getUser();
         setReaction(prefManager.getString("reaction_" + id));
         loadMore();
         initAds();
         showAdsBanner();
         addView();
+        if(isFromLink){
+            getStatus();
+        }else{
+            initStatus();
+        }
 
     }
 
@@ -437,6 +450,7 @@ public class QuoteActivity extends AppCompatActivity {
         dialog.show();
 
     }
+
     public void showDialog(final Integer SuperlikePostId, final Integer userid, final Integer position) {
         final Dialog dialog = new Dialog(this,
                 R.style.Theme_Dialog);
@@ -1092,10 +1106,12 @@ public class QuoteActivity extends AppCompatActivity {
                         mInterstitialAdDownload.show();
                         open_action = 5006;
                     } else {
-                        shareTextWith(SHARE_ID);
+//                        shareTextWith(SHARE_ID);
+                        createSharableLink();
                     }
                 } else {
-                    shareTextWith(SHARE_ID);
+//                    shareTextWith(SHARE_ID);
+                    createSharableLink();
                 }
             }
         });
@@ -2312,7 +2328,7 @@ public class QuoteActivity extends AppCompatActivity {
             } catch (NoSuchAlgorithmException e) {
                 e.printStackTrace();
             }
-            ;
+
             Call<Integer> call = service.addView(ishash, id_user, key_user);
             call.enqueue(new Callback<Integer>() {
                 @Override
@@ -2430,6 +2446,110 @@ public class QuoteActivity extends AppCompatActivity {
                         }
                         statusAdapter.notifyDataSetChanged();
                         recycler_view_status_load_more.setNestedScrollingEnabled(false);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Status>> call, Throwable t) {
+
+            }
+        });
+    }
+
+    public void createSharableLink() {
+
+        String link = "https://phovio.page.link/?statusid=" + id + "&kind=" + kind;
+        FirebaseDynamicLinks.getInstance().createDynamicLink()
+                .setLink(Uri.parse(link))
+                .setDomainUriPrefix("https://phovio.page.link")
+                .setAndroidParameters(
+                        new DynamicLink.AndroidParameters.Builder("com.videos.phovio")
+                                .setMinimumVersion(0)
+                                .build())
+                .buildShortDynamicLink()
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.e("onFailure", e.toString());
+                    }
+                })
+                .addOnSuccessListener(new OnSuccessListener<ShortDynamicLink>() {
+                    @Override
+                    public void onSuccess(ShortDynamicLink shortDynamicLink) {
+                        Uri mInvitationUrl = shortDynamicLink.getShortLink();
+                        String invitationLink = mInvitationUrl.toString();
+                        shareLinkWith(invitationLink);
+                    }
+                });
+    }
+
+    public void shareLinkWith(String invitationLink) {
+        String text = null;
+        try {
+            byte[] data = Base64.decode(title, Base64.DEFAULT);
+            text = new String(data, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            text = "";
+            e.printStackTrace();
+
+        }
+
+        String shareBody = text;
+        shareBody += " \n\n  " + invitationLink;
+
+        Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+        sharingIntent.setType("text/plain");
+        sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Subject Here");
+        sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
+        startActivity(Intent.createChooser(sharingIntent, getResources().getString(R.string.share_via)));
+        addShare(id);
+    }
+
+    private void getStatus() {
+        Retrofit retrofit = apiClient.getClient();
+        apiRest service = retrofit.create(apiRest.class);
+        Call<List<Status>> call = service.getStatusById(id);
+        call.enqueue(new Callback<List<Status>>() {
+            @Override
+            public void onResponse(Call<List<Status>> call, Response<List<Status>> response) {
+                if (response.isSuccessful()) {
+                    Log.e(TAG, "Response :-> " + new Gson().toJson(response));
+                    List<Status> statuses = response.body();
+                    if (statuses != null && !statuses.isEmpty()) {
+                        Status status = statuses.get(0);
+                        title = status.getTitle();
+                        description = status.getDescription();
+                        thumbnail = status.getThumbnail();
+                        userid = status.getUserid();
+                        user = status.getUser();
+                        userimage = status.getUserimage();
+                        type = status.getType();
+                        original = status.getOriginal();
+                        extension = status.getExtension();
+                        comment = status.getComment();
+                        downloads = status.getDownloads();
+                        views = status.getViews();
+                        tags = status.getTags();
+                        review = status.getReview();
+                        comments = status.getComments();
+                        created = status.getCreated();
+                        local = status.getLocal();
+
+                        woow = status.getWoow();
+                        like = status.getLike();
+                        love = status.getLove();
+                        angry = status.getAngry();
+                        sad = status.getSad();
+                        haha = status.getHaha();
+                        kind = status.getKind();
+                        color = status.getColor();
+                        position = -1;
+                        superLikeCount = status.getSuperLikeCount();
+                        isFromLink = true;
+                        initStatus();
                     }
                 }
             }

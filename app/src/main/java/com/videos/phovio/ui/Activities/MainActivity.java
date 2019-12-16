@@ -109,6 +109,9 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
+import static com.videos.phovio.config.Global.PrefKeys.PREF_STATUS_ID;
+import static com.videos.phovio.config.Global.PrefKeys.PREF_STATUS_KIND;
+
 public class MainActivity extends AppCompatActivity
         implements SelectableViewHolder.OnItemSelectedListener, NavigationView.OnNavigationItemSelectedListener {
 
@@ -183,6 +186,41 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    public void handleDeepLink() {
+        String id = prefManager.getString(PREF_STATUS_ID);
+        String kind = prefManager.getString(PREF_STATUS_KIND);
+        if (id != null && !id.isEmpty() && kind != null && !kind.isEmpty()) {
+            if (kind.equals("image")) {
+                Intent intent = new Intent(this, ImageActivity.class);
+                intent.putExtra("id", Integer.parseInt(id));
+                intent.putExtra("isFromLink", true);
+                startActivity(intent);
+                overridePendingTransition(R.anim.enter, R.anim.exit);
+            } else if (kind.equals("video")) {
+                Intent intent = new Intent(this, VideoActivity.class);
+                intent.putExtra("id", Integer.parseInt(id));
+                intent.putExtra("isFromLink", true);
+                startActivity(intent);
+                overridePendingTransition(R.anim.enter, R.anim.exit);
+            } else if (kind.equals("gif")) {
+                Intent intent = new Intent(this, GifActivity.class);
+                intent.putExtra("id", Integer.parseInt(id));
+                intent.putExtra("isFromLink", true);
+                startActivity(intent);
+                overridePendingTransition(R.anim.enter, R.anim.exit);
+            } else if (kind.equals("quote")) {
+                Intent intent = new Intent(this, QuoteActivity.class);
+                intent.putExtra("id", Integer.parseInt(id));
+                intent.putExtra("isFromLink", true);
+                startActivity(intent);
+                overridePendingTransition(R.anim.enter, R.anim.exit);
+            }
+
+            prefManager.setString(PREF_STATUS_ID, "");
+            prefManager.setString(PREF_STATUS_KIND, "");
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -204,8 +242,8 @@ public class MainActivity extends AppCompatActivity
 
         this.navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
         checkPermission();
+        handleDeepLink();
         initData();
         iniView();
         loadLang();

@@ -80,6 +80,11 @@ import com.google.android.gms.ads.rewarded.RewardItem;
 import com.google.android.gms.ads.rewarded.RewardedAd;
 import com.google.android.gms.ads.rewarded.RewardedAdCallback;
 import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.dynamiclinks.DynamicLink;
+import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
+import com.google.firebase.dynamiclinks.ShortDynamicLink;
 import com.like.LikeButton;
 import com.peekandpop.shalskar.peekandpop.PeekAndPop;
 import com.squareup.picasso.Picasso;
@@ -458,39 +463,45 @@ public class StatusAdapter extends RecyclerView.Adapter {
                                         super.onAdClosed();
                                         requestNewInterstitial();
                                         if (statusList.get(position).getKind().equals("quote")) {
-                                            shareTextWith(position, SHARE_ID);
+//                                            shareTextWith(position, SHARE_ID);
+                                            createSharableLink(position, SHARE_ID);
                                         } else {
-                                            if (!statusList.get(position).isDownloading()) {
-                                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
-                                                    downloadFileFromURL.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, statusList.get(position).getOriginal(), statusList.get(position).getTitle(), statusList.get(position).getExtension(), position, SHARE_ID);
-                                                else
-                                                    downloadFileFromURL.execute(statusList.get(position).getOriginal(), statusList.get(position).getTitle(), statusList.get(position).getExtension(), position, SHARE_ID);
-                                            }
+//                                            if (!statusList.get(position).isDownloading()) {
+//                                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
+//                                                    downloadFileFromURL.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, statusList.get(position).getOriginal(), statusList.get(position).getTitle(), statusList.get(position).getExtension(), position, SHARE_ID);
+//                                                else
+//                                                    downloadFileFromURL.execute(statusList.get(position).getOriginal(), statusList.get(position).getTitle(), statusList.get(position).getExtension(), position, SHARE_ID);
+//                                            }
+                                            createSharableLink(position, SHARE_ID);
                                         }
                                     }
                                 });
                             } else {
                                 if (statusList.get(position).getKind().equals("quote")) {
-                                    shareTextWith(position, SHARE_ID);
+//                                    shareTextWith(position, SHARE_ID);
+                                    createSharableLink(position, SHARE_ID);
                                 } else {
-                                    if (!statusList.get(position).isDownloading()) {
-                                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
-                                            downloadFileFromURL.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, statusList.get(position).getOriginal(), statusList.get(position).getTitle(), statusList.get(position).getExtension(), position, SHARE_ID);
-                                        else
-                                            downloadFileFromURL.execute(statusList.get(position).getOriginal(), statusList.get(position).getTitle(), statusList.get(position).getExtension(), position, SHARE_ID);
-                                    }
+//                                    if (!statusList.get(position).isDownloading()) {
+//                                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
+//                                            downloadFileFromURL.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, statusList.get(position).getOriginal(), statusList.get(position).getTitle(), statusList.get(position).getExtension(), position, SHARE_ID);
+//                                        else
+//                                            downloadFileFromURL.execute(statusList.get(position).getOriginal(), statusList.get(position).getTitle(), statusList.get(position).getExtension(), position, SHARE_ID);
+//                                    }
+                                    createSharableLink(position, SHARE_ID);
                                 }
                             }
                         } else {
                             if (statusList.get(position).getKind().equals("quote")) {
-                                shareTextWith(position, SHARE_ID);
+//                                shareTextWith(position, SHARE_ID);
+                                createSharableLink(position, SHARE_ID);
                             } else {
-                                if (!statusList.get(position).isDownloading()) {
+                                /*if (!statusList.get(position).isDownloading()) {
                                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
                                         downloadFileFromURL.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, statusList.get(position).getOriginal(), statusList.get(position).getTitle(), statusList.get(position).getExtension(), position, SHARE_ID);
                                     else
                                         downloadFileFromURL.execute(statusList.get(position).getOriginal(), statusList.get(position).getTitle(), statusList.get(position).getExtension(), position, SHARE_ID);
-                                }
+                                }*/
+                                createSharableLink(position, SHARE_ID);
                             }
                         }
                         break;
@@ -1157,31 +1168,34 @@ public class StatusAdapter extends RecyclerView.Adapter {
                                     public void onAdClosed() {
                                         super.onAdClosed();
                                         requestNewInterstitial();
-                                        if (!statusList.get(position).isDownloading()) {
-                                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
-                                                downloadFileFromURL.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, statusList.get(position).getOriginal(), statusList.get(position).getTitle(), statusList.get(position).getExtension(), position, SHARE_ID);
-                                            else
-                                                downloadFileFromURL.execute(statusList.get(position).getOriginal(), statusList.get(position).getTitle(), statusList.get(position).getExtension(), position, SHARE_ID);
-                                        }
+//                                        if (!statusList.get(position).isDownloading()) {
+//                                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
+//                                                downloadFileFromURL.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, statusList.get(position).getOriginal(), statusList.get(position).getTitle(), statusList.get(position).getExtension(), position, SHARE_ID);
+//                                            else
+//                                                downloadFileFromURL.execute(statusList.get(position).getOriginal(), statusList.get(position).getTitle(), statusList.get(position).getExtension(), position, SHARE_ID);
+//                                        }
+                                        createSharableLink(position, SHARE_ID);
                                     }
                                 });
                             } else {
 
-                                if (!statusList.get(position).isDownloading()) {
-                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
-                                        downloadFileFromURL.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, statusList.get(position).getOriginal(), statusList.get(position).getTitle(), statusList.get(position).getExtension(), position, SHARE_ID);
-                                    else
-                                        downloadFileFromURL.execute(statusList.get(position).getOriginal(), statusList.get(position).getTitle(), statusList.get(position).getExtension(), position, SHARE_ID);
-                                }
+//                                if (!statusList.get(position).isDownloading()) {
+//                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
+//                                        downloadFileFromURL.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, statusList.get(position).getOriginal(), statusList.get(position).getTitle(), statusList.get(position).getExtension(), position, SHARE_ID);
+//                                    else
+//                                        downloadFileFromURL.execute(statusList.get(position).getOriginal(), statusList.get(position).getTitle(), statusList.get(position).getExtension(), position, SHARE_ID);
+//                                }
+                                createSharableLink(position, SHARE_ID);
                             }
                         } else {
 
-                            if (!statusList.get(position).isDownloading()) {
-                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
-                                    downloadFileFromURL.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, statusList.get(position).getOriginal(), statusList.get(position).getTitle(), statusList.get(position).getExtension(), position, SHARE_ID);
-                                else
-                                    downloadFileFromURL.execute(statusList.get(position).getOriginal(), statusList.get(position).getTitle(), statusList.get(position).getExtension(), position, SHARE_ID);
-                            }
+//                            if (!statusList.get(position).isDownloading()) {
+//                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
+//                                    downloadFileFromURL.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, statusList.get(position).getOriginal(), statusList.get(position).getTitle(), statusList.get(position).getExtension(), position, SHARE_ID);
+//                                else
+//                                    downloadFileFromURL.execute(statusList.get(position).getOriginal(), statusList.get(position).getTitle(), statusList.get(position).getExtension(), position, SHARE_ID);
+//                            }
+                            createSharableLink(position, SHARE_ID);
                         }
                     }
                 });
@@ -1453,31 +1467,34 @@ public class StatusAdapter extends RecyclerView.Adapter {
                                     public void onAdClosed() {
                                         super.onAdClosed();
                                         requestNewInterstitial();
-                                        if (!statusList.get(position).isDownloading()) {
-                                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
-                                                downloadFileFromURL.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, statusList.get(position).getOriginal(), statusList.get(position).getTitle(), statusList.get(position).getExtension(), position, SHARE_ID);
-                                            else
-                                                downloadFileFromURL.execute(statusList.get(position).getOriginal(), statusList.get(position).getTitle(), statusList.get(position).getExtension(), position, SHARE_ID);
-                                        }
+//                                        if (!statusList.get(position).isDownloading()) {
+//                                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
+//                                                downloadFileFromURL.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, statusList.get(position).getOriginal(), statusList.get(position).getTitle(), statusList.get(position).getExtension(), position, SHARE_ID);
+//                                            else
+//                                                downloadFileFromURL.execute(statusList.get(position).getOriginal(), statusList.get(position).getTitle(), statusList.get(position).getExtension(), position, SHARE_ID);
+//                                        }
+                                        createSharableLink(position, SHARE_ID);
                                     }
                                 });
                             } else {
 
-                                if (!statusList.get(position).isDownloading()) {
-                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
-                                        downloadFileFromURL.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, statusList.get(position).getOriginal(), statusList.get(position).getTitle(), statusList.get(position).getExtension(), position, SHARE_ID);
-                                    else
-                                        downloadFileFromURL.execute(statusList.get(position).getOriginal(), statusList.get(position).getTitle(), statusList.get(position).getExtension(), position, SHARE_ID);
-                                }
+//                                if (!statusList.get(position).isDownloading()) {
+//                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
+//                                        downloadFileFromURL.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, statusList.get(position).getOriginal(), statusList.get(position).getTitle(), statusList.get(position).getExtension(), position, SHARE_ID);
+//                                    else
+//                                        downloadFileFromURL.execute(statusList.get(position).getOriginal(), statusList.get(position).getTitle(), statusList.get(position).getExtension(), position, SHARE_ID);
+//                                }
+                                createSharableLink(position, SHARE_ID);
                             }
                         } else {
 
-                            if (!statusList.get(position).isDownloading()) {
-                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
-                                    downloadFileFromURL.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, statusList.get(position).getOriginal(), statusList.get(position).getTitle(), statusList.get(position).getExtension(), position, SHARE_ID);
-                                else
-                                    downloadFileFromURL.execute(statusList.get(position).getOriginal(), statusList.get(position).getTitle(), statusList.get(position).getExtension(), position, SHARE_ID);
-                            }
+//                            if (!statusList.get(position).isDownloading()) {
+//                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
+//                                    downloadFileFromURL.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, statusList.get(position).getOriginal(), statusList.get(position).getTitle(), statusList.get(position).getExtension(), position, SHARE_ID);
+//                                else
+//                                    downloadFileFromURL.execute(statusList.get(position).getOriginal(), statusList.get(position).getTitle(), statusList.get(position).getExtension(), position, SHARE_ID);
+//                            }
+                            createSharableLink(position, SHARE_ID);
                         }
                     }
                 });
@@ -1724,14 +1741,17 @@ public class StatusAdapter extends RecyclerView.Adapter {
                                     public void onAdClosed() {
                                         super.onAdClosed();
                                         requestNewInterstitial();
-                                        shareTextWith(position, SHARE_ID);
+//                                        shareTextWith(position, SHARE_ID);
+                                        createSharableLink(position, SHARE_ID);
                                     }
                                 });
                             } else {
-                                shareTextWith(position, SHARE_ID);
+//                                shareTextWith(position, SHARE_ID);
+                                createSharableLink(position, SHARE_ID);
                             }
                         } else {
-                            shareTextWith(position, SHARE_ID);
+//                            shareTextWith(position, SHARE_ID);
+                            createSharableLink(position, SHARE_ID);
                         }
                     }
                 });
@@ -1984,18 +2004,19 @@ public class StatusAdapter extends RecyclerView.Adapter {
                                     public void onAdClosed() {
                                         super.onAdClosed();
                                         requestNewInterstitial();
-                                        shareTextWith(position, SHARE_ID);
+//                                        shareTextWith(position, SHARE_ID);
+                                        createSharableLink(position, SHARE_ID);
                                     }
                                 });
                             } else {
 
-                                shareTextWith(position, SHARE_ID);
-
+//                                shareTextWith(position, SHARE_ID);
+                                createSharableLink(position, SHARE_ID);
                             }
                         } else {
 
-                            shareTextWith(position, SHARE_ID);
-
+//                            shareTextWith(position, SHARE_ID);
+                            createSharableLink(position, SHARE_ID);
                         }
                     }
                 });
@@ -2407,7 +2428,7 @@ public class StatusAdapter extends RecyclerView.Adapter {
             } catch (NoSuchAlgorithmException e) {
                 e.printStackTrace();
             }
-            ;
+
             Call<Integer> call = service.addView(ishash, id_user, key_user);
             call.enqueue(new Callback<Integer>() {
                 @Override
@@ -2478,6 +2499,60 @@ public class StatusAdapter extends RecyclerView.Adapter {
 
         String shareBody = text;
         shareBody += " \n\n  " + activity.getResources().getString(R.string.download_more_from_link);
+
+        Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+        if (!SHARE_ID.equals(APP_ID)) {
+            sharingIntent.setPackage(APP_ID);
+        }
+        sharingIntent.setType("text/plain");
+        sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Subject Here");
+        sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
+        activity.startActivity(Intent.createChooser(sharingIntent, activity.getResources().getString(R.string.share_via)));
+        addShare(position);
+    }
+
+    public void createSharableLink(final int position, final String APP_ID) {
+
+        String link = "https://phovio.page.link/?statusid=" + statusList.get(position).getId() + "&kind=" + statusList.get(position).getKind();
+        FirebaseDynamicLinks.getInstance().createDynamicLink()
+                .setLink(Uri.parse(link))
+                .setDomainUriPrefix("https://phovio.page.link")
+                .setAndroidParameters(
+                        new DynamicLink.AndroidParameters.Builder("com.videos.phovio")
+                                .setMinimumVersion(0)
+                                .build())
+                .buildShortDynamicLink()
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.e("onFailure", e.toString());
+                    }
+                })
+                .addOnSuccessListener(new OnSuccessListener<ShortDynamicLink>() {
+                    @Override
+                    public void onSuccess(ShortDynamicLink shortDynamicLink) {
+                        Uri mInvitationUrl = shortDynamicLink.getShortLink();
+                        String invitationLink = mInvitationUrl.toString();
+                        shareLinkWith(invitationLink, position, APP_ID);
+                    }
+                });
+    }
+
+    public void shareLinkWith(String invitationLink, int position, String APP_ID) {
+        String text = null;
+        try {
+            byte[] data = Base64.decode(statusList.get(position).getTitle(), Base64.DEFAULT);
+            text = new String(data, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }  catch (Exception e) {
+            text = "";
+            e.printStackTrace();
+
+        }
+
+        String shareBody = text;
+        shareBody += " \n\n  " + invitationLink;
 
         Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
         if (!SHARE_ID.equals(APP_ID)) {

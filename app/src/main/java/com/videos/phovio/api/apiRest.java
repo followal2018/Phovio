@@ -270,5 +270,8 @@ public interface apiRest {
     @POST("multi/user/ad/" + Global.SECURE_KEY + "/12/")
     Call<ApiResponse> getRewardedAdKeys();
 
+    @POST("status/{statusId}/" + Global.SECURE_KEY + "/" + Global.SECURE_KEY + "/")
+    Call<List<Status>> getStatusById(@Path("statusId") Integer statusId);
+
 
 }

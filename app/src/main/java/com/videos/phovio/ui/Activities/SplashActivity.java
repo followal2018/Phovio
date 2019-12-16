@@ -29,6 +29,9 @@ import com.anjlab.android.iab.v3.BillingProcessor;
 import com.anjlab.android.iab.v3.Constants;
 import com.anjlab.android.iab.v3.TransactionDetails;
 import com.facebook.ads.AdSettings;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
+import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
 import com.videos.phovio.Provider.PrefManager;
 import com.videos.phovio.Provider.RewardedAdKeyStorage;
 import com.videos.phovio.R;
@@ -51,8 +54,12 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
+import static com.videos.phovio.config.Global.PrefKeys.PREF_STATUS_ID;
+import static com.videos.phovio.config.Global.PrefKeys.PREF_STATUS_KIND;
+
 public class SplashActivity extends AppCompatActivity {
 
+    private static final String TAG = SplashActivity.class.getSimpleName();
     private static final String LOG_TAG = "iabv3";
     // put your Google merchant id here (as stated in public profile of your Payments Merchant Center)
     // if filled library will provide protection against Freedom alike Play Market simulators
@@ -80,15 +87,40 @@ public class SplashActivity extends AppCompatActivity {
         activity.finish();
     }
 
+    public void checkuserreferal() {
+        FirebaseDynamicLinks.getInstance()
+                .getDynamicLink(getIntent())
+                .addOnSuccessListener(this, new OnSuccessListener<PendingDynamicLinkData>() {
+                    @Override
+                    public void onSuccess(PendingDynamicLinkData pendingDynamicLinkData) {
+                        // Get deep link from result (may be null if no link is found)
+                        Log.e("pendingDynamicLinkData", "" + pendingDynamicLinkData);
+                        Uri deepLink = null;
+                        if (pendingDynamicLinkData != null) {
+                            deepLink = pendingDynamicLinkData.getLink();
+                            String id = deepLink.toString().substring(deepLink.toString().indexOf("=") + 1, deepLink.toString().indexOf("&"));
+                            String kind = deepLink.toString().substring(deepLink.toString().lastIndexOf("=") + 1);
+                            Log.e("deepLink", "" + deepLink);
+                            Log.e("deepLink", "Id : " + id);
+                            Log.e("deepLink", "Kind : " + kind);
+                            prf.setString(PREF_STATUS_ID, id);
+                            prf.setString(PREF_STATUS_KIND, kind);
+                        }
+                    }
+                });
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        prf = new PrefManager(getApplicationContext());
+        checkuserreferal();
         AdSettings.addTestDevice("136835a8-3194-462b-9b4b-dfc1c31ef8e3");
         initBuy();
         loadLang();
         getRewardedAdKeys();
         setContentView(R.layout.activity_splash);
-        prf = new PrefManager(getApplicationContext());
+
 
         intro_progress = (ProgressBar) findViewById(R.id.intro_progress);
         Timer myTimer = new Timer();
@@ -275,6 +307,13 @@ public class SplashActivity extends AppCompatActivity {
 
         Retrofit retrofit = apiClient.getClient();
         apiRest service = retrofit.create(apiRest.class);
+        final PrefManager prefManager = new PrefManager(this);
+        Integer id_user = 0;
+        String key_user = "";
+        if (prefManager.getString("LOGGED").toString().equals("TRUE")) {
+            id_user = Integer.parseInt(prefManager.getString("ID_USER"));
+            key_user = prefManager.getString("TOKEN_USER");
+        }
         Call<ApiResponse> call = service.getRewardedAdKeys();
         call.enqueue(new Callback<ApiResponse>() {
             @Override
