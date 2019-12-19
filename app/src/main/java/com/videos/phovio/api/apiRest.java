@@ -87,7 +87,7 @@ public interface apiRest {
 
     @FormUrlEncoded
     @POST("user/register/" + Global.SECURE_KEY + "/" + Global.ITEM_PURCHASE_CODE + "/")
-    Call<ApiResponse> register(@Field("name") String name, @Field("username") String username, @Field("password") String password, @Field("type") String type, @Field("image") String image);
+    Call<ApiResponse> register(@Field("name") String name, @Field("username") String username, @Field("password") String password, @Field("type") String type, @Field("image") String image, @Field("email") String email);
 
     @GET("device/{tkn}/" + Global.SECURE_KEY + "/" + Global.ITEM_PURCHASE_CODE + "/")
     Call<ApiResponse> addDevice(@Path("tkn") String tkn);

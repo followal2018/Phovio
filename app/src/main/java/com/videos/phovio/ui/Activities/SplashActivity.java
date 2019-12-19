@@ -98,13 +98,15 @@ public class SplashActivity extends AppCompatActivity {
                         Uri deepLink = null;
                         if (pendingDynamicLinkData != null) {
                             deepLink = pendingDynamicLinkData.getLink();
-                            String id = deepLink.toString().substring(deepLink.toString().indexOf("=") + 1, deepLink.toString().indexOf("&"));
-                            String kind = deepLink.toString().substring(deepLink.toString().lastIndexOf("=") + 1);
                             Log.e("deepLink", "" + deepLink);
-                            Log.e("deepLink", "Id : " + id);
-                            Log.e("deepLink", "Kind : " + kind);
-                            prf.setString(PREF_STATUS_ID, id);
-                            prf.setString(PREF_STATUS_KIND, kind);
+                            if (deepLink != null && deepLink.toString().contains("statusid")) {
+                                String id = deepLink.toString().substring(deepLink.toString().indexOf("=") + 1, deepLink.toString().indexOf("&"));
+                                String kind = deepLink.toString().substring(deepLink.toString().lastIndexOf("=") + 1);
+                                Log.e("deepLink", "Id : " + id);
+                                Log.e("deepLink", "Kind : " + kind);
+                                prf.setString(PREF_STATUS_ID, id);
+                                prf.setString(PREF_STATUS_KIND, kind);
+                            }
                         }
                     }
                 });

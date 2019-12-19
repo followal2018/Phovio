@@ -91,6 +91,7 @@ import com.videos.phovio.model.Category;
 import com.videos.phovio.model.Comment;
 import com.videos.phovio.model.Language;
 import com.videos.phovio.model.Status;
+import com.videos.phovio.utils.ShareUtils;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -257,6 +258,7 @@ public class ImageActivity extends AppCompatActivity {
     private RelativeLayout nativeBannerAdContainer;
     private LinearLayout adView;
     private NativeBannerAd nativeBannerAd;
+    private ShareUtils shareUtils;
 
     public static String format(long value) {
         //Long.MIN_VALUE == -Long.MIN_VALUE so we need an adjustment here
@@ -325,7 +327,7 @@ public class ImageActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         this.reaction_count = haha + like + love + woow + sad + angry;
-
+        shareUtils = new ShareUtils(this);
         loadRewardedAd();
 
         initView();
@@ -1022,21 +1024,23 @@ public class ImageActivity extends AppCompatActivity {
                         mInterstitialAdDownload.show();
                         open_action = 5001;
                     } else {
-                        if (!downloading) {
+                        shareUtils.shareStatus(id, kind, WHATSAPP_ID, original, title);
+                        /*if (!downloading) {
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
 
                                 new ImageActivity.DownloadFileFromURL().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, urlToDownload, title, extension, 0, WHATSAPP_ID);
                             else
                                 new ImageActivity.DownloadFileFromURL().execute(AsyncTask.THREAD_POOL_EXECUTOR, urlToDownload, title, extension, 0, WHATSAPP_ID);
-                        }
+                        }*/
                     }
                 } else {
-                    if (!downloading) {
+                    shareUtils.shareStatus(id, kind, WHATSAPP_ID, original, title);
+                    /*if (!downloading) {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
                             new ImageActivity.DownloadFileFromURL().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, urlToDownload, title, extension, 0, WHATSAPP_ID);
                         else
                             new ImageActivity.DownloadFileFromURL().execute(AsyncTask.THREAD_POOL_EXECUTOR, urlToDownload, title, extension, 0, WHATSAPP_ID);
-                    }
+                    }*/
                 }
 
             }
@@ -1052,20 +1056,22 @@ public class ImageActivity extends AppCompatActivity {
                         mInterstitialAdDownload.show();
                         open_action = 5001;
                     } else {
-                        if (!downloading) {
+                        shareUtils.shareStatus(id, kind, WHATSAPP_ID, original, title);
+                        /*if (!downloading) {
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
                                 new ImageActivity.DownloadFileFromURL().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, urlToDownload, title, extension, 0, WHATSAPP_ID);
                             else
                                 new ImageActivity.DownloadFileFromURL().execute(AsyncTask.THREAD_POOL_EXECUTOR, urlToDownload, title, extension, 0, WHATSAPP_ID);
-                        }
+                        }*/
                     }
                 } else {
-                    if (!downloading) {
+                    shareUtils.shareStatus(id, kind, WHATSAPP_ID, original, title);
+                    /*if (!downloading) {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
                             new ImageActivity.DownloadFileFromURL().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, urlToDownload, title, extension, 0, WHATSAPP_ID);
                         else
                             new ImageActivity.DownloadFileFromURL().execute(AsyncTask.THREAD_POOL_EXECUTOR, urlToDownload, title, extension, 0, WHATSAPP_ID);
-                    }
+                    }*/
                 }
             }
         });
@@ -1080,20 +1086,22 @@ public class ImageActivity extends AppCompatActivity {
                         mInterstitialAdDownload.show();
                         open_action = 5002;
                     } else {
-                        if (!downloading) {
+                        shareUtils.shareStatus(id, kind, MESSENGER_ID, original, title);
+                        /*if (!downloading) {
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
                                 new ImageActivity.DownloadFileFromURL().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, urlToDownload, title, extension, 0, MESSENGER_ID);
                             else
                                 new ImageActivity.DownloadFileFromURL().execute(urlToDownload, title, extension, 0, MESSENGER_ID);
-                        }
+                        }*/
                     }
                 } else {
-                    if (!downloading) {
+                    shareUtils.shareStatus(id, kind, MESSENGER_ID, original, title);
+                   /* if (!downloading) {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
                             new ImageActivity.DownloadFileFromURL().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, urlToDownload, title, extension, 0, MESSENGER_ID);
                         else
                             new ImageActivity.DownloadFileFromURL().execute(urlToDownload, title, extension, 0, MESSENGER_ID);
-                    }
+                    }*/
                 }
             }
         });
@@ -1108,21 +1116,23 @@ public class ImageActivity extends AppCompatActivity {
                         mInterstitialAdDownload.show();
                         open_action = 5003;
                     } else {
-                        if (!downloading) {
+                        shareUtils.shareStatus(id, kind, FACEBOOK_ID, original, title);
+                        /*if (!downloading) {
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
                                 new ImageActivity.DownloadFileFromURL().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, urlToDownload, title, extension, 0, FACEBOOK_ID);
                             else
                                 new ImageActivity.DownloadFileFromURL().execute(urlToDownload, title, extension, 0, FACEBOOK_ID);
-                        }
+                        }*/
 
                     }
                 } else {
-                    if (!downloading) {
+                    shareUtils.shareStatus(id, kind, FACEBOOK_ID, original, title);
+                    /*if (!downloading) {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
                             new ImageActivity.DownloadFileFromURL().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, urlToDownload, title, extension, 0, FACEBOOK_ID);
                         else
                             new ImageActivity.DownloadFileFromURL().execute(urlToDownload, title, extension, 0, FACEBOOK_ID);
-                    }
+                    }*/
 
                 }
             }
@@ -1138,20 +1148,22 @@ public class ImageActivity extends AppCompatActivity {
                         mInterstitialAdDownload.show();
                         open_action = 5004;
                     } else {
-                        if (!downloading) {
+                        shareUtils.shareStatus(id, kind, INSTAGRAM_ID, original, title);
+                        /*if (!downloading) {
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
                                 new ImageActivity.DownloadFileFromURL().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, urlToDownload, title, extension, 0, INSTAGRAM_ID);
                             else
                                 new ImageActivity.DownloadFileFromURL().execute(urlToDownload, title, extension, 0, INSTAGRAM_ID);
-                        }
+                        }*/
                     }
                 } else {
-                    if (!downloading) {
+                    shareUtils.shareStatus(id, kind, INSTAGRAM_ID, original, title);
+                    /*if (!downloading) {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
                             new ImageActivity.DownloadFileFromURL().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, urlToDownload, title, extension, 0, INSTAGRAM_ID);
                         else
                             new ImageActivity.DownloadFileFromURL().execute(urlToDownload, title, extension, 0, INSTAGRAM_ID);
-                    }
+                    }*/
                 }
             }
         });
@@ -1166,20 +1178,22 @@ public class ImageActivity extends AppCompatActivity {
                         mInterstitialAdDownload.show();
                         open_action = 5005;
                     } else {
-                        if (!downloading) {
+                        shareUtils.shareStatus(id, kind, TWITTER_ID, original, title);
+                        /*if (!downloading) {
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
                                 new ImageActivity.DownloadFileFromURL().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, urlToDownload, title, extension, 0, TWITTER_ID);
                             else
                                 new ImageActivity.DownloadFileFromURL().execute(urlToDownload, title, extension, 0, TWITTER_ID);
-                        }
+                        }*/
                     }
                 } else {
-                    if (!downloading) {
+                    shareUtils.shareStatus(id, kind, TWITTER_ID, original, title);
+                    /*if (!downloading) {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
                             new ImageActivity.DownloadFileFromURL().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, urlToDownload, title, extension, 0, TWITTER_ID);
                         else
                             new ImageActivity.DownloadFileFromURL().execute(urlToDownload, title, extension, 0, TWITTER_ID);
-                    }
+                    }*/
                 }
             }
         });
@@ -1194,7 +1208,8 @@ public class ImageActivity extends AppCompatActivity {
                         mInterstitialAdDownload.show();
                         open_action = 5006;
                     } else {
-                        createSharableLink();
+                        shareUtils.shareStatus(id, kind, SHARE_ID, original, title);
+//                        createSharableLink();
                         /*if (!downloading) {
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
                                 new ImageActivity.DownloadFileFromURL().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, urlToDownload, title, extension, 0, SHARE_ID);
@@ -1203,7 +1218,8 @@ public class ImageActivity extends AppCompatActivity {
                         }*/
                     }
                 } else {
-                    createSharableLink();
+                    shareUtils.shareStatus(id, kind, SHARE_ID, original, title);
+//                    createSharableLink();
                     /*if (!downloading) {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
                             new ImageActivity.DownloadFileFromURL().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, urlToDownload, title, extension, 0, SHARE_ID);
@@ -1252,20 +1268,22 @@ public class ImageActivity extends AppCompatActivity {
                         mInterstitialAdDownload.show();
                         open_action = 5008;
                     } else {
-                        if (!downloading) {
+                        shareUtils.shareStatus(id, kind, HIKE_ID, original, title);
+                        /*if (!downloading) {
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
                                 new ImageActivity.DownloadFileFromURL().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, urlToDownload, title, extension, 0, HIKE_ID);
                             else
                                 new ImageActivity.DownloadFileFromURL().execute(urlToDownload, title, extension, 0, HIKE_ID);
-                        }
+                        }*/
                     }
                 } else {
-                    if (!downloading) {
+                    shareUtils.shareStatus(id, kind, HIKE_ID, original, title);
+                    /*if (!downloading) {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
                             new ImageActivity.DownloadFileFromURL().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, urlToDownload, title, extension, 0, HIKE_ID);
                         else
                             new ImageActivity.DownloadFileFromURL().execute(urlToDownload, title, extension, 0, HIKE_ID);
-                    }
+                    }*/
                 }
             }
         });
@@ -1280,20 +1298,22 @@ public class ImageActivity extends AppCompatActivity {
                         mInterstitialAdDownload.show();
                         open_action = 5009;
                     } else {
-                        if (!downloading) {
+                        shareUtils.shareStatus(id, kind, SNAPSHAT_ID, original, title);
+                        /*if (!downloading) {
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
                                 new ImageActivity.DownloadFileFromURL().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, urlToDownload, title, extension, 0, SNAPSHAT_ID);
                             else
                                 new ImageActivity.DownloadFileFromURL().execute(urlToDownload, title, extension, 0, SNAPSHAT_ID);
-                        }
+                        }*/
                     }
                 } else {
-                    if (!downloading) {
+                    shareUtils.shareStatus(id, kind, SNAPSHAT_ID, original, title);
+                    /*if (!downloading) {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
                             new ImageActivity.DownloadFileFromURL().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, urlToDownload, title, extension, 0, SNAPSHAT_ID);
                         else
                             new ImageActivity.DownloadFileFromURL().execute(urlToDownload, title, extension, 0, SNAPSHAT_ID);
-                    }
+                    }*/
                 }
             }
         });
@@ -1636,61 +1656,67 @@ public class ImageActivity extends AppCompatActivity {
                 switch (open_action) {
 
                     case 5001: {
-                        if (!downloading) {
+                        shareUtils.shareStatus(id, kind, WHATSAPP_ID, original, title);
+                       /* if (!downloading) {
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
                                 new ImageActivity.DownloadFileFromURL().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, urlToDownload, title, extension, 0, WHATSAPP_ID);
                             else
                                 new ImageActivity.DownloadFileFromURL().execute(AsyncTask.THREAD_POOL_EXECUTOR, urlToDownload, title, extension, 0, WHATSAPP_ID);
-                        }
+                        }*/
                         break;
                     }
                     case 5002: {
-                        if (!downloading) {
+                        shareUtils.shareStatus(id, kind, MESSENGER_ID, original, title);
+                        /*if (!downloading) {
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
                                 new ImageActivity.DownloadFileFromURL().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, urlToDownload, title, extension, 0, MESSENGER_ID);
                             else
                                 new ImageActivity.DownloadFileFromURL().execute(urlToDownload, title, extension, 0, MESSENGER_ID);
-                        }
+                        }*/
                         break;
                     }
                     case 5003: {
-                        if (!downloading) {
+                        shareUtils.shareStatus(id, kind, FACEBOOK_ID, original, title);
+                        /*if (!downloading) {
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
                                 new ImageActivity.DownloadFileFromURL().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, urlToDownload, title, extension, 0, FACEBOOK_ID);
                             else
                                 new ImageActivity.DownloadFileFromURL().execute(urlToDownload, title, extension, 0, FACEBOOK_ID);
-                        }
+                        }*/
                         break;
                     }
                     case 5004: {
-
-                        if (!downloading) {
+                        shareUtils.shareStatus(id, kind, INSTAGRAM_ID, original, title);
+                        /*if (!downloading) {
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
                                 new ImageActivity.DownloadFileFromURL().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, urlToDownload, title, extension, 0, INSTAGRAM_ID);
                             else
                                 new ImageActivity.DownloadFileFromURL().execute(urlToDownload, title, extension, 0, INSTAGRAM_ID);
-                        }
+                        }*/
                         break;
                     }
                     case 5005: {
-                        if (!downloading) {
+                        shareUtils.shareStatus(id, kind, TWITTER_ID, original, title);
+                        /*if (!downloading) {
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
                                 new ImageActivity.DownloadFileFromURL().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, urlToDownload, title, extension, 0, TWITTER_ID);
                             else
                                 new ImageActivity.DownloadFileFromURL().execute(urlToDownload, title, extension, 0, TWITTER_ID);
-                        }
+                        }*/
                         break;
                     }
                     case 5006: {
-                        if (!downloading) {
+                        shareUtils.shareStatus(id, kind, SHARE_ID, original, title);
+                        /*if (!downloading) {
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
                                 new ImageActivity.DownloadFileFromURL().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, urlToDownload, title, extension, 0, SHARE_ID);
                             else
                                 new ImageActivity.DownloadFileFromURL().execute(urlToDownload, title, extension, 0, SHARE_ID);
-                        }
+                        }*/
                         break;
                     }
                     case 5007: {
+
                         if (!downloading) {
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
                                 new ImageActivity.DownloadFileFromURL().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, urlToDownload, title, extension, 0, DOWNLOAD_ID);
@@ -1700,21 +1726,23 @@ public class ImageActivity extends AppCompatActivity {
                         break;
                     }
                     case 5008: {
-                        if (!downloading) {
+                        shareUtils.shareStatus(id, kind, HIKE_ID, original, title);
+                        /*if (!downloading) {
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
                                 new ImageActivity.DownloadFileFromURL().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, urlToDownload, title, extension, 0, HIKE_ID);
                             else
                                 new ImageActivity.DownloadFileFromURL().execute(urlToDownload, title, extension, 0, HIKE_ID);
-                        }
+                        }*/
                         break;
                     }
                     case 5009: {
-                        if (!downloading) {
+                        shareUtils.shareStatus(id, kind, SNAPSHAT_ID, original, title);
+                        /*if (!downloading) {
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
                                 new ImageActivity.DownloadFileFromURL().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, urlToDownload, title, extension, 0, SNAPSHAT_ID);
                             else
                                 new ImageActivity.DownloadFileFromURL().execute(urlToDownload, title, extension, 0, SNAPSHAT_ID);
-                        }
+                        }*/
                         break;
                     }
                     case 5010: {

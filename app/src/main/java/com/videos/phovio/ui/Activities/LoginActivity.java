@@ -239,7 +239,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 photo = acct.getPhotoUrl().toString();
             }
 
-            signUp(acct.getId().toString(), acct.getId(), acct.getDisplayName().toString(), "google", photo);
+            signUp(acct.getId().toString(), acct.getId(), acct.getDisplayName().toString(), "google", photo, acct.getEmail());
             Auth.GoogleSignInApi.signOut(mGoogleApiClient);
         } else {
 
@@ -249,7 +249,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     private void getResultFacebook(JSONObject object) {
         Log.d(TAG, object.toString());
         try {
-            signUp(object.getString("id").toString(), object.getString("id").toString(), object.getString("name").toString(), "facebook", object.getJSONObject("picture").getJSONObject("data").getString("url"));
+            signUp(object.getString("id").toString(), object.getString("id").toString(), object.getString("name").toString(), "facebook", object.getJSONObject("picture").getJSONObject("data").getString("url"), object.getString("email").toString());
             LoginManager.getInstance().logOut();
         } catch (JSONException e) {
             e.printStackTrace();
@@ -261,14 +261,14 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         super.onPause();
     }
 
-    public void signUp(String username, String password, String name, String type, String image) {
+    public void signUp(String username, String password, String name, String type, String image, String email) {
         register_progress = new ProgressDialog(LoginActivity.this);
         register_progress.setCancelable(true);
         register_progress.setMessage(getResources().getString(R.string.operation_progress));
         register_progress.show();
         Retrofit retrofit = apiClient.getClient();
         apiRest service = retrofit.create(apiRest.class);
-        Call<ApiResponse> call = service.register(name, username, password, type, image);
+        Call<ApiResponse> call = service.register(name, username, password, type, image, email);
         call.enqueue(new Callback<ApiResponse>() {
             @Override
             public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
@@ -285,6 +285,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                         String enabled = "x";
                         String registered = "x";
                         String mobile = null;
+                        String email = null;
                         for (int i = 0; i < response.body().getValues().size(); i++) {
                             Log.v("KEYS_REGISTER" + response.body().getValues().get(i).getName(), response.body().getValues().get(i).getValue());
                             if (response.body().getValues().get(i).getName().equals("salt")) {
@@ -317,6 +318,9 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                             if (response.body().getValues().get(i).getName().equals("mobile")) {
                                 mobile = response.body().getValues().get(i).getValue();
                             }
+                            if (response.body().getValues().get(i).getName().equals("email")) {
+                                email = response.body().getValues().get(i).getValue();
+                            }
 
                         }
                         register_progress.dismiss();
@@ -335,6 +339,9 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                             prf.setString("LOGGED", "TRUE");
                             if (mobile != null)
                                 prf.setString("MOBILE", mobile);
+                            if (email != null)
+                                prf.setString("EMAIL", email);
+
                             String token = FirebaseInstanceId.getInstance().getToken();
                             if (registered.equals("true")) {
                                 relative_layout_reference_coode.setVisibility(View.VISIBLE);
@@ -406,6 +413,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                         if (pendingDynamicLinkData != null) {
                             deepLink = pendingDynamicLinkData.getLink();
 //                            AddRefer(deepLink);
+
                             String id = deepLink.toString().substring(deepLink.toString().lastIndexOf("=") + 1);
                             Log.e("deepLink", "" + id);
                             edit_text_reference_code.setText(id);

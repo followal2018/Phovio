@@ -91,6 +91,7 @@ import com.videos.phovio.model.Comment;
 import com.videos.phovio.model.Status;
 import com.videos.phovio.ui.Activities.LoginActivity;
 import com.videos.phovio.ui.Activities.UserActivity;
+import com.videos.phovio.utils.ShareUtils;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -236,6 +237,8 @@ public class PlayerFragment extends Fragment {
     private CardView card_view_reactions;
     private ImageView image_view_fragment_player_fav;
 
+    private ShareUtils shareUtils;
+
     public PlayerFragment() {
 
     }
@@ -379,7 +382,7 @@ public class PlayerFragment extends Fragment {
         // Inflate the layout for this fragment
         this.view = inflater.inflate(R.layout.fragment_player, container, false);
         this.prefManager = new PrefManager(getActivity().getApplicationContext());
-
+        shareUtils = new ShareUtils(getActivity());
         Bundle bundle = this.getArguments();
 
         this.id = bundle.getInt("id");
@@ -446,12 +449,13 @@ public class PlayerFragment extends Fragment {
             public void onAdClosed() {
                 switch (open_action) {
                     case 5001: {
-                        if (!downloading) {
+                        shareUtils.shareStatus(id, kind, SHARE_ID, thumbnail, title);
+                        /*if (!downloading) {
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
                                 new DownloadFileFromURL().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, urlToDownload, title, extension, 0, SHARE_ID);
                             else
                                 new DownloadFileFromURL().execute(AsyncTask.THREAD_POOL_EXECUTOR, urlToDownload, title, extension, 0, SHARE_ID);
-                        }
+                        }*/
                         break;
                     }
                     case 5002: {
@@ -689,21 +693,23 @@ public class PlayerFragment extends Fragment {
                         mInterstitialAdDownload.show();
                         open_action = 5001;
                     } else {
-                        if (!downloading) {
+                        shareUtils.shareStatus(id, kind, SHARE_ID, thumbnail, title);
+                        /*if (!downloading) {
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
 
                                 new DownloadFileFromURL().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, urlToDownload, title, extension, 0, SHARE_ID);
                             else
                                 new DownloadFileFromURL().execute(AsyncTask.THREAD_POOL_EXECUTOR, urlToDownload, title, extension, 0, SHARE_ID);
-                        }
+                        }*/
                     }
                 } else {
-                    if (!downloading) {
+                    shareUtils.shareStatus(id, kind, SHARE_ID, thumbnail, title);
+                    /*if (!downloading) {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
                             new DownloadFileFromURL().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, urlToDownload, title, extension, 0, SHARE_ID);
                         else
                             new DownloadFileFromURL().execute(AsyncTask.THREAD_POOL_EXECUTOR, urlToDownload, title, extension, 0, SHARE_ID);
-                    }
+                    }*/
                 }
             }
         });
@@ -1755,7 +1761,7 @@ public class PlayerFragment extends Fragment {
             } catch (NoSuchAlgorithmException e) {
                 e.printStackTrace();
             }
-            ;
+
             Call<Integer> call = service.addView(ishash, id_user, key_user);
             call.enqueue(new Callback<Integer>() {
                 @Override

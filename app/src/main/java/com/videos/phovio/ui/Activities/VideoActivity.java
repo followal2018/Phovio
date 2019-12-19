@@ -116,6 +116,7 @@ import com.videos.phovio.model.Category;
 import com.videos.phovio.model.Comment;
 import com.videos.phovio.model.Language;
 import com.videos.phovio.model.Status;
+import com.videos.phovio.utils.ShareUtils;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -332,6 +333,8 @@ public class VideoActivity extends AppCompatActivity {
         return status_final;
     }
 
+    private ShareUtils shareUtils;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -391,6 +394,7 @@ public class VideoActivity extends AppCompatActivity {
 
         loadRewardedAd();
 
+        shareUtils = new ShareUtils(this);
 
         initView();
         initAction();
@@ -1264,21 +1268,23 @@ public class VideoActivity extends AppCompatActivity {
                         mInterstitialAdDownload.show();
                         open_action = 5001;
                     } else {
-                        if (!downloading) {
+                        shareUtils.shareStatus(id, kind, WHATSAPP_ID, thumbnail, title);
+                        /*if (!downloading) {
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
 
                                 new DownloadFileFromURL().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, urlToDownload, title, extension, 0, WHATSAPP_ID);
                             else
                                 new DownloadFileFromURL().execute(AsyncTask.THREAD_POOL_EXECUTOR, urlToDownload, title, extension, 0, WHATSAPP_ID);
-                        }
+                        }*/
                     }
                 } else {
-                    if (!downloading) {
+                    shareUtils.shareStatus(id, kind, WHATSAPP_ID, thumbnail, title);
+                    /*if (!downloading) {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
                             new DownloadFileFromURL().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, urlToDownload, title, extension, 0, WHATSAPP_ID);
                         else
                             new DownloadFileFromURL().execute(AsyncTask.THREAD_POOL_EXECUTOR, urlToDownload, title, extension, 0, WHATSAPP_ID);
-                    }
+                    }*/
                 }
 
             }
@@ -1294,21 +1300,23 @@ public class VideoActivity extends AppCompatActivity {
                         mInterstitialAdDownload.show();
                         open_action = 5001;
                     } else {
-                        if (!downloading) {
+                        shareUtils.shareStatus(id, kind, WHATSAPP_ID, thumbnail, title);
+                        /*if (!downloading) {
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
 
                                 new DownloadFileFromURL().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, urlToDownload, title, extension, 0, WHATSAPP_ID);
                             else
                                 new DownloadFileFromURL().execute(AsyncTask.THREAD_POOL_EXECUTOR, urlToDownload, title, extension, 0, WHATSAPP_ID);
-                        }
+                        }*/
                     }
                 } else {
-                    if (!downloading) {
+                    shareUtils.shareStatus(id, kind, WHATSAPP_ID, thumbnail, title);
+                    /*if (!downloading) {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
                             new DownloadFileFromURL().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, urlToDownload, title, extension, 0, WHATSAPP_ID);
                         else
                             new DownloadFileFromURL().execute(AsyncTask.THREAD_POOL_EXECUTOR, urlToDownload, title, extension, 0, WHATSAPP_ID);
-                    }
+                    }*/
                 }
 
             }
@@ -1324,20 +1332,22 @@ public class VideoActivity extends AppCompatActivity {
                         mInterstitialAdDownload.show();
                         open_action = 5001;
                     } else {
-                        if (!downloading) {
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
-                                new DownloadFileFromURL().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, urlToDownload, title, extension, 0, WHATSAPP_ID);
-                            else
-                                new DownloadFileFromURL().execute(AsyncTask.THREAD_POOL_EXECUTOR, urlToDownload, title, extension, 0, WHATSAPP_ID);
-                        }
+                        shareUtils.shareStatus(id, kind, WHATSAPP_ID, thumbnail, title);
+//                        if (!downloading) {
+//                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
+//                                new DownloadFileFromURL().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, urlToDownload, title, extension, 0, WHATSAPP_ID);
+//                            else
+//                                new DownloadFileFromURL().execute(AsyncTask.THREAD_POOL_EXECUTOR, urlToDownload, title, extension, 0, WHATSAPP_ID);
+//                        }
                     }
                 } else {
-                    if (!downloading) {
+                    shareUtils.shareStatus(id, kind, WHATSAPP_ID, thumbnail, title);
+                    /*if (!downloading) {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
                             new DownloadFileFromURL().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, urlToDownload, title, extension, 0, WHATSAPP_ID);
                         else
                             new DownloadFileFromURL().execute(AsyncTask.THREAD_POOL_EXECUTOR, urlToDownload, title, extension, 0, WHATSAPP_ID);
-                    }
+                    }*/
                 }
             }
         });
@@ -1352,20 +1362,22 @@ public class VideoActivity extends AppCompatActivity {
                         mInterstitialAdDownload.show();
                         open_action = 5002;
                     } else {
-                        if (!downloading) {
+                        shareUtils.shareStatus(id, kind, MESSENGER_ID, thumbnail, title);
+                        /*if (!downloading) {
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
                                 new DownloadFileFromURL().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, urlToDownload, title, extension, 0, MESSENGER_ID);
                             else
                                 new DownloadFileFromURL().execute(urlToDownload, title, extension, 0, MESSENGER_ID);
-                        }
+                        }*/
                     }
                 } else {
-                    if (!downloading) {
+                    shareUtils.shareStatus(id, kind, MESSENGER_ID, thumbnail, title);
+                    /*if (!downloading) {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
                             new DownloadFileFromURL().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, urlToDownload, title, extension, 0, MESSENGER_ID);
                         else
                             new DownloadFileFromURL().execute(urlToDownload, title, extension, 0, MESSENGER_ID);
-                    }
+                    }*/
                 }
             }
         });
@@ -1377,21 +1389,23 @@ public class VideoActivity extends AppCompatActivity {
                         mInterstitialAdDownload.show();
                         open_action = 5003;
                     } else {
-                        if (!downloading) {
+                        shareUtils.shareStatus(id, kind, FACEBOOK_ID, thumbnail, title);
+                        /*if (!downloading) {
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
                                 new DownloadFileFromURL().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, urlToDownload, title, extension, 0, FACEBOOK_ID);
                             else
                                 new DownloadFileFromURL().execute(urlToDownload, title, extension, 0, FACEBOOK_ID);
-                        }
+                        }*/
 
                     }
                 } else {
-                    if (!downloading) {
+                    shareUtils.shareStatus(id, kind, FACEBOOK_ID, thumbnail, title);
+                    /*if (!downloading) {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
                             new DownloadFileFromURL().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, urlToDownload, title, extension, 0, FACEBOOK_ID);
                         else
                             new DownloadFileFromURL().execute(urlToDownload, title, extension, 0, FACEBOOK_ID);
-                    }
+                    }*/
 
                 }
             }
@@ -1407,21 +1421,23 @@ public class VideoActivity extends AppCompatActivity {
                         mInterstitialAdDownload.show();
                         open_action = 5003;
                     } else {
-                        if (!downloading) {
+                        shareUtils.shareStatus(id, kind, FACEBOOK_ID, thumbnail, title);
+                        /*if (!downloading) {
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
                                 new DownloadFileFromURL().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, urlToDownload, title, extension, 0, FACEBOOK_ID);
                             else
                                 new DownloadFileFromURL().execute(urlToDownload, title, extension, 0, FACEBOOK_ID);
-                        }
+                        }*/
 
                     }
                 } else {
-                    if (!downloading) {
+                    shareUtils.shareStatus(id, kind, FACEBOOK_ID, thumbnail, title);
+                    /*if (!downloading) {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
                             new DownloadFileFromURL().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, urlToDownload, title, extension, 0, FACEBOOK_ID);
                         else
                             new DownloadFileFromURL().execute(urlToDownload, title, extension, 0, FACEBOOK_ID);
-                    }
+                    }*/
 
                 }
             }
@@ -1437,20 +1453,22 @@ public class VideoActivity extends AppCompatActivity {
                         mInterstitialAdDownload.show();
                         open_action = 5004;
                     } else {
-                        if (!downloading) {
+                        shareUtils.shareStatus(id, kind, INSTAGRAM_ID, thumbnail, title);
+                        /*if (!downloading) {
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
                                 new DownloadFileFromURL().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, urlToDownload, title, extension, 0, INSTAGRAM_ID);
                             else
                                 new DownloadFileFromURL().execute(urlToDownload, title, extension, 0, INSTAGRAM_ID);
-                        }
+                        }*/
                     }
                 } else {
-                    if (!downloading) {
+                    shareUtils.shareStatus(id, kind, INSTAGRAM_ID, thumbnail, title);
+                    /*if (!downloading) {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
                             new DownloadFileFromURL().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, urlToDownload, title, extension, 0, INSTAGRAM_ID);
                         else
                             new DownloadFileFromURL().execute(urlToDownload, title, extension, 0, INSTAGRAM_ID);
-                    }
+                    }*/
                 }
             }
         });
@@ -1465,20 +1483,22 @@ public class VideoActivity extends AppCompatActivity {
                         mInterstitialAdDownload.show();
                         open_action = 5005;
                     } else {
-                        if (!downloading) {
+                        shareUtils.shareStatus(id, kind, TWITTER_ID, thumbnail, title);
+                        /*if (!downloading) {
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
                                 new DownloadFileFromURL().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, urlToDownload, title, extension, 0, TWITTER_ID);
                             else
                                 new DownloadFileFromURL().execute(urlToDownload, title, extension, 0, TWITTER_ID);
-                        }
+                        }*/
                     }
                 } else {
-                    if (!downloading) {
+                    shareUtils.shareStatus(id, kind, TWITTER_ID, thumbnail, title);
+                    /*if (!downloading) {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
                             new DownloadFileFromURL().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, urlToDownload, title, extension, 0, TWITTER_ID);
                         else
                             new DownloadFileFromURL().execute(urlToDownload, title, extension, 0, TWITTER_ID);
-                    }
+                    }*/
                 }
             }
         });
@@ -1493,7 +1513,8 @@ public class VideoActivity extends AppCompatActivity {
                         mInterstitialAdDownload.show();
                         open_action = 5006;
                     } else {
-                        createSharableLink();
+                        shareUtils.shareStatus(id, kind, SHARE_ID, thumbnail, title);
+//                        createSharableLink();
                         /*if (!downloading) {
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
                                 new DownloadFileFromURL().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, urlToDownload, title, extension, 0, SHARE_ID);
@@ -1502,7 +1523,8 @@ public class VideoActivity extends AppCompatActivity {
                         }*/
                     }
                 } else {
-                    createSharableLink();
+                    shareUtils.shareStatus(id, kind, SHARE_ID, thumbnail, title);
+//                    createSharableLink();
                     /*if (!downloading) {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
                             new DownloadFileFromURL().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, urlToDownload, title, extension, 0, SHARE_ID);
@@ -1551,20 +1573,22 @@ public class VideoActivity extends AppCompatActivity {
                         mInterstitialAdDownload.show();
                         open_action = 5008;
                     } else {
-                        if (!downloading) {
+                        shareUtils.shareStatus(id, kind, HIKE_ID, thumbnail, title);
+                        /*if (!downloading) {
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
                                 new DownloadFileFromURL().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, urlToDownload, title, extension, 0, HIKE_ID);
                             else
                                 new DownloadFileFromURL().execute(urlToDownload, title, extension, 0, HIKE_ID);
-                        }
+                        }*/
                     }
                 } else {
-                    if (!downloading) {
+                    shareUtils.shareStatus(id, kind, HIKE_ID, thumbnail, title);
+                    /*if (!downloading) {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
                             new DownloadFileFromURL().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, urlToDownload, title, extension, 0, HIKE_ID);
                         else
                             new DownloadFileFromURL().execute(urlToDownload, title, extension, 0, HIKE_ID);
-                    }
+                    }*/
                 }
             }
         });
@@ -1579,20 +1603,22 @@ public class VideoActivity extends AppCompatActivity {
                         mInterstitialAdDownload.show();
                         open_action = 5009;
                     } else {
-                        if (!downloading) {
+                        shareUtils.shareStatus(id, kind, SNAPSHAT_ID, thumbnail, title);
+                        /*if (!downloading) {
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
                                 new DownloadFileFromURL().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, urlToDownload, title, extension, 0, SNAPSHAT_ID);
                             else
                                 new DownloadFileFromURL().execute(urlToDownload, title, extension, 0, SNAPSHAT_ID);
-                        }
+                        }*/
                     }
                 } else {
-                    if (!downloading) {
+                    shareUtils.shareStatus(id, kind, SNAPSHAT_ID, thumbnail, title);
+                    /*if (!downloading) {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
                             new DownloadFileFromURL().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, urlToDownload, title, extension, 0, SNAPSHAT_ID);
                         else
                             new DownloadFileFromURL().execute(urlToDownload, title, extension, 0, SNAPSHAT_ID);
-                    }
+                    }*/
                 }
             }
         });
@@ -1935,58 +1961,63 @@ public class VideoActivity extends AppCompatActivity {
                 switch (open_action) {
 
                     case 5001: {
-                        if (!downloading) {
+                        shareUtils.shareStatus(id, kind, WHATSAPP_ID, thumbnail, title);
+                        /*if (!downloading) {
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
                                 new DownloadFileFromURL().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, urlToDownload, title, extension, 0, WHATSAPP_ID);
                             else
                                 new DownloadFileFromURL().execute(AsyncTask.THREAD_POOL_EXECUTOR, urlToDownload, title, extension, 0, WHATSAPP_ID);
-                        }
+                        }*/
                         break;
                     }
                     case 5002: {
-                        if (!downloading) {
+                        shareUtils.shareStatus(id, kind, MESSENGER_ID, thumbnail, title);
+                        /*if (!downloading) {
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
                                 new DownloadFileFromURL().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, urlToDownload, title, extension, 0, MESSENGER_ID);
                             else
                                 new DownloadFileFromURL().execute(urlToDownload, title, extension, 0, MESSENGER_ID);
-                        }
+                        }*/
                         break;
                     }
                     case 5003: {
-                        if (!downloading) {
+                        shareUtils.shareStatus(id, kind, FACEBOOK_ID, thumbnail, title);
+                        /*if (!downloading) {
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
                                 new DownloadFileFromURL().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, urlToDownload, title, extension, 0, FACEBOOK_ID);
                             else
                                 new DownloadFileFromURL().execute(urlToDownload, title, extension, 0, FACEBOOK_ID);
-                        }
+                        }*/
                         break;
                     }
                     case 5004: {
-
-                        if (!downloading) {
+                        shareUtils.shareStatus(id, kind, INSTAGRAM_ID, thumbnail, title);
+                        /*if (!downloading) {
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
                                 new DownloadFileFromURL().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, urlToDownload, title, extension, 0, INSTAGRAM_ID);
                             else
                                 new DownloadFileFromURL().execute(urlToDownload, title, extension, 0, INSTAGRAM_ID);
-                        }
+                        }*/
                         break;
                     }
                     case 5005: {
-                        if (!downloading) {
+                        shareUtils.shareStatus(id, kind, TWITTER_ID, thumbnail, title);
+                        /*if (!downloading) {
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
                                 new DownloadFileFromURL().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, urlToDownload, title, extension, 0, TWITTER_ID);
                             else
                                 new DownloadFileFromURL().execute(urlToDownload, title, extension, 0, TWITTER_ID);
-                        }
+                        }*/
                         break;
                     }
                     case 5006: {
-                        if (!downloading) {
+                        shareUtils.shareStatus(id, kind, SHARE_ID, thumbnail, title);
+                       /* if (!downloading) {
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
                                 new DownloadFileFromURL().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, urlToDownload, title, extension, 0, SHARE_ID);
                             else
                                 new DownloadFileFromURL().execute(urlToDownload, title, extension, 0, SHARE_ID);
-                        }
+                        }*/
                         break;
                     }
                     case 5007: {
@@ -1999,21 +2030,23 @@ public class VideoActivity extends AppCompatActivity {
                         break;
                     }
                     case 5008: {
-                        if (!downloading) {
+                        shareUtils.shareStatus(id, kind, HIKE_ID, thumbnail, title);
+                        /*if (!downloading) {
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
                                 new DownloadFileFromURL().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, urlToDownload, title, extension, 0, HIKE_ID);
                             else
                                 new DownloadFileFromURL().execute(urlToDownload, title, extension, 0, HIKE_ID);
-                        }
+                        }*/
                         break;
                     }
                     case 5009: {
-                        if (!downloading) {
+                        shareUtils.shareStatus(id, kind, SNAPSHAT_ID, thumbnail, title);
+                        /*if (!downloading) {
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
                                 new DownloadFileFromURL().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, urlToDownload, title, extension, 0, SNAPSHAT_ID);
                             else
                                 new DownloadFileFromURL().execute(urlToDownload, title, extension, 0, SNAPSHAT_ID);
-                        }
+                        }*/
                         break;
                     }
                     case 5010: {

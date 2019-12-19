@@ -52,46 +52,50 @@ public class PlayerActivity extends AppCompatActivity {
         this.prefManager = new PrefManager(getApplicationContext());
         this.language = prefManager.getString("LANGUAGE_DEFAULT");
 
-
         Bundle bundle = getIntent().getExtras();
+        int id = bundle.getInt("id");
 
+        if (bundle.getBoolean("isFromLink")) {
+            getStatus(id);
+        } else {
+            status = new Status();
+            status.setId(bundle.getInt("id"));
+            status.setTitle(bundle.getString("title"));
+            status.setDescription(bundle.getString("description"));
+            status.setThumbnail(bundle.getString("thumbnail"));
+            status.setUserid(bundle.getInt("userid"));
+            status.setUser(bundle.getString("user"));
+            status.setUserimage(bundle.getString("userimage"));
+            status.setType(bundle.getString("type"));
+            status.setOriginal(bundle.getString("original"));
+            status.setExtension(bundle.getString("extension"));
+            status.setComment(bundle.getBoolean("comment"));
+            status.setDownloads(bundle.getInt("downloads"));
+            status.setViews(bundle.getInt("views"));
+            status.setFont(bundle.getInt("font"));
+            status.setTags(bundle.getString("tags"));
+            status.setReview(bundle.getBoolean("review"));
+            status.setComments(bundle.getInt("comments"));
+            status.setCreated(bundle.getString("created"));
+            status.setLocal(bundle.getString("local"));
 
-        status = new Status();
-        status.setId(bundle.getInt("id"));
-        status.setTitle(bundle.getString("title"));
-        status.setDescription(bundle.getString("description"));
-        status.setThumbnail(bundle.getString("thumbnail"));
-        status.setUserid(bundle.getInt("userid"));
-        status.setUser(bundle.getString("user"));
-        status.setUserimage(bundle.getString("userimage"));
-        status.setType(bundle.getString("type"));
-        status.setOriginal(bundle.getString("original"));
-        status.setExtension(bundle.getString("extension"));
-        status.setComment(bundle.getBoolean("comment"));
-        status.setDownloads(bundle.getInt("downloads"));
-        status.setViews(bundle.getInt("views"));
-        status.setFont(bundle.getInt("font"));
-        status.setTags(bundle.getString("tags"));
-        status.setReview(bundle.getBoolean("review"));
-        status.setComments(bundle.getInt("comments"));
-        status.setCreated(bundle.getString("created"));
-        status.setLocal(bundle.getString("local"));
+            status.setLike(bundle.getInt("like"));
+            status.setLove(bundle.getInt("love"));
+            status.setWoow(bundle.getInt("woow"));
+            status.setAngry(bundle.getInt("angry"));
+            status.setSad(bundle.getInt("sad"));
+            status.setHaha(bundle.getInt("haha"));
 
-        status.setLike(bundle.getInt("like"));
-        status.setLove(bundle.getInt("love"));
-        status.setWoow(bundle.getInt("woow"));
-        status.setAngry(bundle.getInt("angry"));
-        status.setSad(bundle.getInt("sad"));
-        status.setHaha(bundle.getInt("haha"));
+            status.setKind(bundle.getString("kind"));
+            status.setColor(bundle.getString("color"));
+            status.setSuperLikeCount(bundle.getInt("superLikeCount"));
+            initStatus(status);
+        }
+    }
 
-        status.setKind(bundle.getString("kind"));
-        status.setColor(bundle.getString("color"));
-        status.setSuperLikeCount(bundle.getInt("superLikeCount"));
-
+    public void initStatus(Status status) {
         initView();
-
         item++;
-
 
         Bundle bundle1 = new Bundle();
         bundle1.putInt("id", status.getId());
@@ -177,6 +181,29 @@ public class PlayerActivity extends AppCompatActivity {
         PlayerFragment playerFragment = new PlayerFragment();
         playerFragment.setArguments(bundle);
         adapter.addFragment(playerFragment);
+    }
+
+    private void getStatus(int id) {
+        Retrofit retrofit = apiClient.getClient();
+        apiRest service = retrofit.create(apiRest.class);
+        Call<List<Status>> call = service.getStatusById(id);
+        call.enqueue(new Callback<List<Status>>() {
+            @Override
+            public void onResponse(Call<List<Status>> call, Response<List<Status>> response) {
+                if (response.isSuccessful()) {
+                    List<Status> statuses = response.body();
+                    if (statuses != null && !statuses.isEmpty()) {
+                        Status status = statuses.get(0);
+                        initStatus(status);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Status>> call, Throwable t) {
+
+            }
+        });
     }
 
     private void loadMore() {

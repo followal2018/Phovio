@@ -81,13 +81,13 @@ public class RandomUserDialog extends DialogFragment {
 
 
     public void onPositiveClicked() {
-        if (adapter != null && adapter.getFollowedUsers().size() >= 5) {
+        if (adapter != null && adapter.getFollowedUsers().size() >= 10) {
             if (listener != null) {
                 listener.onUserFollowed();
             }
             dismiss();
         } else {
-            Toast.makeText(context, "Please Follow Minimum 5 Users", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Please Follow Minimum 10 Users", Toast.LENGTH_SHORT).show();
         }
     }
 

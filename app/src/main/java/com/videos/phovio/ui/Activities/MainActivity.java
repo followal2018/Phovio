@@ -100,6 +100,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import devlight.io.library.ntb.NavigationTabBar;
@@ -108,6 +110,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
+import timber.log.Timber;
 
 import static com.videos.phovio.config.Global.PrefKeys.PREF_STATUS_ID;
 import static com.videos.phovio.config.Global.PrefKeys.PREF_STATUS_KIND;
@@ -142,6 +145,7 @@ public class MainActivity extends AppCompatActivity
         }
     };
     String refercode = "";
+    Timer timer = new Timer();
     private Boolean EarningSystem = true;
     private Dialog rateDialog;
     private MaterialSearchView searchView;
@@ -166,6 +170,7 @@ public class MainActivity extends AppCompatActivity
     private String old_language;
     private MenuItem item_language;
     private SpeedDialView speed_dial_main_activity;
+    private boolean isForeground = false;
 
     public void checkPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -214,6 +219,12 @@ public class MainActivity extends AppCompatActivity
                 intent.putExtra("isFromLink", true);
                 startActivity(intent);
                 overridePendingTransition(R.anim.enter, R.anim.exit);
+            } else if (kind.equals("fullscreen")) {
+                Intent intent = new Intent(this, PlayerActivity.class);
+                intent.putExtra("id", Integer.parseInt(id));
+                intent.putExtra("isFromLink", true);
+                startActivity(intent);
+                overridePendingTransition(R.anim.enter, R.anim.exit);
             }
 
             prefManager.setString(PREF_STATUS_ID, "");
@@ -251,6 +262,7 @@ public class MainActivity extends AppCompatActivity
         firebaseSubscribe();
         initEvent();
         initGDPR();
+        initAdTimer();
     }
 
     private void initGDPR() {
@@ -468,7 +480,19 @@ public class MainActivity extends AppCompatActivity
             }
         });*/
 
+    }
 
+    public void initAdTimer() {
+        timer.scheduleAtFixedRate(new TimerTask() {
+
+            @Override
+            public void run() {
+                Timber.e("MainActivity Timer :-> called");
+                if (isForeground) {
+                    AdRequestHandle.showAd(MainActivity.this);
+                }
+            }
+        }, 0, 1000 * 60 * 3);
     }
 
     @Override
@@ -1025,10 +1049,16 @@ public class MainActivity extends AppCompatActivity
         Toast.makeText(getApplicationContext(), getString(R.string.message_logout), Toast.LENGTH_LONG).show();
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        isForeground = true;
+    }
 
     @Override
     protected void onResume() {
         super.onResume();
+        isForeground = true;
         checkPermission();
 
         updateTextViews();
@@ -1076,6 +1106,12 @@ public class MainActivity extends AppCompatActivity
                 finish();
             }
         }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        isForeground = false;
     }
 
     @Override
@@ -1144,6 +1180,9 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        if (timer != null) {
+            timer.cancel();
+        }
         unbindService(mServiceConn);
     }
 
