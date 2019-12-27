@@ -16,6 +16,8 @@ public class Global {
     public static final String MERCHANT_KEY = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsbjH6nM+4iinlsh0gRY31RxNKfFI4v/DLd59pVH51b3fH7ENuCPrKT8K7ixlokrnCt3q36QK5W3N4b0YTsjiTIxwmRbbg6cAntXUoZIgID5rC/DfOEQ11/HtfG45IEiH4L10wloUDx2ASeyqTAxKKqBKrkpTHdezwBgv1tQKMSrvmfHNzD9dCF+dYRi+SORunLrpMiAmC4E1OOniW+sBmMBzAKTYGG3hMMbxFaO36Hq6UG2vBPTcJNB/Wp1MEUzzjRaawPvTznhjr3CdJXwsejnO5h489ucwHzB5t/Ki9XzGhpBy0ZOx5epM6nL2M7cjORaCzRRPkIbZk28NnRN6TQIDAQAB" ; // PUT YOUR MERCHANT KEY HERE;
     public static final long   SUBSCRIPTION_DURATION = 30; // PUT SUBSCRIPTION DURATION DAYS HERE;
 
+    public static final String TESTING_REWARDED_AD_ID = "ca-app-pub-3940256099942544/5224354917";
+
     public static class PrefKeys {
         public static final String PREF_STATUS_ID = "pref_redirect_status_id";
         public static final String PREF_STATUS_KIND = "pref_redirect_status_kind";

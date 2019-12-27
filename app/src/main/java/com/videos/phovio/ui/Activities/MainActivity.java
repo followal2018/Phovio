@@ -2,6 +2,7 @@ package com.videos.phovio.ui.Activities;
 
 import android.Manifest;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -71,6 +72,7 @@ import com.google.firebase.dynamiclinks.DynamicLink;
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 import com.google.firebase.dynamiclinks.ShortDynamicLink;
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.gson.Gson;
 import com.leinardi.android.speeddial.SpeedDialActionItem;
 import com.leinardi.android.speeddial.SpeedDialView;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
@@ -86,6 +88,7 @@ import com.videos.phovio.config.AdRequestHandle;
 import com.videos.phovio.config.Global;
 import com.videos.phovio.model.ApiResponse;
 import com.videos.phovio.model.Language;
+import com.videos.phovio.model.Status;
 import com.videos.phovio.ui.fragement.CategroiesFragement;
 import com.videos.phovio.ui.fragement.DownloadsFragement;
 import com.videos.phovio.ui.fragement.FavoritesFragment;
@@ -146,6 +149,7 @@ public class MainActivity extends AppCompatActivity
     };
     String refercode = "";
     Timer timer = new Timer();
+    ProgressDialog progressDialog;
     private Boolean EarningSystem = true;
     private Dialog rateDialog;
     private MaterialSearchView searchView;
@@ -194,6 +198,8 @@ public class MainActivity extends AppCompatActivity
     public void handleDeepLink() {
         String id = prefManager.getString(PREF_STATUS_ID);
         String kind = prefManager.getString(PREF_STATUS_KIND);
+
+
         if (id != null && !id.isEmpty() && kind != null && !kind.isEmpty()) {
             if (kind.equals("image")) {
                 Intent intent = new Intent(this, ImageActivity.class);
@@ -202,11 +208,11 @@ public class MainActivity extends AppCompatActivity
                 startActivity(intent);
                 overridePendingTransition(R.anim.enter, R.anim.exit);
             } else if (kind.equals("video")) {
-                Intent intent = new Intent(this, VideoActivity.class);
-                intent.putExtra("id", Integer.parseInt(id));
-                intent.putExtra("isFromLink", true);
-                startActivity(intent);
-                overridePendingTransition(R.anim.enter, R.anim.exit);
+                progressDialog = new ProgressDialog(this);
+                progressDialog.setCancelable(false);
+                progressDialog.setTitle("Plese Wait Loading Status...");
+                progressDialog.show();
+                getStatus(Integer.parseInt(id));
             } else if (kind.equals("gif")) {
                 Intent intent = new Intent(this, GifActivity.class);
                 intent.putExtra("id", Integer.parseInt(id));
@@ -273,6 +279,8 @@ public class MainActivity extends AppCompatActivity
                 ConsentInformation.getInstance(MainActivity.this);
 //// test
 /////
+
+        consentInformation.addTestDevice("4305B2D76AD67A8A8B3DE391FCDCE35A");
         String[] publisherIds = {getResources().getString(R.string.publisher_id)};
         consentInformation.requestConsentInfoUpdate(publisherIds, new
                 ConsentInfoUpdateListener() {
@@ -285,6 +293,7 @@ public class MainActivity extends AppCompatActivity
                                 Log.d(TAG, "PERSONALIZED");
                                 ConsentInformation.getInstance(MainActivity.this)
                                         .setConsentStatus(ConsentStatus.PERSONALIZED);
+
                                 break;
                             case NON_PERSONALIZED:
                                 Log.d(TAG, "NON_PERSONALIZED");
@@ -1306,6 +1315,78 @@ public class MainActivity extends AppCompatActivity
         });
         rateDialog.show();
 
+    }
+
+    private void getStatus(int id) {
+        Retrofit retrofit = apiClient.getClient();
+        apiRest service = retrofit.create(apiRest.class);
+        Call<List<Status>> call = service.getStatusById(id);
+        call.enqueue(new Callback<List<Status>>() {
+            @Override
+            public void onResponse(Call<List<Status>> call, Response<List<Status>> response) {
+                progressDialog.dismiss();
+                if (response.isSuccessful()) {
+                    Log.e(TAG, "Response :-> " + new Gson().toJson(response));
+                    List<Status> statuses = response.body();
+                    if (statuses != null && !statuses.isEmpty()) {
+                        Status status = statuses.get(0);
+
+                        Intent intent = new Intent(MainActivity.this, VideoActivity.class);
+
+                        if (status.getKind().equals("video")) {
+                            intent = new Intent(MainActivity.this, VideoActivity.class);
+                        } else if (status.getKind().equals("quote")) {
+                            intent = new Intent(MainActivity.this, QuoteActivity.class);
+                        } else if (status.getKind().equals("gif")) {
+                            intent = new Intent(MainActivity.this, GifActivity.class);
+                        } else if (status.getKind().equals("image")) {
+                            intent = new Intent(MainActivity.this, ImageActivity.class);
+                        } else if (status.getKind().equals("fullscreen")) {
+                            intent = new Intent(MainActivity.this, PlayerActivity.class);
+                        }
+
+                        intent.putExtra("id", status.getId());
+                        intent.putExtra("title", status.getTitle());
+                        intent.putExtra("kind", status.getKind());
+                        intent.putExtra("description", status.getDescription());
+                        intent.putExtra("review", status.getReview());
+                        intent.putExtra("comment", status.getComment());
+                        intent.putExtra("comments", status.getComments());
+                        intent.putExtra("downloads", status.getDownloads());
+                        intent.putExtra("views", status.getViews());
+                        intent.putExtra("font", status.getFont());
+
+                        intent.putExtra("user", status.getUser());
+                        intent.putExtra("userid", status.getUserid());
+                        intent.putExtra("userimage", status.getUserimage());
+                        intent.putExtra("thumbnail", status.getThumbnail());
+                        intent.putExtra("original", status.getOriginal());
+                        intent.putExtra("type", status.getType());
+                        intent.putExtra("extension", status.getExtension());
+                        intent.putExtra("color", status.getColor());
+                        intent.putExtra("created", status.getCreated());
+                        intent.putExtra("tags", status.getTags());
+                        intent.putExtra("like", status.getLike());
+                        intent.putExtra("love", status.getLove());
+                        intent.putExtra("woow", status.getWoow());
+                        intent.putExtra("angry", status.getAngry());
+                        intent.putExtra("sad", status.getSad());
+                        intent.putExtra("haha", status.getHaha());
+                        intent.putExtra("local", status.getLocal());
+                        intent.putExtra("position", -1);
+                        intent.putExtra("superLikeCount", status.getSuperLikeCount());
+
+                        startActivity(intent);
+                        overridePendingTransition(R.anim.enter, R.anim.exit);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Status>> call, Throwable t) {
+                progressDialog.dismiss();
+            }
+        });
     }
 
     class ViewPagerAdapter extends FragmentPagerAdapter {

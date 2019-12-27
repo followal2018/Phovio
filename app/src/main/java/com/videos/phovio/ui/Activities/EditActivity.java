@@ -68,6 +68,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
+import timber.log.Timber;
 
 public class EditActivity extends AppCompatActivity implements ProgressRequestBody.UploadCallbacks {
 
@@ -587,6 +588,8 @@ public class EditActivity extends AppCompatActivity implements ProgressRequestBo
                 if (response.isSuccessful()) {
 
                     for (int i = 0; i < response.body().getValues().size(); i++) {
+                        Timber.e("EditProfile :-> Value Name -> " + response.body().getValues().get(i).getName());
+                        Timber.e("EditProfile :-> Value Value -> " + response.body().getValues().get(i).getValue());
 
                         if (response.body().getValues().get(i).getName().equals("facebook")) {
                             facebook = response.body().getValues().get(i).getValue();
@@ -708,6 +711,7 @@ public class EditActivity extends AppCompatActivity implements ProgressRequestBo
         verificationDialog.setCancelable(false);
         edit_input_otp = verificationDialog.findViewById(R.id.edtOtp);
         TextView txtPositive = verificationDialog.findViewById(R.id.txtPositive);
+        TextView txtNegative = verificationDialog.findViewById(R.id.txtNegative);
         TextView tvresend = verificationDialog.findViewById(R.id.tvresend);
         txtPositive.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -715,6 +719,13 @@ public class EditActivity extends AppCompatActivity implements ProgressRequestBo
                 if (!edit_input_otp.getText().toString().trim().isEmpty()) {
                     verifyVerificationCode(edit_input_otp.getText().toString().trim());
                 }
+            }
+        });
+
+        txtNegative.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                verificationDialog.dismiss();
             }
         });
         tvresend.setOnClickListener(new View.OnClickListener() {

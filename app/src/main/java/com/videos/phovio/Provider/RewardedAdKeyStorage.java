@@ -5,11 +5,14 @@ import android.content.SharedPreferences;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.videos.phovio.BuildConfig;
 import com.videos.phovio.R;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Random;
+
+import static com.videos.phovio.config.Global.TESTING_REWARDED_AD_ID;
 
 /**
  * Created by Nirav Mandani on 07-12-2019.
@@ -37,16 +40,20 @@ public class RewardedAdKeyStorage {
     }
 
     public String getRewardedAdKey() {
-        Gson gson = new Gson();
-        String json = preferences.getString("REWARDED_AD_KEY_LIST", null);
-        Type type = new TypeToken<ArrayList<String>>() {
-        }.getType();
-        ArrayList<String> rewardedAdKeys = gson.fromJson(json, type);
-        if (rewardedAdKeys != null && !rewardedAdKeys.isEmpty()) {
-            int index = randomGenerator.nextInt(rewardedAdKeys.size());
-            return rewardedAdKeys.get(index);
+        if (BuildConfig.DEBUG) {
+            return TESTING_REWARDED_AD_ID;
         } else {
-            return context.getString(R.string.ad_unit_id_reward);
+            Gson gson = new Gson();
+            String json = preferences.getString("REWARDED_AD_KEY_LIST", null);
+            Type type = new TypeToken<ArrayList<String>>() {
+            }.getType();
+            ArrayList<String> rewardedAdKeys = gson.fromJson(json, type);
+            if (rewardedAdKeys != null && !rewardedAdKeys.isEmpty()) {
+                int index = randomGenerator.nextInt(rewardedAdKeys.size());
+                return rewardedAdKeys.get(index);
+            } else {
+                return context.getString(R.string.ad_unit_id_reward);
+            }
         }
     }
 }

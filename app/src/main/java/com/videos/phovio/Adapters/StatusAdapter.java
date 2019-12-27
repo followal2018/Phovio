@@ -301,9 +301,9 @@ public class StatusAdapter extends RecyclerView.Adapter {
                                         }*/
                                         if (statusList.get(position).getKind().equals("quote")) {
                                             shareUtils.shareStatus(statusList.get(position).getId(), statusList.get(position).getKind(), FACEBOOK_ID, null, statusList.get(position).getTitle());
-                                        } else if(statusList.get(position).getKind().equals("video")){
+                                        } else if (statusList.get(position).getKind().equals("video")) {
                                             shareUtils.shareStatus(statusList.get(position).getId(), statusList.get(position).getKind(), FACEBOOK_ID, statusList.get(position).getThumbnail(), statusList.get(position).getTitle());
-                                        } else  {
+                                        } else {
                                             shareUtils.shareStatus(statusList.get(position).getId(), statusList.get(position).getKind(), FACEBOOK_ID, statusList.get(position).getOriginal(), statusList.get(position).getTitle());
                                         }
                                     }
@@ -319,9 +319,9 @@ public class StatusAdapter extends RecyclerView.Adapter {
 
                                 if (statusList.get(position).getKind().equals("quote")) {
                                     shareUtils.shareStatus(statusList.get(position).getId(), statusList.get(position).getKind(), FACEBOOK_ID, null, statusList.get(position).getTitle());
-                                } else if(statusList.get(position).getKind().equals("video")){
+                                } else if (statusList.get(position).getKind().equals("video")) {
                                     shareUtils.shareStatus(statusList.get(position).getId(), statusList.get(position).getKind(), FACEBOOK_ID, statusList.get(position).getThumbnail(), statusList.get(position).getTitle());
-                                } else  {
+                                } else {
                                     shareUtils.shareStatus(statusList.get(position).getId(), statusList.get(position).getKind(), FACEBOOK_ID, statusList.get(position).getOriginal(), statusList.get(position).getTitle());
                                 }
                             }
@@ -335,9 +335,9 @@ public class StatusAdapter extends RecyclerView.Adapter {
                             }*/
                             if (statusList.get(position).getKind().equals("quote")) {
                                 shareUtils.shareStatus(statusList.get(position).getId(), statusList.get(position).getKind(), FACEBOOK_ID, null, statusList.get(position).getTitle());
-                            } else if(statusList.get(position).getKind().equals("video")){
+                            } else if (statusList.get(position).getKind().equals("video")) {
                                 shareUtils.shareStatus(statusList.get(position).getId(), statusList.get(position).getKind(), FACEBOOK_ID, statusList.get(position).getThumbnail(), statusList.get(position).getTitle());
-                            } else  {
+                            } else {
                                 shareUtils.shareStatus(statusList.get(position).getId(), statusList.get(position).getKind(), FACEBOOK_ID, statusList.get(position).getOriginal(), statusList.get(position).getTitle());
                             }
                         }
@@ -354,9 +354,9 @@ public class StatusAdapter extends RecyclerView.Adapter {
                                         requestNewInterstitial();
                                         if (statusList.get(position).getKind().equals("quote")) {
                                             shareUtils.shareStatus(statusList.get(position).getId(), statusList.get(position).getKind(), MESSENGER_ID, null, statusList.get(position).getTitle());
-                                        } else if(statusList.get(position).getKind().equals("video")){
+                                        } else if (statusList.get(position).getKind().equals("video")) {
                                             shareUtils.shareStatus(statusList.get(position).getId(), statusList.get(position).getKind(), MESSENGER_ID, statusList.get(position).getThumbnail(), statusList.get(position).getTitle());
-                                        } else  {
+                                        } else {
                                             shareUtils.shareStatus(statusList.get(position).getId(), statusList.get(position).getKind(), MESSENGER_ID, statusList.get(position).getOriginal(), statusList.get(position).getTitle());
                                         }
                                         /*if (statusList.get(position).getKind().equals("quote")) {
@@ -374,9 +374,9 @@ public class StatusAdapter extends RecyclerView.Adapter {
                             } else {
                                 if (statusList.get(position).getKind().equals("quote")) {
                                     shareUtils.shareStatus(statusList.get(position).getId(), statusList.get(position).getKind(), MESSENGER_ID, null, statusList.get(position).getTitle());
-                                } else if(statusList.get(position).getKind().equals("video")){
+                                } else if (statusList.get(position).getKind().equals("video")) {
                                     shareUtils.shareStatus(statusList.get(position).getId(), statusList.get(position).getKind(), MESSENGER_ID, statusList.get(position).getThumbnail(), statusList.get(position).getTitle());
-                                } else  {
+                                } else {
                                     shareUtils.shareStatus(statusList.get(position).getId(), statusList.get(position).getKind(), MESSENGER_ID, statusList.get(position).getOriginal(), statusList.get(position).getTitle());
                                 }
                                /* if (statusList.get(position).getKind().equals("quote")) {
@@ -393,9 +393,9 @@ public class StatusAdapter extends RecyclerView.Adapter {
                         } else {
                             if (statusList.get(position).getKind().equals("quote")) {
                                 shareUtils.shareStatus(statusList.get(position).getId(), statusList.get(position).getKind(), MESSENGER_ID, null, statusList.get(position).getTitle());
-                            } else if(statusList.get(position).getKind().equals("video")){
+                            } else if (statusList.get(position).getKind().equals("video")) {
                                 shareUtils.shareStatus(statusList.get(position).getId(), statusList.get(position).getKind(), MESSENGER_ID, statusList.get(position).getThumbnail(), statusList.get(position).getTitle());
-                            } else  {
+                            } else {
                                 shareUtils.shareStatus(statusList.get(position).getId(), statusList.get(position).getKind(), MESSENGER_ID, statusList.get(position).getOriginal(), statusList.get(position).getTitle());
                             }
                            /* if (statusList.get(position).getKind().equals("quote")) {
@@ -432,9 +432,9 @@ public class StatusAdapter extends RecyclerView.Adapter {
                                         }*/
                                         if (statusList.get(position).getKind().equals("quote")) {
                                             shareUtils.shareStatus(statusList.get(position).getId(), statusList.get(position).getKind(), WHATSAPP_ID, null, statusList.get(position).getTitle());
-                                        } else if(statusList.get(position).getKind().equals("video")){
+                                        } else if (statusList.get(position).getKind().equals("video")) {
                                             shareUtils.shareStatus(statusList.get(position).getId(), statusList.get(position).getKind(), WHATSAPP_ID, statusList.get(position).getThumbnail(), statusList.get(position).getTitle());
-                                        } else  {
+                                        } else {
                                             shareUtils.shareStatus(statusList.get(position).getId(), statusList.get(position).getKind(), WHATSAPP_ID, statusList.get(position).getOriginal(), statusList.get(position).getTitle());
                                         }
                                     }
@@ -452,9 +452,9 @@ public class StatusAdapter extends RecyclerView.Adapter {
                                 }*/
                                 if (statusList.get(position).getKind().equals("quote")) {
                                     shareUtils.shareStatus(statusList.get(position).getId(), statusList.get(position).getKind(), WHATSAPP_ID, null, statusList.get(position).getTitle());
-                                } else if(statusList.get(position).getKind().equals("video")){
+                                } else if (statusList.get(position).getKind().equals("video")) {
                                     shareUtils.shareStatus(statusList.get(position).getId(), statusList.get(position).getKind(), WHATSAPP_ID, statusList.get(position).getThumbnail(), statusList.get(position).getTitle());
-                                } else  {
+                                } else {
                                     shareUtils.shareStatus(statusList.get(position).getId(), statusList.get(position).getKind(), WHATSAPP_ID, statusList.get(position).getOriginal(), statusList.get(position).getTitle());
                                 }
                             }
@@ -471,9 +471,9 @@ public class StatusAdapter extends RecyclerView.Adapter {
                             }*/
                             if (statusList.get(position).getKind().equals("quote")) {
                                 shareUtils.shareStatus(statusList.get(position).getId(), statusList.get(position).getKind(), WHATSAPP_ID, null, statusList.get(position).getTitle());
-                            } else if(statusList.get(position).getKind().equals("video")){
+                            } else if (statusList.get(position).getKind().equals("video")) {
                                 shareUtils.shareStatus(statusList.get(position).getId(), statusList.get(position).getKind(), WHATSAPP_ID, statusList.get(position).getThumbnail(), statusList.get(position).getTitle());
-                            } else  {
+                            } else {
                                 shareUtils.shareStatus(statusList.get(position).getId(), statusList.get(position).getKind(), WHATSAPP_ID, statusList.get(position).getOriginal(), statusList.get(position).getTitle());
                             }
                         }
@@ -499,9 +499,9 @@ public class StatusAdapter extends RecyclerView.Adapter {
                                         }*/
                                         if (statusList.get(position).getKind().equals("quote")) {
                                             shareUtils.shareStatus(statusList.get(position).getId(), statusList.get(position).getKind(), INSTAGRAM_ID, null, statusList.get(position).getTitle());
-                                        } else if(statusList.get(position).getKind().equals("video")){
+                                        } else if (statusList.get(position).getKind().equals("video")) {
                                             shareUtils.shareStatus(statusList.get(position).getId(), statusList.get(position).getKind(), INSTAGRAM_ID, statusList.get(position).getThumbnail(), statusList.get(position).getTitle());
-                                        } else  {
+                                        } else {
                                             shareUtils.shareStatus(statusList.get(position).getId(), statusList.get(position).getKind(), INSTAGRAM_ID, statusList.get(position).getOriginal(), statusList.get(position).getTitle());
                                         }
                                     }
@@ -515,9 +515,9 @@ public class StatusAdapter extends RecyclerView.Adapter {
                                 }*/
                                 if (statusList.get(position).getKind().equals("quote")) {
                                     shareUtils.shareStatus(statusList.get(position).getId(), statusList.get(position).getKind(), INSTAGRAM_ID, null, statusList.get(position).getTitle());
-                                } else if(statusList.get(position).getKind().equals("video")){
+                                } else if (statusList.get(position).getKind().equals("video")) {
                                     shareUtils.shareStatus(statusList.get(position).getId(), statusList.get(position).getKind(), INSTAGRAM_ID, statusList.get(position).getThumbnail(), statusList.get(position).getTitle());
-                                } else  {
+                                } else {
                                     shareUtils.shareStatus(statusList.get(position).getId(), statusList.get(position).getKind(), INSTAGRAM_ID, statusList.get(position).getOriginal(), statusList.get(position).getTitle());
                                 }
                             }
@@ -530,9 +530,9 @@ public class StatusAdapter extends RecyclerView.Adapter {
                             }*/
                             if (statusList.get(position).getKind().equals("quote")) {
                                 shareUtils.shareStatus(statusList.get(position).getId(), statusList.get(position).getKind(), INSTAGRAM_ID, null, statusList.get(position).getTitle());
-                            } else if(statusList.get(position).getKind().equals("video")){
+                            } else if (statusList.get(position).getKind().equals("video")) {
                                 shareUtils.shareStatus(statusList.get(position).getId(), statusList.get(position).getKind(), INSTAGRAM_ID, statusList.get(position).getThumbnail(), statusList.get(position).getTitle());
-                            } else  {
+                            } else {
                                 shareUtils.shareStatus(statusList.get(position).getId(), statusList.get(position).getKind(), INSTAGRAM_ID, statusList.get(position).getOriginal(), statusList.get(position).getTitle());
                             }
                         }
@@ -564,9 +564,9 @@ public class StatusAdapter extends RecyclerView.Adapter {
                                         }*/
                                         if (statusList.get(position).getKind().equals("quote")) {
                                             shareUtils.shareStatus(statusList.get(position).getId(), statusList.get(position).getKind(), SHARE_ID, null, statusList.get(position).getTitle());
-                                        } else if(statusList.get(position).getKind().equals("video")){
+                                        } else if (statusList.get(position).getKind().equals("video")) {
                                             shareUtils.shareStatus(statusList.get(position).getId(), statusList.get(position).getKind(), SHARE_ID, statusList.get(position).getThumbnail(), statusList.get(position).getTitle());
-                                        } else  {
+                                        } else {
                                             shareUtils.shareStatus(statusList.get(position).getId(), statusList.get(position).getKind(), SHARE_ID, statusList.get(position).getOriginal(), statusList.get(position).getTitle());
                                         }
                                     }
@@ -586,9 +586,9 @@ public class StatusAdapter extends RecyclerView.Adapter {
                                 }*/
                                 if (statusList.get(position).getKind().equals("quote")) {
                                     shareUtils.shareStatus(statusList.get(position).getId(), statusList.get(position).getKind(), SHARE_ID, null, statusList.get(position).getTitle());
-                                } else if(statusList.get(position).getKind().equals("video")){
+                                } else if (statusList.get(position).getKind().equals("video")) {
                                     shareUtils.shareStatus(statusList.get(position).getId(), statusList.get(position).getKind(), SHARE_ID, statusList.get(position).getThumbnail(), statusList.get(position).getTitle());
-                                } else  {
+                                } else {
                                     shareUtils.shareStatus(statusList.get(position).getId(), statusList.get(position).getKind(), SHARE_ID, statusList.get(position).getOriginal(), statusList.get(position).getTitle());
                                 }
                             }
@@ -607,9 +607,9 @@ public class StatusAdapter extends RecyclerView.Adapter {
                             }*/
                             if (statusList.get(position).getKind().equals("quote")) {
                                 shareUtils.shareStatus(statusList.get(position).getId(), statusList.get(position).getKind(), SHARE_ID, null, statusList.get(position).getTitle());
-                            } else if(statusList.get(position).getKind().equals("video")){
+                            } else if (statusList.get(position).getKind().equals("video")) {
                                 shareUtils.shareStatus(statusList.get(position).getId(), statusList.get(position).getKind(), SHARE_ID, statusList.get(position).getThumbnail(), statusList.get(position).getTitle());
-                            } else  {
+                            } else {
                                 shareUtils.shareStatus(statusList.get(position).getId(), statusList.get(position).getKind(), SHARE_ID, statusList.get(position).getOriginal(), statusList.get(position).getTitle());
                             }
                         }
@@ -860,7 +860,7 @@ public class StatusAdapter extends RecyclerView.Adapter {
                             .addTestDevice("F131SDDBC55B6A45A3A6A6EF6377EF8E")
                             .addTestDevice("WSDSDSDESDB6A45A3A6A6EF63S77EF8E")
                             .addTestDevice("F1212121ESDB6A45A3A6A6EF63S77EF8E")
-                            .addTestDevice("ASDSADSSADSASDA45A3A6A6EF6377EF8E").build(),
+                            .addTestDevice("ASDSADSSADSASDA45A3A6A6EF6377EF8E").addTestDevice("4305B2D76AD67A8A8B3DE391FCDCE35A").build(),
                     new RewardedAdLoadCallback() {
                         @Override
                         public void onRewardedAdLoaded() {
@@ -2140,13 +2140,13 @@ public class StatusAdapter extends RecyclerView.Adapter {
                             } else {
 
 //                                shareTextWith(position, SHARE_ID);
-                               /* createSharableLink(position, SHARE_ID);*/
+                                /* createSharableLink(position, SHARE_ID);*/
                                 shareUtils.shareStatus(statusList.get(position).getId(), statusList.get(position).getKind(), SHARE_ID, null, statusList.get(position).getTitle());
                             }
                         } else {
 
 //                            shareTextWith(position, SHARE_ID);
-                           /* createSharableLink(position, SHARE_ID);*/
+                            /* createSharableLink(position, SHARE_ID);*/
                             shareUtils.shareStatus(statusList.get(position).getId(), statusList.get(position).getKind(), SHARE_ID, null, statusList.get(position).getTitle());
                         }
                     }
@@ -2679,7 +2679,7 @@ public class StatusAdapter extends RecyclerView.Adapter {
             text = new String(data, "UTF-8");
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
-        }  catch (Exception e) {
+        } catch (Exception e) {
             text = "";
             e.printStackTrace();
 
@@ -3591,7 +3591,7 @@ public class StatusAdapter extends RecyclerView.Adapter {
                 }
             }).build();
 
-            adLoader.loadAds(new AdRequest.Builder().addTestDevice("FAF86C60429038E83D29176F3253C13F").build(), 1);
+            adLoader.loadAds(new AdRequest.Builder().addTestDevice("FAF86C60429038E83D29176F3253C13F").addTestDevice("4305B2D76AD67A8A8B3DE391FCDCE35A").build(), 1);
         }
     }
 

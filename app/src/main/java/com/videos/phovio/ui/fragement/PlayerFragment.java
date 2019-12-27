@@ -2,6 +2,7 @@ package com.videos.phovio.ui.fragement;
 
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -68,11 +69,8 @@ import com.google.android.exoplayer2.util.Util;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
-import com.google.android.gms.ads.doubleclick.PublisherAdRequest;
 import com.google.android.gms.ads.rewarded.RewardItem;
-import com.google.android.gms.ads.rewarded.RewardedAd;
 import com.google.android.gms.ads.rewarded.RewardedAdCallback;
-import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
 import com.leo.simplearcloader.SimpleArcLoader;
 import com.like.LikeButton;
 import com.like.OnLikeListener;
@@ -82,7 +80,6 @@ import com.videos.phovio.App;
 import com.videos.phovio.Provider.DownloadStorage;
 import com.videos.phovio.Provider.FavoritesStorage;
 import com.videos.phovio.Provider.PrefManager;
-import com.videos.phovio.Provider.RewardedAdKeyStorage;
 import com.videos.phovio.R;
 import com.videos.phovio.api.apiClient;
 import com.videos.phovio.api.apiRest;
@@ -90,6 +87,7 @@ import com.videos.phovio.model.ApiResponse;
 import com.videos.phovio.model.Comment;
 import com.videos.phovio.model.Status;
 import com.videos.phovio.ui.Activities.LoginActivity;
+import com.videos.phovio.ui.Activities.PlayerActivity;
 import com.videos.phovio.ui.Activities.UserActivity;
 import com.videos.phovio.utils.ShareUtils;
 
@@ -133,7 +131,9 @@ public class PlayerFragment extends Fragment {
         suffixes.put(1_000_000_000_000_000_000L, "E");
     }
 
-    RewardedAd rewardedAd;
+    Context context;
+
+    /*RewardedAd rewardedAd;*/
     boolean Isrewardcompleted = false;
     private String TAG = "PlayerFragment";
     private InterstitialAd mInterstitialAdDownload;
@@ -367,7 +367,6 @@ public class PlayerFragment extends Fragment {
         exo_play = (ImageView) view.findViewById(R.id.exo_play);
 
 
-
         try {
             relative_super_like.setVisibility(Integer.parseInt(prefManager.getString("ID_USER")) == userid ? View.GONE : View.VISIBLE);
         } catch (Exception e) {
@@ -425,7 +424,7 @@ public class PlayerFragment extends Fragment {
         setStatus();
         setReaction(prefManager.getString("reaction_" + id));
 
-        loadRewardedAd();
+//        ((PlayerActivity)context).loadRewardedAd();
 
         if (first) {
             initializePlayer();
@@ -434,7 +433,7 @@ public class PlayerFragment extends Fragment {
     }
 
     private void requestNewInterstitial() {
-        AdRequest adRequest = new AdRequest.Builder()
+        AdRequest adRequest = new AdRequest.Builder().addTestDevice("4305B2D76AD67A8A8B3DE391FCDCE35A")
                 .build();
 
         mInterstitialAdDownload.loadAd(adRequest);
@@ -1067,19 +1066,19 @@ public class PlayerFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        if (Util.SDK_INT > 23) {
-            Log.v("VideoPlayer", "onPause");
-            releasePlayer();
-        }
+//        if (Util.SDK_INT > 23) {
+        Log.v("VideoPlayer", "onPause");
+        releasePlayer();
+//        }
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        if (Util.SDK_INT > 23) {
-            releasePlayer();
-            Log.v("VideoPlayer", "onStop");
-        }
+//        if (Util.SDK_INT > 23) {
+        releasePlayer();
+        Log.v("VideoPlayer", "onStop");
+//        }
     }
 
     private void download() {
@@ -1775,21 +1774,25 @@ public class PlayerFragment extends Fragment {
         }
     }
 
-    private void loadRewardedAd() {
+    /*private void loadRewardedAd() {
         if (rewardedAd == null || !rewardedAd.isLoaded()) {
 //            isLoading = true;
             RewardedAdKeyStorage rewardedAdKeyStorage = new RewardedAdKeyStorage(getActivity().getApplicationContext());
             rewardedAd = new RewardedAd(getActivity(), rewardedAdKeyStorage.getRewardedAdKey());
 
+            Timber.e("PlayerFragment " + "loadAd ");
             rewardedAd.loadAd(
                     new PublisherAdRequest.Builder().addTestDevice("F512225BC55B6A45A3A6A6EF6377EF8E")
                             .addTestDevice("F131SDDBC55B6A45A3A6A6EF6377EF8E")
                             .addTestDevice("WSDSDSDESDB6A45A3A6A6EF63S77EF8E")
                             .addTestDevice("F1212121ESDB6A45A3A6A6EF63S77EF8E")
-                            .addTestDevice("ASDSADSSADSASDA45A3A6A6EF6377EF8E").build(),
+                            .addTestDevice("ASDSADSSADSASDA45A3A6A6EF6377EF8E")
+                            .addTestDevice("4305B2D76AD67A8A8B3DE391FCDCE35A").build(),
                     new RewardedAdLoadCallback() {
                         @Override
                         public void onRewardedAdLoaded() {
+                            Timber.e("PlayerFragment " + "onRewardedAdLoaded ");
+
                             // Ad successfully loaded.
 //                            MainActivity.this.isLoading = false;
 //                            Toast.makeText(activity, "onRewardedAdLoaded", Toast.LENGTH_SHORT).show();
@@ -1797,6 +1800,8 @@ public class PlayerFragment extends Fragment {
 
                         @Override
                         public void onRewardedAdFailedToLoad(int errorCode) {
+                            Timber.e("PlayerFragment " + "onRewardedAdFailedToLoad " + errorCode);
+
                             // Ad failed to load.
 //                            MainActivity.this.isLoading = false;
 //                            Toast.makeText(activity, "onRewardedAdFailedToLoad=" + errorCode, Toast.LENGTH_SHORT)
@@ -1804,7 +1809,7 @@ public class PlayerFragment extends Fragment {
                         }
                     });
         }
-    }
+    }*/
 
     private void onSuperLikeClicked() {
         PrefManager prefManager = new PrefManager(getActivity());
@@ -1869,7 +1874,7 @@ public class PlayerFragment extends Fragment {
 
     private void showRewardedVideo(final Integer superlikePostId, final Integer userid, final Integer position) {
 //        showVideoButton.setVisibility(View.INVISIBLE);
-        if (rewardedAd.isLoaded()) {
+        if (((PlayerActivity)context).getRewardedAd().isLoaded()) {
             RewardedAdCallback adCallback =
                     new RewardedAdCallback() {
                         @Override
@@ -1887,17 +1892,17 @@ public class PlayerFragment extends Fragment {
                             // Ad closed.
 //                            Toast.makeText(getActivity(), "onRewardedAdClosed", Toast.LENGTH_SHORT).show();
                             // Preload the next rewarded ad.
-                            loadRewardedAd();
+                            ((PlayerActivity)context).loadRewardedAd();
                         }
 
                         @Override
                         public void onUserEarnedReward(RewardItem rewardItem) {
 
-                            startPlayer();
                             Isrewardcompleted = true;
+                            ((PlayerActivity)context).loadRewardedAd();
                             Toasty.success(getActivity().getApplicationContext(), "Success", Toast.LENGTH_SHORT, true).show();
                             AddSuperLikePoints(superlikePostId, userid, position);
-                            loadRewardedAd();
+                            startPlayer();
                         }
 
                         @Override
@@ -1908,12 +1913,13 @@ public class PlayerFragment extends Fragment {
 //                                    .show();
                         }
                     };
-            rewardedAd.show(getActivity(), adCallback);
+            ((PlayerActivity)context).getRewardedAd().show(getActivity(), adCallback);
         } else {
-            loadRewardedAd();
+            ((PlayerActivity)context).loadRewardedAd();
             Toasty.error(getActivity().getApplicationContext(), "Ads will Available in Next 15 Min.", Toast.LENGTH_SHORT, true).show();
         }
     }
+
     private void pausePlayer() {
         player.setPlayWhenReady(false);
         player.getPlaybackState();
@@ -1923,6 +1929,7 @@ public class PlayerFragment extends Fragment {
         player.setPlayWhenReady(true);
         player.getPlaybackState();
     }
+
     public void AddSuperLikePoints(Integer postid, Integer userid, final Integer position) {
         final PrefManager prefManager = new PrefManager(getActivity());
         Integer id_user = 0;
@@ -1981,7 +1988,7 @@ public class PlayerFragment extends Fragment {
         prefManager.setString("LastSuperLikeTime", "" + milisecond);
 
 
-        int SuperLikeCount =superLikeCount + 1;
+        int SuperLikeCount = superLikeCount + 1;
 //        prefManager.setInt("SuperLikeCount", SuperLikeCount);
         Log.e("SuperLikeCount", "" + prefManager.getInt("SuperLikeCount"));
 
@@ -1989,9 +1996,15 @@ public class PlayerFragment extends Fragment {
         Date today = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         prefManager.setString("SuperLikeDate", sdf.format(today));
-        text_view_fragment_player_super_like.setText(""+SuperLikeCount);
+        text_view_fragment_player_super_like.setText("" + SuperLikeCount);
 
 
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        this.context = context;
+        super.onAttach(context);
     }
 
     private class CommentTextWatcher implements TextWatcher {

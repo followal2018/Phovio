@@ -1,12 +1,7 @@
 package com.videos.phovio.ui.Activities;
 
 
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.appcompat.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -14,17 +9,23 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.peekandpop.shalskar.peekandpop.PeekAndPop;
-import com.videos.phovio.R;
 import com.videos.phovio.Adapters.StatusAdapter;
+import com.videos.phovio.Provider.PrefManager;
+import com.videos.phovio.R;
 import com.videos.phovio.api.apiClient;
 import com.videos.phovio.api.apiRest;
 import com.videos.phovio.model.Category;
 import com.videos.phovio.model.Status;
-import com.videos.phovio.Provider.PrefManager;
 import com.videos.phovio.model.User;
 
 import java.util.ArrayList;
@@ -92,7 +93,7 @@ public class SearchActivity extends AppCompatActivity {
     private void showAdsBanner() {
         if (prefManager.getString("SUBSCRIBED").equals("FALSE")) {
             final AdView mAdView = (AdView) findViewById(R.id.adView);
-            AdRequest adRequest = new AdRequest.Builder()
+            AdRequest adRequest = new AdRequest.Builder().addTestDevice("4305B2D76AD67A8A8B3DE391FCDCE35A")
                     .build();
 
             // Start loading the ad in the background.

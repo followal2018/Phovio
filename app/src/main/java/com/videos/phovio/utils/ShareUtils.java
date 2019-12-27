@@ -73,9 +73,9 @@ public class ShareUtils {
         this.id = id;
         if (kind.equals("quote")) {
             this.type = "text";
-            createSharableLink(id, kind, shareWith, null);
+            createSharableLink(id, kind, shareWith, null, title);
         } else {
-            this.type = "image";
+            this.type = "*/*";
             new DownloadFileFromURL().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, thumb, title, ".jpg", 0, shareWith, kind);
         }
     }
@@ -90,7 +90,7 @@ public class ShareUtils {
         }
     }
 
-    public void createSharableLink(int id, String kind, final String shareWith, final String path) {
+    public void createSharableLink(int id, String kind, final String shareWith, final String path, final String title) {
         Timber.e("ShareUtils :-> " + "createSharableLink");
         String link = "https://phovio.page.link/?statusid=" + id + "&kind=" + kind;
         FirebaseDynamicLinks.getInstance().createDynamicLink()
@@ -112,7 +112,8 @@ public class ShareUtils {
                     public void onSuccess(ShortDynamicLink shortDynamicLink) {
                         Uri mInvitationUrl = shortDynamicLink.getShortLink();
                         String invitationLink = mInvitationUrl.toString();
-                        shareWith(shareWith, path, invitationLink);
+                        String shareableText = "Check this interesting post '" + title + "' now and also earn daily real cash.\n\n " + invitationLink;
+                        shareWith(shareWith, path, shareableText);
                     }
                 });
         setDownloading(false);
@@ -200,6 +201,7 @@ public class ShareUtils {
     }
 
     public void shareFacebook(String text, String path) {
+        Timber.e("ShareUtils :-> " + "shareFacebook " + text + "   path  " + path);
         Intent shareIntent = new Intent();
         shareIntent.setAction(Intent.ACTION_SEND);
         shareIntent.setPackage(FACEBOOK_ID);
@@ -220,6 +222,7 @@ public class ShareUtils {
     }
 
     public void shareMessenger(String text, String path) {
+        Timber.e("ShareUtils :-> " + "shareMessenger " + text + "   path  " + path);
         Intent shareIntent = new Intent();
         shareIntent.setAction(Intent.ACTION_SEND);
         shareIntent.setPackage(MESSENGER_ID);
@@ -240,6 +243,7 @@ public class ShareUtils {
     }
 
     public void shareSnapshat(String text, String path) {
+        Timber.e("ShareUtils :-> " + "shareSnapshat " + text + "   path  " + path);
         Intent shareIntent = new Intent();
         shareIntent.setAction(Intent.ACTION_SEND);
         shareIntent.setPackage(SNAPSHAT_ID);
@@ -260,6 +264,7 @@ public class ShareUtils {
     }
 
     public void shareHike(String text, String path) {
+        Timber.e("ShareUtils :-> " + "shareHike " + text + "   path  " + path);
         Intent shareIntent = new Intent();
         shareIntent.setAction(Intent.ACTION_SEND);
         shareIntent.setPackage(HIKE_ID);
@@ -280,6 +285,7 @@ public class ShareUtils {
     }
 
     public void shareInstagram(String text, String path) {
+        Timber.e("ShareUtils :-> " + "shareInstagram " + text + "   path  " + path);
         Intent shareIntent = new Intent();
         shareIntent.setAction(Intent.ACTION_SEND);
         shareIntent.setPackage(INSTAGRAM_ID);
@@ -300,6 +306,7 @@ public class ShareUtils {
     }
 
     public void shareTwitter(String text, String path) {
+        Timber.e("ShareUtils :-> " + "shareTwitter " + text + "   path  " + path);
         Intent shareIntent = new Intent();
         shareIntent.setAction(Intent.ACTION_SEND);
         shareIntent.setPackage(TWITTER_ID);
@@ -320,6 +327,7 @@ public class ShareUtils {
     }
 
     public void share(String text, String path) {
+        Timber.e("ShareUtils :-> " + "share " + text + "   path  " + path);
         Intent shareIntent = new Intent();
         shareIntent.setAction(Intent.ACTION_SEND);
         shareIntent.putExtra(Intent.EXTRA_TEXT, text);
@@ -348,6 +356,7 @@ public class ShareUtils {
         private boolean runing = true;
         private String share_app;
         private String kind = "";
+        private String title = "";
 
         /**
          * Before starting background thread
@@ -384,7 +393,7 @@ public class ShareUtils {
             int count;
             try {
                 URL url = new URL((String) f_url[0]);
-                String title = (String) f_url[1];
+                this.title = (String) f_url[1];
                 String extension = (String) f_url[2];
                 this.position = (int) f_url[3];
                 this.share_app = (String) f_url[4];
@@ -504,7 +513,7 @@ public class ShareUtils {
         @Override
         protected void onPostExecute(String file_url) {
             Timber.e("ShareUtils :-> " + "onPostExecute");
-            createSharableLink(id, kind, share_app, path);
+            createSharableLink(id, kind, share_app, path, title);
         }
     }
 
