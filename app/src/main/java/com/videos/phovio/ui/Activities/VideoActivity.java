@@ -1908,7 +1908,6 @@ public class VideoActivity extends AppCompatActivity {
             videodownloaded.setExtension(extension);
             videodownloaded.setType(type);
             videodownloaded.setKind(kind);
-
             videodownloaded.setLike(like);
             videodownloaded.setLove(love);
             videodownloaded.setAngry(angry);
@@ -1916,7 +1915,6 @@ public class VideoActivity extends AppCompatActivity {
             videodownloaded.setHaha(haha);
             videodownloaded.setWoow(woow);
             videodownloaded.setLocal(localpath);
-
             audios.add(videodownloaded);
             downloadStorage.storeImage(audios);
         }

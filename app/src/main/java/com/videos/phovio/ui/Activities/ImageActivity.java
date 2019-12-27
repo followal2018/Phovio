@@ -16,6 +16,7 @@ import android.os.CountDownTimer;
 import android.os.Environment;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.text.style.IconMarginSpan;
 import android.util.Base64;
 import android.util.Log;
 import android.view.Gravity;
@@ -447,15 +448,15 @@ public class ImageActivity extends AppCompatActivity {
                         public void onRewardedAdLoaded() {
                             // Ad successfully loaded.
 //                            MainActivity.this.isLoading = false;
-//                            Toast.makeText(activity, "onRewardedAdLoaded", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(ImageActivity.this, "onRewardedAdLoaded", Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
                         public void onRewardedAdFailedToLoad(int errorCode) {
                             // Ad failed to load.
 //                            MainActivity.this.isLoading = false;
-//                            Toast.makeText(activity, "onRewardedAdFailedToLoad=" + errorCode, Toast.LENGTH_SHORT)
-//                                    .show();
+                            Toast.makeText(ImageActivity.this, "onRewardedAdFailedToLoad=" + errorCode, Toast.LENGTH_SHORT)
+                                    .show();
                         }
                     });
         }
@@ -494,6 +495,7 @@ public class ImageActivity extends AppCompatActivity {
 
                         @Override
                         public void onRewardedAdFailedToShow(int errorCode) {
+                            loadRewardedAd();
 
                             // Ad failed to display
 //                            Toast.makeText(getActivity(), "onRewardedAdFailedToShow", Toast.LENGTH_SHORT)
@@ -503,6 +505,7 @@ public class ImageActivity extends AppCompatActivity {
             rewardedAd.show(this, adCallback);
         } else {
             Toasty.error(getApplicationContext(), "Ads will Available in Next 15 Min.", Toast.LENGTH_SHORT, true).show();
+            loadRewardedAd();
         }
     }
 

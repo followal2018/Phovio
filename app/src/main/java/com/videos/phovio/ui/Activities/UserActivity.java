@@ -528,6 +528,15 @@ public class UserActivity extends AppCompatActivity {
                             else
                                 button_follow_user_activity.setText("Follow");
                         }
+                        if (response.body().getValues().get(i).getName().equals("profile_picture")) {
+                            Picasso.with(UserActivity.this)
+                                    .load(response.body().getValues().get(i).getValue())
+                                    .error(R.drawable.profile)
+                                    .placeholder(R.drawable.profile)
+                                    .centerCrop()
+                                    .resize(100, 80)
+                                    .into(image_view_profile_user_activity);
+                        }
                     }
 
                 }else{

@@ -90,6 +90,7 @@ public class UploadVideoActivity extends AppCompatActivity implements ProgressRe
     protected String[] colours;
     protected ArrayList<CharSequence> selectedColours = new ArrayList<CharSequence>();
     boolean iscompressing = false;
+    String picturePath = "";
     private Spinner spinner_categories_upload;
     private ArrayList<CharSequence> categoriesList = new ArrayList<>();
     private RelativeLayout relative_layout_upload;
@@ -135,6 +136,113 @@ public class UploadVideoActivity extends AppCompatActivity implements ProgressRe
     @TargetApi(Build.VERSION_CODES.N)
     public static Locale getSystemLocale(Configuration config) {
         return config.getLocales().get(0);
+    }
+
+    public static Uri getImageContentUri(Context context, File imageFile) {
+        String filePath = imageFile.getAbsolutePath();
+        Cursor cursor = context.getContentResolver().query(
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                new String[]{MediaStore.Images.Media._ID},
+                MediaStore.Images.Media.DATA + "=? ",
+                new String[]{filePath}, null);
+        if (cursor != null && cursor.moveToFirst()) {
+            int id = cursor.getInt(cursor.getColumnIndex(MediaStore.MediaColumns._ID));
+            cursor.close();
+            return Uri.withAppendedPath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "" + id);
+        } else {
+            if (imageFile.exists()) {
+                ContentValues values = new ContentValues();
+                values.put(MediaStore.Images.Media.DATA, filePath);
+                return context.getContentResolver().insert(
+                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+            } else {
+                return null;
+            }
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    public static String getPath(final Context context, final Uri uri) {
+
+        if (DEBUG)
+            Log.d("aaaaaaaaaaa" + " File -",
+                    "Authority: " + uri.getAuthority() +
+                            ", Fragment: " + uri.getFragment() +
+                            ", Port: " + uri.getPort() +
+                            ", Query: " + uri.getQuery() +
+                            ", Scheme: " + uri.getScheme() +
+                            ", Host: " + uri.getHost() +
+                            ", Segments: " + uri.getPathSegments().toString()
+            );
+
+        final boolean isKitKat = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
+
+        // DocumentProvider
+        if (isKitKat && DocumentsContract.isDocumentUri(context, uri)) {
+            // LocalStorageProvider
+            if (isLocalStorageDocument(uri)) {
+                // The path is the id
+                return DocumentsContract.getDocumentId(uri);
+            }
+            // ExternalStorageProvider
+            else if (isExternalStorageDocument(uri)) {
+                final String docId = DocumentsContract.getDocumentId(uri);
+                final String[] split = docId.split(":");
+                final String type = split[0];
+
+                if ("primary".equalsIgnoreCase(type)) {
+                    return Environment.getExternalStorageDirectory() + "/" + split[1];
+                }
+
+                // TODO handle non-primary volumes
+            }
+            // DownloadsProvider
+            else if (isDownloadsDocument(uri)) {
+
+                final String id = DocumentsContract.getDocumentId(uri);
+                final Uri contentUri = ContentUris.withAppendedId(
+                        Uri.parse("content://downloads/public_downloads"), Long.valueOf(id));
+
+                return getDataColumn(context, contentUri, null, null);
+            }
+            // MediaProvider
+            else if (isMediaDocument(uri)) {
+                final String docId = DocumentsContract.getDocumentId(uri);
+                final String[] split = docId.split(":");
+                final String type = split[0];
+
+                Uri contentUri = null;
+                if ("image".equals(type)) {
+                    contentUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+                } else if ("video".equals(type)) {
+                    contentUri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
+                } else if ("audio".equals(type)) {
+                    contentUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+                }
+
+                final String selection = "_id=?";
+                final String[] selectionArgs = new String[]{
+                        split[1]
+                };
+
+                return getDataColumn(context, contentUri, selection, selectionArgs);
+            }
+        }
+        // MediaStore (and general)
+        else if ("content".equalsIgnoreCase(uri.getScheme())) {
+
+            // Return the remote address
+            if (isGooglePhotosUri(uri))
+                return uri.getLastPathSegment();
+
+            return getDataColumn(context, uri, null, null);
+        }
+        // File
+        else if ("file".equalsIgnoreCase(uri.getScheme())) {
+            return uri.getPath();
+        }
+
+        return null;
     }
 
     public void checkPermission() {
@@ -284,7 +392,7 @@ public class UploadVideoActivity extends AppCompatActivity implements ProgressRe
 
 
     }
-    String picturePath="";
+
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         super.onActivityResult(requestCode, resultCode, data);
@@ -300,11 +408,10 @@ public class UploadVideoActivity extends AppCompatActivity implements ProgressRe
             cursor.moveToFirst();
 
             int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-             picturePath = cursor.getString(columnIndex);
+            picturePath = cursor.getString(columnIndex);
             cursor.close();
 
 //            compressionDialog.show();
-
 
 
         } else {
@@ -319,48 +426,49 @@ public class UploadVideoActivity extends AppCompatActivity implements ProgressRe
             }
         }
     }
-public void compressfile()
-{
-    videoUrl = android.os.Environment.getExternalStorageDirectory().getPath() + File.separatorChar + "VID_" + new SimpleDateFormat("yyyyMMdd_HHmmss", getLocale()).format(new Date()) + ".mp4";
 
-    VideoCompress.compressVideoLow(picturePath, videoUrl, new VideoCompress.CompressListener() {
-        @Override
-        public void onStart() {
-            compressionDialog.show();
-        }
+    public void compressfile() {
+        videoUrl = android.os.Environment.getExternalStorageDirectory().getPath() + File.separatorChar + "VID_" + new SimpleDateFormat("yyyyMMdd_HHmmss", getLocale()).format(new Date()) + ".mp4";
 
-        @Override
-        public void onSuccess() {
-                    compressionDialog.dismiss();
-                    compressionDialog.cancel();
-            File file = new File(videoUrl);
-            Log.v("SIZE", file.getName() + "");
-            text_upload_title.setText(file.getName().replace(".mp4", "").replace(".MP4", ""));
-            iscompressing = false;
-            if (videoUrl == null) {
-                Toasty.error(UploadVideoActivity.this, getResources().getString(R.string.image_upload_error), Toast.LENGTH_SHORT).show();
-                return;
+        VideoCompress.compressVideoLow(picturePath, videoUrl, new VideoCompress.CompressListener() {
+            @Override
+            public void onStart() {
+                compressionDialog.show();
             }
-            upload(CAMERA_REQUEST_IMAGE_1);
+
+            @Override
+            public void onSuccess() {
+                compressionDialog.dismiss();
+                compressionDialog.cancel();
+                File file = new File(videoUrl);
+                Log.v("SIZE", file.getName() + "");
+                text_upload_title.setText(file.getName().replace(".mp4", "").replace(".MP4", ""));
+                iscompressing = false;
+                if (videoUrl == null) {
+                    Toasty.error(UploadVideoActivity.this, getResources().getString(R.string.image_upload_error), Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                upload(CAMERA_REQUEST_IMAGE_1);
 
 
-        }
+            }
 
-        @Override
-        public void onFail() {
-                    compressionDialog.dismiss();
-                    compressionDialog.cancel();
-            iscompressing = false;
-            Toast.makeText(UploadVideoActivity.this, "Compression Failed", Toast.LENGTH_SHORT).show();
-        }
+            @Override
+            public void onFail() {
+                compressionDialog.dismiss();
+                compressionDialog.cancel();
+                iscompressing = false;
+                Toast.makeText(UploadVideoActivity.this, "Compression Failed", Toast.LENGTH_SHORT).show();
+            }
 
-        @Override
-        public void onProgress(float percent) {
-                    compressionDialog.setProgress((int) percent);
-            iscompressing = true;
-        }
-    });
-}
+            @Override
+            public void onProgress(float percent) {
+                compressionDialog.setProgress((int) percent);
+                iscompressing = true;
+            }
+        });
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void upload(final int CODE) {
 
@@ -455,111 +563,6 @@ public void compressfile()
         });
     }
 
-    public static Uri getImageContentUri(Context context, File imageFile) {
-        String filePath = imageFile.getAbsolutePath();
-        Cursor cursor = context.getContentResolver().query(
-                MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                new String[] { MediaStore.Images.Media._ID },
-                MediaStore.Images.Media.DATA + "=? ",
-                new String[] { filePath }, null);
-        if (cursor != null && cursor.moveToFirst()) {
-            int id = cursor.getInt(cursor.getColumnIndex(MediaStore.MediaColumns._ID));
-            cursor.close();
-            return Uri.withAppendedPath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "" + id);
-        } else {
-            if (imageFile.exists()) {
-                ContentValues values = new ContentValues();
-                values.put(MediaStore.Images.Media.DATA, filePath);
-                return context.getContentResolver().insert(
-                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
-            } else {
-                return null;
-            }
-        }
-    }
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    public static String getPath(final Context context, final Uri uri) {
-
-        if (DEBUG)
-            Log.d("aaaaaaaaaaa" + " File -",
-                    "Authority: " + uri.getAuthority() +
-                            ", Fragment: " + uri.getFragment() +
-                            ", Port: " + uri.getPort() +
-                            ", Query: " + uri.getQuery() +
-                            ", Scheme: " + uri.getScheme() +
-                            ", Host: " + uri.getHost() +
-                            ", Segments: " + uri.getPathSegments().toString()
-            );
-
-        final boolean isKitKat = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
-
-        // DocumentProvider
-        if (isKitKat && DocumentsContract.isDocumentUri(context, uri)) {
-            // LocalStorageProvider
-            if (isLocalStorageDocument(uri)) {
-                // The path is the id
-                return DocumentsContract.getDocumentId(uri);
-            }
-            // ExternalStorageProvider
-            else if (isExternalStorageDocument(uri)) {
-                final String docId = DocumentsContract.getDocumentId(uri);
-                final String[] split = docId.split(":");
-                final String type = split[0];
-
-                if ("primary".equalsIgnoreCase(type)) {
-                    return Environment.getExternalStorageDirectory() + "/" + split[1];
-                }
-
-                // TODO handle non-primary volumes
-            }
-            // DownloadsProvider
-            else if (isDownloadsDocument(uri)) {
-
-                final String id = DocumentsContract.getDocumentId(uri);
-                final Uri contentUri = ContentUris.withAppendedId(
-                        Uri.parse("content://downloads/public_downloads"), Long.valueOf(id));
-
-                return getDataColumn(context, contentUri, null, null);
-            }
-            // MediaProvider
-            else if (isMediaDocument(uri)) {
-                final String docId = DocumentsContract.getDocumentId(uri);
-                final String[] split = docId.split(":");
-                final String type = split[0];
-
-                Uri contentUri = null;
-                if ("image".equals(type)) {
-                    contentUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
-                } else if ("video".equals(type)) {
-                    contentUri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
-                } else if ("audio".equals(type)) {
-                    contentUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
-                }
-
-                final String selection = "_id=?";
-                final String[] selectionArgs = new String[] {
-                        split[1]
-                };
-
-                return getDataColumn(context, contentUri, selection, selectionArgs);
-            }
-        }
-        // MediaStore (and general)
-        else if ("content".equalsIgnoreCase(uri.getScheme())) {
-
-            // Return the remote address
-            if (isGooglePhotosUri(uri))
-                return uri.getLastPathSegment();
-
-            return getDataColumn(context, uri, null, null);
-        }
-        // File
-        else if ("file".equalsIgnoreCase(uri.getScheme())) {
-            return uri.getPath();
-        }
-
-        return null;
-    }
     public String getSelectedCategories() {
         String categories = "";
         for (int i = 0; i < categorySelectAdapter.getSelectedItems().size(); i++) {

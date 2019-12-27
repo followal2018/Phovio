@@ -563,6 +563,7 @@ public class QuoteActivity extends AppCompatActivity {
                     };
             rewardedAd.show(this, adCallback);
         } else {
+            loadRewardedAd();
             Toasty.error(getApplicationContext(), "Ads will Available in Next 15 Min.", Toast.LENGTH_SHORT, true).show();
         }
     }

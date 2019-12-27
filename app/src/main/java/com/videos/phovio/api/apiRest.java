@@ -1,5 +1,6 @@
 package com.videos.phovio.api;
 
+import com.google.gson.JsonObject;
 import com.videos.phovio.config.Global;
 import com.videos.phovio.model.ApiResponse;
 import com.videos.phovio.model.ApiResponseSettings;
@@ -13,6 +14,8 @@ import com.videos.phovio.model.Slide;
 import com.videos.phovio.model.Status;
 import com.videos.phovio.model.Transaction;
 import com.videos.phovio.model.User;
+
+import org.json.JSONObject;
 
 import java.util.List;
 
@@ -147,9 +150,9 @@ public interface apiRest {
     @GET("user/get/{user}/{me}/" + Global.SECURE_KEY + "/" + Global.ITEM_PURCHASE_CODE + "/")
     Call<ApiResponse> getUser(@Path("user") Integer user, @Path("me") Integer me);
 
-    @FormUrlEncoded
+    @Multipart
     @POST("user/edit/" + Global.SECURE_KEY + "/" + Global.ITEM_PURCHASE_CODE + "/")
-    Call<ApiResponse> editUser(@Field("user") Integer user, @Field("key") String key, @Field("name") String name, @Field("email") String email, @Field("facebook") String facebook, @Field("twitter") String twitter, @Field("instagram") String instagram, @Field("mobile") String mobile);
+    Call<ApiResponse> editUser(@Part MultipartBody.Part file,@Part("user") Integer user, @Part("key") String key, @Part("name") String name, @Part("email") String email, @Part("facebook") String facebook, @Part("twitter") String twitter, @Part("instagram") String instagram, @Part("mobile") String mobile);
 
 
     @GET("install/add/{id}/" + Global.SECURE_KEY + "/" + Global.ITEM_PURCHASE_CODE + "/")
@@ -268,7 +271,7 @@ public interface apiRest {
     Call<ApiResponse> AddSuperlike(@Path("user") Integer user, @Path("key") String key, @Field("id") String id);
 
     @POST("multi/user/ad/" + Global.SECURE_KEY + "/12/")
-    Call<ApiResponse> getRewardedAdKeys();
+    Call<JsonObject> getRewardedAdKeys();
 
     @POST("status/{statusId}/" + Global.SECURE_KEY + "/" + Global.SECURE_KEY + "/")
     Call<List<Status>> getStatusById(@Path("statusId") Integer statusId);

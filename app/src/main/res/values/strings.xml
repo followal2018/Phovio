@@ -18,15 +18,15 @@
 
     <!-- Admob Published For GDPR -->
     <string name="publisher_id">pub-2885193985970095</string>
-    <string name="app_id">ca-app-pub-2885193985970095~5532011596</string>
+    <string name="app_id">ca-app-pub-2544960045823726~3802643288</string>
 
 
     <string name="AD_MOB_TIME">15</string>
-    <string name="ad_unit_id_interstitial">ca-app-pub-2885193985970095/5180657800</string>
+    <string name="ad_unit_id_interstitial">ca-app-pub-2544960045823726/7707504367</string>
     <!--    <string name="ad_unit_id_reward">ca-app-pub-2885193985970095/4302690404</string>-->
-    <string name="ad_unit_id_reward">ca-app-pub-2885193985970095/4302690404</string>
-    <string name="ad_unit_id_banner">ca-app-pub-2885193985970095/2810818799</string>
-    <string name="ad_unit_id_native">ca-app-pub-2885193985970095/9536009243</string>
+    <string name="ad_unit_id_reward">ca-app-pub-2544960045823726/4156182291</string>
+    <string name="ad_unit_id_banner">ca-app-pub-2544960045823726/3898399099</string>
+    <string name="ad_unit_id_native">ca-app-pub-2544960045823726/2047983574</string>
 
 
     <!-- FACEBOOK ADS -->

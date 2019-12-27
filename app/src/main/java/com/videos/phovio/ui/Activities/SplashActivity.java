@@ -32,6 +32,8 @@ import com.facebook.ads.AdSettings;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.videos.phovio.Provider.PrefManager;
 import com.videos.phovio.Provider.RewardedAdKeyStorage;
 import com.videos.phovio.R;
@@ -316,28 +318,45 @@ public class SplashActivity extends AppCompatActivity {
             id_user = Integer.parseInt(prefManager.getString("ID_USER"));
             key_user = prefManager.getString("TOKEN_USER");
         }
-        Call<ApiResponse> call = service.getRewardedAdKeys();
-        call.enqueue(new Callback<ApiResponse>() {
+        Call<JsonObject> call = service.getRewardedAdKeys();
+        call.enqueue(new Callback<JsonObject>() {
             @Override
-            public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
-                updateTextViews();
-                intro_progress.setVisibility(View.GONE);
-                if (response.isSuccessful()) {
-                    if (response.body().getCode().equals(200)) {
-                        ArrayList<String> rewardedAdKeys = new ArrayList<>();
-                        for (int i = 0; i < response.body().getValues().size(); i++) {
-                            if (response.body().getValues().get(i).getName().equals("rewarded_ads_id")) {
-                                rewardedAdKeys.add(response.body().getValues().get(i).getValue());
-                            }
-                        }
-                        RewardedAdKeyStorage rewardedAdKeyStorage = new RewardedAdKeyStorage(SplashActivity.this);
-                        rewardedAdKeyStorage.storeRewardedKeys(rewardedAdKeys);
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+
+
+                JsonArray array = response.body().get("values").getAsJsonArray();
+                JsonArray jvb = array.get(0).getAsJsonArray();
+                ArrayList<String> rewardedAdKeys = new ArrayList<>();
+
+                for (int i = 0; i < jvb.size(); i++) {
+                    if (jvb.get(i).getAsJsonObject().get("name").toString().contains("Rewarded")) {
+                        rewardedAdKeys.add(jvb.get(i).getAsJsonObject().get("value").toString());
                     }
                 }
+                RewardedAdKeyStorage rewardedAdKeyStorage = new RewardedAdKeyStorage(SplashActivity.this);
+                rewardedAdKeyStorage.storeRewardedKeys(rewardedAdKeys);
+
+//                jvb.get(9)
+
+                updateTextViews();
+                intro_progress.setVisibility(View.GONE);
+//                if (response.isSuccessful()) {
+//                    if (response.body().getCode().equals(200)) {
+////                        response.body().getValues().get(0).get(0).
+//                        ArrayList<String> rewardedAdKeys = new ArrayList<>();
+//                        for (int i = 0; i < response.body().getValues().size(); i++) {
+//                            if (response.body().getValues().get(i).getName().equals("rewarded_ads_id")) {
+//                                rewardedAdKeys.add(response.body().getValues().get(i).getValue());
+//                            }
+//                        }
+//                        RewardedAdKeyStorage rewardedAdKeyStorage = new RewardedAdKeyStorage(SplashActivity.this);
+//                        rewardedAdKeyStorage.storeRewardedKeys(rewardedAdKeys);
+//                    }
+//                }
             }
 
             @Override
-            public void onFailure(Call<ApiResponse> call, Throwable t) {
+            public void onFailure(Call<JsonObject> call, Throwable t) {
 
                 t.printStackTrace();
             }

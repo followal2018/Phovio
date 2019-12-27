@@ -1,15 +1,22 @@
 package com.videos.phovio.ui.Activities;
 
+import android.Manifest;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
@@ -24,6 +31,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -40,20 +49,29 @@ import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 import com.videos.phovio.Provider.PrefManager;
 import com.videos.phovio.R;
+import com.videos.phovio.api.ProgressRequestBody;
 import com.videos.phovio.api.apiClient;
 import com.videos.phovio.api.apiRest;
 import com.videos.phovio.model.ApiResponse;
+import com.videos.phovio.utils.ImageCompress;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 import es.dmoral.toasty.Toasty;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import okio.BufferedSink;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-public class EditActivity extends AppCompatActivity {
+public class EditActivity extends AppCompatActivity implements ProgressRequestBody.UploadCallbacks {
 
+    private static final int CAMERA_REQUEST_IMAGE_1 = 3001;
     Dialog verificationDialog;
     private EditText edit_input_email;
     private EditText edit_input_name;
@@ -84,6 +102,10 @@ public class EditActivity extends AppCompatActivity {
     private ProgressDialog register_progress_load;
     private String mVerificationId;
     private FirebaseAuth mAuth;
+    private int PICK_IMAGE = 1002;
+    private String videoUrl;
+    private ProgressDialog pd;
+    private PhoneAuthProvider.ForceResendingToken mResendToken;
     private PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
         @Override
         public void onVerificationCompleted(PhoneAuthCredential phoneAuthCredential) {
@@ -109,6 +131,8 @@ public class EditActivity extends AppCompatActivity {
         public void onCodeSent(String s, PhoneAuthProvider.ForceResendingToken forceResendingToken) {
             super.onCodeSent(s, forceResendingToken);
             mVerificationId = s;
+            mResendToken = forceResendingToken;
+
         }
     };
 
@@ -140,6 +164,17 @@ public class EditActivity extends AppCompatActivity {
 
     }
 
+    private void resendVerificationCode(String phoneNumber,
+                                        PhoneAuthProvider.ForceResendingToken token) {
+        PhoneAuthProvider.getInstance().verifyPhoneNumber(
+                phoneNumber,        // Phone number to verify
+                60,                 // Timeout duration
+                TimeUnit.SECONDS,   // Unit of timeout
+                this,               // Activity (for callback binding)
+                mCallbacks,         // OnVerificationStateChangedCallbacks
+                token);             // ForceResendingToken from callbacks
+    }
+
     public void initView() {
         this.text_view_name_user = (TextView) findViewById(R.id.text_view_name_user);
         this.edit_input_email = (EditText) findViewById(R.id.edit_input_email);
@@ -154,11 +189,131 @@ public class EditActivity extends AppCompatActivity {
         this.edit_input_layout_twitter = (TextInputLayout) findViewById(R.id.edit_input_layout_twitter);
         this.edit_input_layout_instragram = (TextInputLayout) findViewById(R.id.edit_input_layout_instragram);
         this.edit_input_layout_mobile_number = (TextInputLayout) findViewById(R.id.edit_input_layout_mobile_number);
-
+        pd = new ProgressDialog(EditActivity.this);
+        pd.setMessage("Uploading Image");
+        pd.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        pd.setCancelable(false);
         this.image_view_user_profile = (ImageView) findViewById(R.id.image_view_user_profile);
         this.edit_button = (Button) findViewById(R.id.edit_button);
         this.add_mobile_number_button = (Button) findViewById(R.id.add_mobile_number_button);
 
+
+        image_view_user_profile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SelectImage();
+            }
+        });
+
+
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == PICK_IMAGE && resultCode == RESULT_OK
+                && null != data) {
+
+
+            Uri selectedImage = data.getData();
+            String[] filePathColumn = {MediaStore.Video.Media.DATA};
+
+            Cursor cursor = getContentResolver().query(selectedImage,
+                    filePathColumn, null, null, null);
+            cursor.moveToFirst();
+
+            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+            String picturePath = cursor.getString(columnIndex);
+            cursor.close();
+
+
+            videoUrl = picturePath;
+            videoUrl = new ImageCompress(EditActivity.this).compressImage(videoUrl);
+
+            File file = new File(videoUrl);
+            Log.e("EditActivity:->", "File Size :-> " + file.length());
+            Log.v("SIZE", file.getName() + "");
+//            text_upload_title.setText(file.getName().replace(".mp4", "").replace(".MP4", ""));
+
+
+            upload(CAMERA_REQUEST_IMAGE_1);
+
+        } else {
+
+            Log.i("SonaSys", "resultCode: " + resultCode);
+            switch (resultCode) {
+                case 0:
+                    Log.i("SonaSys", "User cancelled");
+                    break;
+                case -1:
+                    break;
+            }
+        }
+    }
+
+    public void upload(final int CODE) {
+        File file1 = new File(videoUrl);
+        int file_size = Integer.parseInt(String.valueOf(file1.length() / 1024 / 1024));
+        if (file_size > 20) {
+            Toasty.error(getApplicationContext(), "Max file size allowed 20M", Toast.LENGTH_LONG).show();
+        }
+        Log.v("SIZE", file1.getName() + "");
+
+
+//        pd.show();
+        PrefManager prf = new PrefManager(getApplicationContext());
+
+        Retrofit retrofit = apiClient.getClient();
+        apiRest service = retrofit.create(apiRest.class);
+
+        //File creating from selected URL
+        final File file = new File(videoUrl);
+
+
+        ProgressRequestBody requestFile = new ProgressRequestBody(file, EditActivity.this);
+
+        MultipartBody.Part body = MultipartBody.Part.createFormData("profile_picture", file.getName(), requestFile);
+        String id_ser = prf.getString("ID_USER");
+        String key_ser = prf.getString("TOKEN_USER");
+
+//        Call<ApiResponse> request = service.uploadImage(body, id_ser, key_ser, edit_text_upload_title.getText().toString().trim(), edit_text_upload_description.getText().toString().trim(), getSelectedLanguages(), getSelectedCategories());
+        Call<ApiResponse> request = service.editUser(body, Integer.parseInt(id_ser), key_ser, edit_input_name.getText().toString(), edit_input_email.getText().toString(), edit_input_facebook.getText().toString(), edit_input_twitter.getText().toString(), edit_input_instragram.getText().toString(), edit_input_mobile_number.getText().toString());
+
+        request.enqueue(new Callback<ApiResponse>() {
+            @Override
+            public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
+
+                if (response.isSuccessful()) {
+//                    Toasty.success(getApplication(), getResources().getString(R.string.image_upload_success), Toast.LENGTH_LONG).show();
+//                    finish();
+                } else {
+//                    Toasty.error(getApplication(), getResources().getString(R.string.no_connexion), Toast.LENGTH_LONG).show();
+
+                }
+                // file.delete();
+                // getApplicationContext().sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(file)));
+//                pd.dismiss();
+//                pd.cancel();
+            }
+
+            @Override
+            public void onFailure(Call<ApiResponse> call, Throwable t) {
+                Toasty.error(getApplication(), getResources().getString(R.string.no_connexion), Toast.LENGTH_LONG).show();
+//                pd.dismiss();
+//                pd.cancel();
+            }
+        });
+    }
+
+    private void SelectImage() {
+        if (ContextCompat.checkSelfPermission(EditActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(EditActivity.this, new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE}, 0);
+        } else {
+            Intent i = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Video.Media.EXTERNAL_CONTENT_URI);
+            i.setType("image/*");
+            startActivityForResult(i, PICK_IMAGE);
+        }
     }
 
     public void initAction() {
@@ -235,7 +390,6 @@ public class EditActivity extends AppCompatActivity {
         signInWithPhoneAuthCredential(credential);
     }
 
-
     private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(EditActivity.this, new OnCompleteListener<AuthResult>() {
@@ -278,7 +432,19 @@ public class EditActivity extends AppCompatActivity {
             register_progress = ProgressDialog.show(this, null, getString(R.string.progress_login));
             Retrofit retrofit = apiClient.getClient();
             apiRest service = retrofit.create(apiRest.class);
-            Call<ApiResponse> call = service.editUser(Integer.parseInt(user), key, edit_input_name.getText().toString(), edit_input_email.getText().toString(), edit_input_facebook.getText().toString(), edit_input_twitter.getText().toString(), edit_input_instragram.getText().toString(), edit_input_mobile_number.getText().toString());
+            MultipartBody.Part body = MultipartBody.Part.createFormData("profile_picture", "", new RequestBody() {
+                @Override
+                public MediaType contentType() {
+                    return null;
+                }
+
+                @Override
+                public void writeTo(BufferedSink sink) throws IOException {
+
+                }
+            });
+
+            Call<ApiResponse> call = service.editUser(body, Integer.parseInt(user), key, edit_input_name.getText().toString(), edit_input_email.getText().toString(), edit_input_facebook.getText().toString(), edit_input_twitter.getText().toString(), edit_input_instragram.getText().toString(), edit_input_mobile_number.getText().toString());
             call.enqueue(new Callback<ApiResponse>() {
                 @Override
                 public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
@@ -421,13 +587,14 @@ public class EditActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
 
                     for (int i = 0; i < response.body().getValues().size(); i++) {
+
                         if (response.body().getValues().get(i).getName().equals("facebook")) {
                             facebook = response.body().getValues().get(i).getValue();
                             if (facebook != null) {
                                 if (!facebook.isEmpty()) {
-                                    if (facebook.startsWith("http://") || facebook.startsWith("https://")) {
-                                        edit_input_facebook.setText(facebook);
-                                    }
+//                                    if (facebook.startsWith("http://") || facebook.startsWith("https://")) {
+                                    edit_input_facebook.setText(facebook.replace("\"", ""));
+//                                    }
                                 }
                             }
                         }
@@ -436,10 +603,10 @@ public class EditActivity extends AppCompatActivity {
                             if (twitter != null) {
 
                                 if (!twitter.isEmpty()) {
-                                    if (twitter.startsWith("http://") || twitter.startsWith("https://")) {
-                                        edit_input_twitter.setText(twitter);
+//                                    if (twitter.startsWith("http://") || twitter.startsWith("https://")) {
+                                    edit_input_twitter.setText(twitter.replace("\"", ""));
 
-                                    }
+//                                    }
                                 }
                             }
                         }
@@ -449,10 +616,10 @@ public class EditActivity extends AppCompatActivity {
                             if (instagram != null) {
 
                                 if (!instagram.isEmpty()) {
-                                    if (instagram.startsWith("http://") || instagram.startsWith("https://")) {
+//                                    if (instagram.startsWith("http://") || instagram.startsWith("https://")) {
 
-                                        edit_input_instragram.setText(instagram);
-                                    }
+                                    edit_input_instragram.setText(instagram.replace("\"", ""));
+//                                    }
                                 }
                             }
                         }
@@ -460,7 +627,9 @@ public class EditActivity extends AppCompatActivity {
                             email = response.body().getValues().get(i).getValue();
                             if (email != null) {
                                 if (!email.isEmpty()) {
-                                    edit_input_email.setText(email);
+                                    edit_input_email.setText(email.replace("\"", ""));
+                                    edit_input_email.setEnabled(false);
+
                                 }
                             }
                         }
@@ -468,11 +637,19 @@ public class EditActivity extends AppCompatActivity {
                             mobile = response.body().getValues().get(i).getValue();
                             if (mobile != null) {
                                 if (!mobile.isEmpty()) {
-                                    edit_input_email.setText(mobile);
-                                    edit_input_email.setEnabled(false);
+                                    edit_input_mobile_number.setText(mobile.replace("\"", ""));
                                     add_mobile_number_button.setVisibility(View.GONE);
                                 }
                             }
+                        }
+                        if (response.body().getValues().get(i).getName().equals("profile_picture")) {
+                            Picasso.with(EditActivity.this)
+                                    .load(response.body().getValues().get(i).getValue())
+                                    .error(R.drawable.profile)
+                                    .placeholder(R.drawable.profile)
+                                    .centerCrop()
+                                    .resize(100, 80)
+                                    .into(image_view_user_profile);
                         }
 
                     }
@@ -531,12 +708,21 @@ public class EditActivity extends AppCompatActivity {
         verificationDialog.setCancelable(false);
         edit_input_otp = verificationDialog.findViewById(R.id.edtOtp);
         TextView txtPositive = verificationDialog.findViewById(R.id.txtPositive);
+        TextView tvresend = verificationDialog.findViewById(R.id.tvresend);
         txtPositive.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (!edit_input_otp.getText().toString().trim().isEmpty()) {
                     verifyVerificationCode(edit_input_otp.getText().toString().trim());
                 }
+            }
+        });
+        tvresend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                resendVerificationCode(edit_input_otp.getText().toString().trim(), mResendToken);
+                Toast.makeText(EditActivity.this, "OTP Resent Successfully", Toast.LENGTH_SHORT).show();
+
             }
         });
     }
@@ -560,6 +746,24 @@ public class EditActivity extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onProgressUpdate(int percentage) {
+        pd.setProgress(percentage);
+    }
+
+    @Override
+    public void onError() {
+        pd.dismiss();
+        pd.cancel();
+    }
+
+    @Override
+    public void onFinish() {
+        pd.dismiss();
+        pd.cancel();
+
     }
 
     private class SupportTextWatcher implements TextWatcher {

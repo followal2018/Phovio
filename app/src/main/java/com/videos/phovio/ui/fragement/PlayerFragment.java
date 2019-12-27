@@ -1910,6 +1910,7 @@ public class PlayerFragment extends Fragment {
                     };
             rewardedAd.show(getActivity(), adCallback);
         } else {
+            loadRewardedAd();
             Toasty.error(getActivity().getApplicationContext(), "Ads will Available in Next 15 Min.", Toast.LENGTH_SHORT, true).show();
         }
     }

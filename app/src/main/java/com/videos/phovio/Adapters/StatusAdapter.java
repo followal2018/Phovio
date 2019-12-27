@@ -921,6 +921,7 @@ public class StatusAdapter extends RecyclerView.Adapter {
                     };
             rewardedAd.show(activity, adCallback);
         } else {
+            loadRewardedAd();
             Toasty.error(activity.getApplicationContext(), "Ads will Available in Next 15 Min.", Toast.LENGTH_SHORT, true).show();
         }
     }
