@@ -11,8 +11,12 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.doubleclick.PublisherAdRequest;
+import com.google.android.gms.ads.rewarded.RewardedAd;
+import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
 import com.leo.simplearcloader.SimpleArcLoader;
 import com.videos.phovio.Provider.PrefManager;
+import com.videos.phovio.Provider.RewardedAdKeyStorage;
 import com.videos.phovio.R;
 import com.videos.phovio.api.apiClient;
 import com.videos.phovio.api.apiRest;
@@ -28,6 +32,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
+import timber.log.Timber;
 
 
 public class PlayerActivity extends AppCompatActivity {
@@ -44,6 +49,8 @@ public class PlayerActivity extends AppCompatActivity {
     private PlayerFragment FirstplayerFragment;
     private SimpleArcLoader simple_arc_loader_exo;
 
+    RewardedAd rewardedAd;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +58,8 @@ public class PlayerActivity extends AppCompatActivity {
         setContentView(R.layout.activity_player);
         this.prefManager = new PrefManager(getApplicationContext());
         this.language = prefManager.getString("LANGUAGE_DEFAULT");
+
+        loadRewardedAd();
 
         Bundle bundle = getIntent().getExtras();
         int id = bundle.getInt("id");
@@ -245,7 +254,7 @@ public class PlayerActivity extends AppCompatActivity {
     private void showAdsBanner() {
         if (prefManager.getString("SUBSCRIBED").equals("FALSE")) {
             final AdView mAdView = (AdView) findViewById(R.id.adView);
-            AdRequest adRequest = new AdRequest.Builder()
+            AdRequest adRequest = new AdRequest.Builder().addTestDevice("4305B2D76AD67A8A8B3DE391FCDCE35A")
                     .build();
 
             // Start loading the ad in the background.
@@ -265,6 +274,47 @@ public class PlayerActivity extends AppCompatActivity {
     private void addFacebookAds() {
         AdsFragment facebookAdsFragment = new AdsFragment();
         adapter.addFragment(facebookAdsFragment);
+    }
+
+    public void loadRewardedAd() {
+        if (rewardedAd == null || !rewardedAd.isLoaded()) {
+//            isLoading = true;
+            RewardedAdKeyStorage rewardedAdKeyStorage = new RewardedAdKeyStorage(this);
+            rewardedAd = new RewardedAd(this, rewardedAdKeyStorage.getRewardedAdKey());
+
+            Timber.e("PlayerFragment " + "loadAd ");
+            rewardedAd.loadAd(
+                    new PublisherAdRequest.Builder().addTestDevice("F512225BC55B6A45A3A6A6EF6377EF8E")
+                            .addTestDevice("F131SDDBC55B6A45A3A6A6EF6377EF8E")
+                            .addTestDevice("WSDSDSDESDB6A45A3A6A6EF63S77EF8E")
+                            .addTestDevice("F1212121ESDB6A45A3A6A6EF63S77EF8E")
+                            .addTestDevice("ASDSADSSADSASDA45A3A6A6EF6377EF8E")
+                            .addTestDevice("4305B2D76AD67A8A8B3DE391FCDCE35A").build(),
+                    new RewardedAdLoadCallback() {
+                        @Override
+                        public void onRewardedAdLoaded() {
+                            Timber.e("PlayerFragment " + "onRewardedAdLoaded ");
+
+                            // Ad successfully loaded.
+//                            MainActivity.this.isLoading = false;
+//                            Toast.makeText(activity, "onRewardedAdLoaded", Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onRewardedAdFailedToLoad(int errorCode) {
+                            Timber.e("PlayerFragment " + "onRewardedAdFailedToLoad " + errorCode);
+
+                            // Ad failed to load.
+//                            MainActivity.this.isLoading = false;
+//                            Toast.makeText(activity, "onRewardedAdFailedToLoad=" + errorCode, Toast.LENGTH_SHORT)
+//                                    .show();
+                        }
+                    });
+        }
+    }
+
+    public RewardedAd getRewardedAd(){
+        return rewardedAd;
     }
 
     @Override

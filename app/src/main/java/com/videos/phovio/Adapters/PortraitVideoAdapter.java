@@ -2,8 +2,6 @@ package com.videos.phovio.Adapters;
 
 import android.app.Activity;
 import android.content.Intent;
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +13,9 @@ import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.facebook.ads.Ad;
 import com.facebook.ads.AdChoicesView;
@@ -277,7 +278,7 @@ public class PortraitVideoAdapter extends RecyclerView.Adapter<RecyclerView.View
                 }
             }).build();
 
-            adLoader.loadAds(new AdRequest.Builder().addTestDevice("FAF86C60429038E83D29176F3253C13F").build(), 1);
+            adLoader.loadAds(new AdRequest.Builder().addTestDevice("FAF86C60429038E83D29176F3253C13F").addTestDevice("4305B2D76AD67A8A8B3DE391FCDCE35A").build(), 1);
         }
     }
 

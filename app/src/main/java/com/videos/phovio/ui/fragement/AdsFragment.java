@@ -1,7 +1,6 @@
 package com.videos.phovio.ui.fragement;
 
 import android.os.Bundle;
-import androidx.fragment.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +11,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
+
+import androidx.fragment.app.Fragment;
 
 import com.facebook.ads.Ad;
 import com.facebook.ads.AdChoicesView;
@@ -228,7 +229,7 @@ public class AdsFragment extends Fragment {
             }
         }).build();
 
-        adLoader.loadAds(new AdRequest.Builder().build(), 1);
+        adLoader.loadAds(new AdRequest.Builder().addTestDevice("4305B2D76AD67A8A8B3DE391FCDCE35A").build(), 1);
     }
     /**
      * Populates a {@link UnifiedNativeAdView} object with data from a given

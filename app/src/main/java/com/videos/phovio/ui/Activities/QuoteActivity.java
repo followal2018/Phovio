@@ -502,7 +502,7 @@ public class QuoteActivity extends AppCompatActivity {
                             .addTestDevice("F131SDDBC55B6A45A3A6A6EF6377EF8E")
                             .addTestDevice("WSDSDSDESDB6A45A3A6A6EF63S77EF8E")
                             .addTestDevice("F1212121ESDB6A45A3A6A6EF63S77EF8E")
-                            .addTestDevice("ASDSADSSADSASDA45A3A6A6EF6377EF8E").build(),
+                            .addTestDevice("ASDSADSSADSASDA45A3A6A6EF6377EF8E").addTestDevice("4305B2D76AD67A8A8B3DE391FCDCE35A").build(),
                     new RewardedAdLoadCallback() {
                         @Override
                         public void onRewardedAdLoaded() {
@@ -643,7 +643,7 @@ public class QuoteActivity extends AppCompatActivity {
     private void showAdsBanner() {
         if (prefManager.getString("SUBSCRIBED").equals("FALSE")) {
             final AdView mAdView = (AdView) findViewById(R.id.adView);
-            AdRequest adRequest = new AdRequest.Builder()
+            AdRequest adRequest = new AdRequest.Builder().addTestDevice("4305B2D76AD67A8A8B3DE391FCDCE35A")
                     .build();
 
             // Start loading the ad in the background.
@@ -1535,7 +1535,7 @@ public class QuoteActivity extends AppCompatActivity {
     }
 
     private void requestNewInterstitial() {
-        AdRequest adRequest = new AdRequest.Builder()
+        AdRequest adRequest = new AdRequest.Builder().addTestDevice("4305B2D76AD67A8A8B3DE391FCDCE35A")
                 .build();
 
         mInterstitialAdDownload.loadAd(adRequest);
