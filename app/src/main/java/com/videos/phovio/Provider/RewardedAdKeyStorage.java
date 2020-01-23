@@ -37,16 +37,18 @@ public class RewardedAdKeyStorage {
     }
 
     public String getRewardedAdKey() {
-        Gson gson = new Gson();
-        String json = preferences.getString("REWARDED_AD_KEY_LIST", null);
-        Type type = new TypeToken<ArrayList<String>>() {
-        }.getType();
-        ArrayList<String> rewardedAdKeys = gson.fromJson(json, type);
-        if (rewardedAdKeys != null && !rewardedAdKeys.isEmpty()) {
-            int index = randomGenerator.nextInt(rewardedAdKeys.size());
-            return rewardedAdKeys.get(index);
-        } else {
-            return context.getString(R.string.ad_unit_id_reward);
-        }
+
+        return "ca-app-pub-3940256099942544/5224354917";
+//        Gson gson = new Gson();
+//        String json = preferences.getString("REWARDED_AD_KEY_LIST", null);
+//        Type type = new TypeToken<ArrayList<String>>() {
+//        }.getType();
+//        ArrayList<String> rewardedAdKeys = gson.fromJson(json, type);
+//        if (rewardedAdKeys != null && !rewardedAdKeys.isEmpty()) {
+//            int index = randomGenerator.nextInt(rewardedAdKeys.size());
+//            return rewardedAdKeys.get(index);
+//        } else {
+//            return context.getString(R.string.ad_unit_id_reward);
+//        }
     }
 }

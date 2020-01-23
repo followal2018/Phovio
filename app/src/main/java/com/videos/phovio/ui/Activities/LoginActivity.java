@@ -142,16 +142,18 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         this.text_view_skip_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                startActivity(intent);
+//                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+//                startActivity(intent);
+
+                showRandomUserDialog(responsedata.body().getRandomUsers());
             }
         });
-        this.text_view_skip_login.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+//        this.text_view_skip_login.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                finish();
+//            }
+//        });
     }
 
     public void customView() {
@@ -260,7 +262,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     public void onPause() {
         super.onPause();
     }
-
+    Response<ApiResponse> responsedata;
     public void signUp(String username, String password, String name, String type, String image, String email) {
         register_progress = new ProgressDialog(LoginActivity.this);
         register_progress.setCancelable(true);
@@ -274,7 +276,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
                 if (response.body() != null) {
                     if (response.body().getCode() == 200) {
-
+                        responsedata=response;
                         String id_user = "0";
                         String name_user = "x";
                         String username_user = "x";
@@ -325,7 +327,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                         }
                         register_progress.dismiss();
 
-                        showRandomUserDialog(response.body().getRandomUsers());
+//                        showRandomUserDialog(response.body().getRandomUsers());
 
                         if (enabled.equals("true")) {
                             PrefManager prf = new PrefManager(getApplicationContext());
@@ -343,12 +345,12 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                                 prf.setString("EMAIL", email);
 
                             String token = FirebaseInstanceId.getInstance().getToken();
-                            if (registered.equals("true")) {
+//                            if (registered.equals("true")) {
                                 relative_layout_reference_coode.setVisibility(View.VISIBLE);
                                 relative_layout_facebook_login.setVisibility(View.GONE);
                                 relative_layout_google_login.setVisibility(View.GONE);
                                 referenceCodeAsked = true;
-                            }
+//                            }
                             updateToken(Integer.parseInt(id_user), token_user, token);
                         } else {
                             Toasty.error(getApplicationContext(), getResources().getString(R.string.account_disabled), Toast.LENGTH_SHORT, true).show();
@@ -447,7 +449,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 if (response.isSuccessful()) {
                     if (response.body().getCode().equals(200)) {
                         Toasty.success(getApplicationContext(), response.body().getMessage(), Toast.LENGTH_SHORT, true).show();
-                        finish();
+//                        finish();
+                        showRandomUserDialog(responsedata.body().getRandomUsers());
                     } else {
                         Toasty.error(getApplicationContext(), response.body().getMessage(), Toast.LENGTH_SHORT, true).show();
                     }
