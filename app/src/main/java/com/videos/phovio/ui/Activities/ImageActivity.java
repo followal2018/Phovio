@@ -363,31 +363,31 @@ public class ImageActivity extends AppCompatActivity {
 //                        long LastSuperLikeTime = Long.parseLong(prefManager.getString("LastSuperLikeTime"));
 
 //                        showDialogTimer();
-        if (prefManager.getInt("SuperLikeCount") == 5) {
+//        if (prefManager.getInt("SuperLikeCount") == 5) {
+//
+//            showDialogTimer();
+//
+//        } else {
 
-            showDialogTimer();
-
-        } else {
-
-            prefManager = new PrefManager(this);
-            String SuperLikeIds = prefManager.getString("SuperLikeUserIds");
-            Date today = new Date();
-            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-            if (prefManager.getString("SuperLikeDate").equalsIgnoreCase(sdf.format(today))) {
-                if (SuperLikeIds.contains(String.valueOf(userid))) {
-                    Toasty.error(this, "Already Superlike this user post", Toast.LENGTH_SHORT, true).show();
-                } else {
-                    showDialog(id, userid, position);
-                }
-            } else {
-                prefManager.setInt("SuperLikeCount", 0);
-                prefManager.setString("SuperLikeUserIds", "");
-                prefManager.setString("SuperLikeDate", sdf.format(today));
-//                            setSuperLikedata(position);
-//                            AddSuperLikePoints(statusList.get(position).getId(), statusList.get(position).getUserid());
-                showDialog(id, userid, position);
-            }
-        }
+//            prefManager = new PrefManager(this);
+//            String SuperLikeIds = prefManager.getString("SuperLikeUserIds");
+//            Date today = new Date();
+//            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+//            if (prefManager.getString("SuperLikeDate").equalsIgnoreCase(sdf.format(today))) {
+//                if (SuperLikeIds.contains(String.valueOf(userid))) {
+//                    Toasty.error(this, "Already Superlike this user post", Toast.LENGTH_SHORT, true).show();
+//                } else {
+        showDialog(id, userid, position);
+//                }
+//            } else {
+//                prefManager.setInt("SuperLikeCount", 0);
+//                prefManager.setString("SuperLikeUserIds", "");
+//                prefManager.setString("SuperLikeDate", sdf.format(today));
+////                            setSuperLikedata(position);
+////                            AddSuperLikePoints(statusList.get(position).getId(), statusList.get(position).getUserid());
+//                showDialog(id, userid, position);
+//            }
+//        }
     }
 
     public void showDialog(final Integer SuperlikePostId, final Integer userid, final Integer position) {
@@ -409,7 +409,8 @@ public class ImageActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
-                showRewardedVideo(SuperlikePostId, userid, position);
+                CheckSuperLikePoints(SuperlikePostId, userid, position);
+//                showRewardedVideo(SuperlikePostId, userid, position);
 //                bp.subscribe(MainActivity.this, Global.SUBSCRIPTION_ID);
             }
         });
@@ -502,9 +503,59 @@ public class ImageActivity extends AppCompatActivity {
                     };
             rewardedAd.show(this, adCallback);
         } else {
-            Toasty.error(getApplicationContext(), "Ads will Available in Next 15 Min.", Toast.LENGTH_SHORT, true).show();
+            Toasty.error(getApplicationContext(), "Failed to load ads. please try again after some time.", Toast.LENGTH_SHORT, true).show();
             loadRewardedAd();
         }
+    }
+
+
+    public void CheckSuperLikePoints(final Integer postid, final Integer userid, final Integer position) {
+        final PrefManager prefManager = new PrefManager(this);
+        Integer id_user = 0;
+        String key_user = "";
+        if (prefManager.getString("LOGGED").toString().equals("TRUE")) {
+            id_user = Integer.parseInt(prefManager.getString("ID_USER"));
+            key_user = prefManager.getString("TOKEN_USER");
+        }
+        Retrofit retrofit = apiClient.getClient();
+        apiRest service = retrofit.create(apiRest.class);
+
+        Call<ApiResponse> call = service.CheckSuperlike(id_user, key_user, postid.toString());
+        call.enqueue(new Callback<ApiResponse>() {
+            @Override
+            public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
+//                swipe_refreshl_earning_activity.setRefreshing(false);
+                apiClient.FormatData(ImageActivity.this, response);
+
+                if (response.isSuccessful()) {
+                    if (response.body().getMessage().equalsIgnoreCase("success")) {
+                        showRewardedVideo(postid, userid, position);
+//                        AddSuperLikePoints(postid, userid, position);
+                    } else {
+                        Toasty.error(getApplicationContext(), response.body().getMessage()).show();
+                    }
+                    //  AddSuperLikePoints(statusList.get(position).getId(), statusList.get(position).getUserid());
+
+//                    int SuperLikeCount = Integer.parseInt(prefManager.getString("SuperLikeCount"));
+//                    prefManager.setInt("SuperLikeCount", SuperLikeCount++);
+//                    Log.e("SuperLikeCount", "" + Integer.parseInt(prefManager.getString("SuperLikeCount")));
+//                    if (responsese.body().size() != 0) {
+//                        transactionList.clear();
+//                        for (int i = 0; i < response.body().size(); i++) {
+//                            transactionList.add(response.body().get(i));
+//                        }
+//                        adapter.notifyDataSetChanged();
+//                        recycler_view_transaction_earning_activity.setNestedScrollingEnabled(false);
+//                        page++;
+//                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ApiResponse> call, Throwable t) {
+
+            }
+        });
     }
 
     public void AddSuperLikePoints(Integer postid, Integer userid, final Integer position) {
@@ -526,8 +577,11 @@ public class ImageActivity extends AppCompatActivity {
                 apiClient.FormatData(ImageActivity.this, response);
 
                 if (response.isSuccessful()) {
-
-                    setSuperLikedata(position);
+                    if (response.body().getMessage().equalsIgnoreCase("success")) {
+                        setSuperLikedata(position);
+                    } else {
+                        Toasty.error(getApplicationContext(), response.body().getMessage()).show();
+                    }
                     //  AddSuperLikePoints(statusList.get(position).getId(), statusList.get(position).getUserid());
 
 //                    int SuperLikeCount = Integer.parseInt(prefManager.getString("SuperLikeCount"));
@@ -1389,6 +1443,8 @@ public class ImageActivity extends AppCompatActivity {
         this.like_button_super_like_activity_image.setOnLikeListener(new OnLikeListener() {
             @Override
             public void liked(LikeButton likeButton) {
+
+//                AddSuperLikePoints(statusList.get(position).getId(), userid, position);
                 onSuperLikeClicked();
             }
 

@@ -38,6 +38,7 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.VideoView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -84,6 +85,7 @@ import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.doubleclick.PublisherAdRequest;
 import com.google.android.gms.ads.rewarded.RewardItem;
 import com.google.android.gms.ads.rewarded.RewardedAd;
@@ -404,31 +406,31 @@ public class VideoActivity extends AppCompatActivity {
     }
 
     private void onSuperLikeClicked() {
-        PrefManager prefManager = new PrefManager(this);
-
-        if (prefManager.getInt("SuperLikeCount") == 5) {
-
-            showDialogTimer();
-
-        } else {
-            String SuperLikeIds = prefManager.getString("SuperLikeUserIds");
-            Date today = new Date();
-            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-            if (prefManager.getString("SuperLikeDate").equalsIgnoreCase(sdf.format(today))) {
-                if (SuperLikeIds.contains(String.valueOf(userid))) {
-                    Toasty.error(this, "Already Superlike this user post", Toast.LENGTH_SHORT, true).show();
-                } else {
+//        PrefManager prefManager = new PrefManager(this);
+//
+//        if (prefManager.getInt("SuperLikeCount") == 5) {
+//
+//            showDialogTimer();
+//
+//        } else {
+//            String SuperLikeIds = prefManager.getString("SuperLikeUserIds");
+//            Date today = new Date();
+//            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+//            if (prefManager.getString("SuperLikeDate").equalsIgnoreCase(sdf.format(today))) {
+//                if (SuperLikeIds.contains(String.valueOf(userid))) {
+//                    Toasty.error(this, "Already Superlike this user post", Toast.LENGTH_SHORT, true).show();
+//                } else {
                     showDialog(id, userid, position);
-                }
-            } else {
-                prefManager.setInt("SuperLikeCount", 0);
-                prefManager.setString("SuperLikeUserIds", "");
-                prefManager.setString("SuperLikeDate", sdf.format(today));
-//                            setSuperLikedata(position);
-//                            AddSuperLikePoints(statusList.get(position).getId(), statusList.get(position).getUserid());
-                showDialog(id, userid, position);
-            }
-        }
+//                }
+//            } else {
+//                prefManager.setInt("SuperLikeCount", 0);
+//                prefManager.setString("SuperLikeUserIds", "");
+//                prefManager.setString("SuperLikeDate", sdf.format(today));
+////                            setSuperLikedata(position);
+////                            AddSuperLikePoints(statusList.get(position).getId(), statusList.get(position).getUserid());
+//                showDialog(id, userid, position);
+//            }
+//        }
     }
 
     public void showDialogTimer() {
@@ -536,7 +538,7 @@ public class VideoActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
-                showRewardedVideo(SuperlikePostId, userid, position);
+                CheckSuperLikePoints(SuperlikePostId, userid, position);
 //                bp.subscribe(MainActivity.this, Global.SUBSCRIPTION_ID);
             }
         });
@@ -557,9 +559,58 @@ public class VideoActivity extends AppCompatActivity {
 
     }
 
+    public void CheckSuperLikePoints(final Integer postid, final Integer userid, final Integer position) {
+        final PrefManager prefManager = new PrefManager(this);
+        Integer id_user = 0;
+        String key_user = "";
+        if (prefManager.getString("LOGGED").toString().equals("TRUE")) {
+            id_user = Integer.parseInt(prefManager.getString("ID_USER"));
+            key_user = prefManager.getString("TOKEN_USER");
+        }
+        Retrofit retrofit = apiClient.getClient();
+        apiRest service = retrofit.create(apiRest.class);
+
+        Call<ApiResponse> call = service.CheckSuperlike(id_user, key_user, postid.toString());
+        call.enqueue(new Callback<ApiResponse>() {
+            @Override
+            public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
+//                swipe_refreshl_earning_activity.setRefreshing(false);
+                apiClient.FormatData(VideoActivity.this, response);
+
+                if (response.isSuccessful()) {
+                    if (response.body().getMessage().equalsIgnoreCase("success")) {
+                        showRewardedVideo(postid, userid, position);
+
+                    } else {
+                        Toasty.error(getApplicationContext(), response.body().getMessage()).show();
+                    }
+                    //  AddSuperLikePoints(statusList.get(position).getId(), statusList.get(position).getUserid());
+
+//                    int SuperLikeCount = Integer.parseInt(prefManager.getString("SuperLikeCount"));
+//                    prefManager.setInt("SuperLikeCount", SuperLikeCount++);
+//                    Log.e("SuperLikeCount", "" + Integer.parseInt(prefManager.getString("SuperLikeCount")));
+//                    if (responsese.body().size() != 0) {
+//                        transactionList.clear();
+//                        for (int i = 0; i < response.body().size(); i++) {
+//                            transactionList.add(response.body().get(i));
+//                        }
+//                        adapter.notifyDataSetChanged();
+//                        recycler_view_transaction_earning_activity.setNestedScrollingEnabled(false);
+//                        page++;
+//                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ApiResponse> call, Throwable t) {
+
+            }
+        });
+    }
     private void loadRewardedAd() {
         if (rewardedAd == null || !rewardedAd.isLoaded()) {
 //            isLoading = true;
+
             RewardedAdKeyStorage rewardedAdKeyStorage = new RewardedAdKeyStorage(this);
             rewardedAd = new RewardedAd(this, rewardedAdKeyStorage.getRewardedAdKey());
 
@@ -569,21 +620,22 @@ public class VideoActivity extends AppCompatActivity {
                             .addTestDevice("WSDSDSDESDB6A45A3A6A6EF63S77EF8E")
                             .addTestDevice("F1212121ESDB6A45A3A6A6EF63S77EF8E")
                             .addTestDevice("ASDSADSSADSASDA45A3A6A6EF6377EF8E")
+                            .addTestDevice("F1A0964A0A8B8607EEC65EA4BD39B0D3")
                             .addTestDevice("4305B2D76AD67A8A8B3DE391FCDCE35A").build(),
                     new RewardedAdLoadCallback() {
                         @Override
                         public void onRewardedAdLoaded() {
                             // Ad successfully loaded.
 //                            MainActivity.this.isLoading = false;
-//                            Toast.makeText(activity, "onRewardedAdLoaded", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), "onRewardedAdLoaded", Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
                         public void onRewardedAdFailedToLoad(int errorCode) {
                             // Ad failed to load.
 //                            MainActivity.this.isLoading = false;
-//                            Toast.makeText(activity, "onRewardedAdFailedToLoad=" + errorCode, Toast.LENGTH_SHORT)
-//                                    .show();
+                            Toast.makeText(getApplicationContext(), "onRewardedAdFailedToLoad=" + errorCode, Toast.LENGTH_SHORT)
+                                    .show();
                         }
                     });
         }
@@ -638,7 +690,7 @@ public class VideoActivity extends AppCompatActivity {
             rewardedAd.show(this, adCallback);
         } else {
             showDialogTimer();
-//            Toasty.error(getApplicationContext(), "Ads will Available in Next 15 Min.", Toast.LENGTH_SHORT, true).show();
+//            Toasty.error(getApplicationContext(), "Failed to load ads. please try again after some time.", Toast.LENGTH_SHORT, true).show();
         }
     }
 
@@ -662,8 +714,12 @@ public class VideoActivity extends AppCompatActivity {
 
                 if (response.isSuccessful()) {
 
-                    setSuperLikedata(position);
-                    //  AddSuperLikePoints(statusList.get(position).getId(), statusList.get(position).getUserid());
+                    if (response.body().getMessage().equalsIgnoreCase("success")) {
+
+                        setSuperLikedata(position);
+                    } else {
+                        Toasty.error(getApplicationContext(), response.body().getMessage()).show();
+                    }                    //  AddSuperLikePoints(statusList.get(position).getId(), statusList.get(position).getUserid());
 
 //                    int SuperLikeCount = Integer.parseInt(prefManager.getString("SuperLikeCount"));
 //                    prefManager.setInt("SuperLikeCount", SuperLikeCount++);

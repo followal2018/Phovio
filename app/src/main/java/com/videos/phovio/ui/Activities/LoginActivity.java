@@ -346,10 +346,21 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
                             String token = FirebaseInstanceId.getInstance().getToken();
 //                            if (registered.equals("true")) {
-                                relative_layout_reference_coode.setVisibility(View.VISIBLE);
                                 relative_layout_facebook_login.setVisibility(View.GONE);
                                 relative_layout_google_login.setVisibility(View.GONE);
                                 referenceCodeAsked = true;
+
+                                if(response.body().getRandomUsers()==null)
+                                {
+                                    relative_layout_reference_coode.setVisibility(View.GONE);
+                                    finish();
+                                }else
+                                {
+                                    relative_layout_reference_coode.setVisibility(View.VISIBLE);
+
+                                }
+
+
 //                            }
                             updateToken(Integer.parseInt(id_user), token_user, token);
                         } else {

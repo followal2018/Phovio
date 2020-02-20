@@ -1812,24 +1812,24 @@ public class PlayerFragment extends Fragment {
     }*/
 
     private void onSuperLikeClicked() {
-        PrefManager prefManager = new PrefManager(getActivity());
-        String SuperLikeIds = prefManager.getString("SuperLikeUserIds");
-        Date today = new Date();
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        if (prefManager.getString("SuperLikeDate").equalsIgnoreCase(sdf.format(today))) {
-            if (SuperLikeIds.contains(String.valueOf(userid))) {
-                Toasty.error(getActivity(), "Already Superlike this user post", Toast.LENGTH_SHORT, true).show();
-            } else {
-                showDialog(id, userid, position);
-            }
-        } else {
-            prefManager.setInt("SuperLikeCount", 0);
-            prefManager.setString("SuperLikeUserIds", "");
-            prefManager.setString("SuperLikeDate", sdf.format(today));
-//                            setSuperLikedata(position);
-//                            AddSuperLikePoints(statusList.get(position).getId(), statusList.get(position).getUserid());
+//        PrefManager prefManager = new PrefManager(getActivity());
+//        String SuperLikeIds = prefManager.getString("SuperLikeUserIds");
+//        Date today = new Date();
+//        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+//        if (prefManager.getString("SuperLikeDate").equalsIgnoreCase(sdf.format(today))) {
+////            if (SuperLikeIds.contains(String.valueOf(userid))) {
+////                Toasty.error(getActivity(), "Already Superlike this user post", Toast.LENGTH_SHORT, true).show();
+////            } else {
             showDialog(id, userid, position);
-        }
+////            }
+//        } else {
+//            prefManager.setInt("SuperLikeCount", 0);
+//            prefManager.setString("SuperLikeUserIds", "");
+//            prefManager.setString("SuperLikeDate", sdf.format(today));
+////                            setSuperLikedata(position);
+////                            AddSuperLikePoints(statusList.get(position).getId(), statusList.get(position).getUserid());
+//            showDialog(id, userid, position);
+//        }
     }
 
     public void showDialog(final Integer SuperlikePostId, final Integer userid, final Integer position) {
@@ -1851,7 +1851,7 @@ public class PlayerFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
-                showRewardedVideo(SuperlikePostId, userid, position);
+                CheckSuperLikePoints(SuperlikePostId, userid, position);
 //                bp.subscribe(MainActivity.this, Global.SUBSCRIPTION_ID);
             }
         });
@@ -1872,9 +1872,58 @@ public class PlayerFragment extends Fragment {
 
     }
 
+    public void CheckSuperLikePoints(final Integer postid, final Integer userid, final Integer position) {
+        final PrefManager prefManager = new PrefManager(getActivity());
+        Integer id_user = 0;
+        String key_user = "";
+        if (prefManager.getString("LOGGED").toString().equals("TRUE")) {
+            id_user = Integer.parseInt(prefManager.getString("ID_USER"));
+            key_user = prefManager.getString("TOKEN_USER");
+        }
+        Retrofit retrofit = apiClient.getClient();
+        apiRest service = retrofit.create(apiRest.class);
+
+        Call<ApiResponse> call = service.CheckSuperlike(id_user, key_user, postid.toString());
+        call.enqueue(new Callback<ApiResponse>() {
+            @Override
+            public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
+//                swipe_refreshl_earning_activity.setRefreshing(false);
+                apiClient.FormatData(getActivity(), response);
+
+                if (response.isSuccessful()) {
+                    if (response.body().getMessage().equalsIgnoreCase("success")) {
+                        showRewardedVideo(postid, userid, position);
+
+                    } else {
+                        Toasty.error(getActivity(), response.body().getMessage()).show();
+                    }
+                    //  AddSuperLikePoints(statusList.get(position).getId(), statusList.get(position).getUserid());
+
+//                    int SuperLikeCount = Integer.parseInt(prefManager.getString("SuperLikeCount"));
+//                    prefManager.setInt("SuperLikeCount", SuperLikeCount++);
+//                    Log.e("SuperLikeCount", "" + Integer.parseInt(prefManager.getString("SuperLikeCount")));
+//                    if (responsese.body().size() != 0) {
+//                        transactionList.clear();
+//                        for (int i = 0; i < response.body().size(); i++) {
+//                            transactionList.add(response.body().get(i));
+//                        }
+//                        adapter.notifyDataSetChanged();
+//                        recycler_view_transaction_earning_activity.setNestedScrollingEnabled(false);
+//                        page++;
+//                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ApiResponse> call, Throwable t) {
+
+            }
+        });
+    }
+
     private void showRewardedVideo(final Integer superlikePostId, final Integer userid, final Integer position) {
 //        showVideoButton.setVisibility(View.INVISIBLE);
-        if (((PlayerActivity)context).getRewardedAd().isLoaded()) {
+        if (((PlayerActivity) context).getRewardedAd().isLoaded()) {
             RewardedAdCallback adCallback =
                     new RewardedAdCallback() {
                         @Override
@@ -1892,14 +1941,14 @@ public class PlayerFragment extends Fragment {
                             // Ad closed.
 //                            Toast.makeText(getActivity(), "onRewardedAdClosed", Toast.LENGTH_SHORT).show();
                             // Preload the next rewarded ad.
-                            ((PlayerActivity)context).loadRewardedAd();
+                            ((PlayerActivity) context).loadRewardedAd();
                         }
 
                         @Override
                         public void onUserEarnedReward(RewardItem rewardItem) {
 
                             Isrewardcompleted = true;
-                            ((PlayerActivity)context).loadRewardedAd();
+                            ((PlayerActivity) context).loadRewardedAd();
                             Toasty.success(getActivity().getApplicationContext(), "Success", Toast.LENGTH_SHORT, true).show();
                             AddSuperLikePoints(superlikePostId, userid, position);
                             startPlayer();
@@ -1913,10 +1962,10 @@ public class PlayerFragment extends Fragment {
 //                                    .show();
                         }
                     };
-            ((PlayerActivity)context).getRewardedAd().show(getActivity(), adCallback);
+            ((PlayerActivity) context).getRewardedAd().show(getActivity(), adCallback);
         } else {
-            ((PlayerActivity)context).loadRewardedAd();
-            Toasty.error(getActivity().getApplicationContext(), "Ads will Available in Next 15 Min.", Toast.LENGTH_SHORT, true).show();
+            ((PlayerActivity) context).loadRewardedAd();
+            Toasty.error(getActivity().getApplicationContext(), "Failed to load ads. please try again after some time.", Toast.LENGTH_SHORT, true).show();
         }
     }
 
@@ -1949,8 +1998,13 @@ public class PlayerFragment extends Fragment {
                 apiClient.FormatData(getActivity(), response);
 
                 if (response.isSuccessful()) {
+                    if (response.body().getMessage().equalsIgnoreCase("success")) {
 
-                    setSuperLikedata(position);
+                        setSuperLikedata(position);
+                    } else {
+                        Toasty.error(getActivity(), response.body().getMessage()).show();
+                    }
+//                    setSuperLikedata(position);
                     //  AddSuperLikePoints(statusList.get(position).getId(), statusList.get(position).getUserid());
 
 //                    int SuperLikeCount = Integer.parseInt(prefManager.getString("SuperLikeCount"));

@@ -63,11 +63,11 @@ public class PlayerActivity extends AppCompatActivity {
 
         Bundle bundle = getIntent().getExtras();
         int id = bundle.getInt("id");
+        status = new Status();
 
         if (bundle.getBoolean("isFromLink")) {
             getStatus(id);
         } else {
-            status = new Status();
             status.setId(bundle.getInt("id"));
             status.setTitle(bundle.getString("title"));
             status.setDescription(bundle.getString("description"));

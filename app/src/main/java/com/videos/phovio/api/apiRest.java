@@ -270,6 +270,12 @@ public interface apiRest {
     @POST("superlike/points/user/{user}/{key}/" + Global.SECURE_KEY + "/" + Global.ITEM_PURCHASE_CODE + "/")
     Call<ApiResponse> AddSuperlike(@Path("user") Integer user, @Path("key") String key, @Field("id") String id);
 
+
+    @FormUrlEncoded
+    @POST("checksuperlike/points/user/{user}/{key}/" + Global.SECURE_KEY + "/" + Global.ITEM_PURCHASE_CODE + "/")
+    Call<ApiResponse> CheckSuperlike(@Path("user") Integer user, @Path("key") String key, @Field("id") String id);
+
+
     @POST("multi/user/ad/" + Global.SECURE_KEY + "/12/")
     Call<JsonObject> getRewardedAdKeys();
 

@@ -922,7 +922,7 @@ public class StatusAdapter extends RecyclerView.Adapter {
             rewardedAd.show(activity, adCallback);
         } else {
             loadRewardedAd();
-            Toasty.error(activity.getApplicationContext(), "Ads will Available in Next 15 Min.", Toast.LENGTH_SHORT, true).show();
+            Toasty.error(activity.getApplicationContext(), "Failed to load ads. please try again after some time.", Toast.LENGTH_SHORT, true).show();
         }
     }
 
@@ -946,8 +946,12 @@ public class StatusAdapter extends RecyclerView.Adapter {
 
                 if (response.isSuccessful()) {
 
-                    setSuperLikedata(position);
-                    //  AddSuperLikePoints(statusList.get(position).getId(), statusList.get(position).getUserid());
+                    if (response.body().getMessage().equalsIgnoreCase("success")) {
+
+                        setSuperLikedata(position);
+                    } else {
+                        Toasty.error(activity, response.body().getMessage()).show();
+                    }                    //  AddSuperLikePoints(statusList.get(position).getId(), statusList.get(position).getUserid());
 
 //                    int SuperLikeCount = Integer.parseInt(prefManager.getString("SuperLikeCount"));
 //                    prefManager.setInt("SuperLikeCount", SuperLikeCount++);

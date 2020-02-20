@@ -12,8 +12,6 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Random;
 
-import static com.videos.phovio.config.Global.TESTING_REWARDED_AD_ID;
-
 /**
  * Created by Nirav Mandani on 07-12-2019.
  * Followal Solutions
@@ -40,16 +38,21 @@ public class RewardedAdKeyStorage {
     }
 
     public String getRewardedAdKey() {
-        Gson gson = new Gson();
-        String json = preferences.getString("REWARDED_AD_KEY_LIST", null);
-        Type type = new TypeToken<ArrayList<String>>() {
-        }.getType();
-        ArrayList<String> rewardedAdKeys = gson.fromJson(json, type);
-        if (rewardedAdKeys != null && !rewardedAdKeys.isEmpty()) {
-            int index = randomGenerator.nextInt(rewardedAdKeys.size());
-            return rewardedAdKeys.get(index);
+
+        if (BuildConfig.DEBUG) {
+            return "ca-app-pub-3940256099942544/5224354917";
         } else {
-            return context.getString(R.string.ad_unit_id_reward);
+            Gson gson = new Gson();
+            String json = preferences.getString("REWARDED_AD_KEY_LIST", null);
+            Type type = new TypeToken<ArrayList<String>>() {
+            }.getType();
+            ArrayList<String> rewardedAdKeys = gson.fromJson(json, type);
+            if (rewardedAdKeys != null && !rewardedAdKeys.isEmpty()) {
+                int index = randomGenerator.nextInt(rewardedAdKeys.size());
+                return rewardedAdKeys.get(index);
+            } else {
+                return context.getString(R.string.ad_unit_id_reward);
+            }
         }
     }
 }
