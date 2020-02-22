@@ -1,6 +1,7 @@
 package com.videos.phovio.ui.Activities;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -281,7 +282,7 @@ public class PlayerActivity extends AppCompatActivity {
 //            isLoading = true;
             RewardedAdKeyStorage rewardedAdKeyStorage = new RewardedAdKeyStorage(this);
             rewardedAd = new RewardedAd(this, rewardedAdKeyStorage.getRewardedAdKey());
-
+            Log.e("rewardadid",""+rewardedAdKeyStorage.getRewardedAdKey());
             Timber.e("PlayerFragment " + "loadAd ");
             rewardedAd.loadAd(
                     new PublisherAdRequest.Builder().addTestDevice("F512225BC55B6A45A3A6A6EF6377EF8E")

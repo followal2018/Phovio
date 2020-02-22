@@ -613,7 +613,7 @@ public class VideoActivity extends AppCompatActivity {
 
             RewardedAdKeyStorage rewardedAdKeyStorage = new RewardedAdKeyStorage(this);
             rewardedAd = new RewardedAd(this, rewardedAdKeyStorage.getRewardedAdKey());
-
+            Log.e("rewardadid",""+rewardedAdKeyStorage.getRewardedAdKey());
             rewardedAd.loadAd(
                     new PublisherAdRequest.Builder().addTestDevice("F512225BC55B6A45A3A6A6EF6377EF8E")
                             .addTestDevice("F131SDDBC55B6A45A3A6A6EF6377EF8E")

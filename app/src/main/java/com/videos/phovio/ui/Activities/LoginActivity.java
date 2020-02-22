@@ -58,13 +58,11 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
     private static final String TAG = "LoginActivity";
     private static final int RC_SIGN_IN = 9001;
-
+    Response<ApiResponse> responsedata;
     private LoginButton sign_in_button_facebook;
     private SignInButton sign_in_button_google;
-
     private GoogleApiClient mGoogleApiClient;
     private CallbackManager callbackManager;
-
     private ProgressDialog register_progress;
     private TextView text_view_skip_login;
     private RelativeLayout relative_layout_google_login;
@@ -73,7 +71,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     private RelativeLayout relative_layout_reference_coode;
     private Button btn_send_code;
     private boolean referenceCodeAsked = false;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,7 +93,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
         checkuserreferal();
     }
-
 
     public void initView() {
         this.btn_send_code = (Button) findViewById(R.id.btn_send_code);
@@ -144,8 +140,13 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             public void onClick(View v) {
 //                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
 //                startActivity(intent);
-
-                showRandomUserDialog(responsedata.body().getRandomUsers());
+                if(responsedata!=null)
+                {
+                    showRandomUserDialog(responsedata.body().getRandomUsers());
+                }else {
+                    finish();
+                }
+//                showRandomUserDialog(responsedata.body().getRandomUsers());
             }
         });
 //        this.text_view_skip_login.setOnClickListener(new View.OnClickListener() {
@@ -262,7 +263,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     public void onPause() {
         super.onPause();
     }
-    Response<ApiResponse> responsedata;
+
     public void signUp(String username, String password, String name, String type, String image, String email) {
         register_progress = new ProgressDialog(LoginActivity.this);
         register_progress.setCancelable(true);
@@ -276,7 +277,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
                 if (response.body() != null) {
                     if (response.body().getCode() == 200) {
-                        responsedata=response;
+                        responsedata = response;
                         String id_user = "0";
                         String name_user = "x";
                         String username_user = "x";
@@ -346,19 +347,17 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
                             String token = FirebaseInstanceId.getInstance().getToken();
 //                            if (registered.equals("true")) {
-                                relative_layout_facebook_login.setVisibility(View.GONE);
-                                relative_layout_google_login.setVisibility(View.GONE);
-                                referenceCodeAsked = true;
+                            relative_layout_facebook_login.setVisibility(View.GONE);
+                            relative_layout_google_login.setVisibility(View.GONE);
+                            referenceCodeAsked = true;
 
-                                if(response.body().getRandomUsers()==null)
-                                {
-                                    relative_layout_reference_coode.setVisibility(View.GONE);
-                                    finish();
-                                }else
-                                {
-                                    relative_layout_reference_coode.setVisibility(View.VISIBLE);
+                            if (response.body().getRandomUsers() == null) {
+                                relative_layout_reference_coode.setVisibility(View.GONE);
+                                finish();
+                            } else {
+                                relative_layout_reference_coode.setVisibility(View.VISIBLE);
 
-                                }
+                            }
 
 
 //                            }
